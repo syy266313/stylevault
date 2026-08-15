@@ -8,6 +8,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 import random
 import re
@@ -35,6 +36,81 @@ def load_json(path, default=None):
             return json.load(f)
     except Exception:
         return default
+
+
+def derive_overall_pace(avg_shot_ms):
+    """根据平均镜头时长派生整体节奏（M3.1 确定性规则，Mock/Ffmpeg 共用）。
+
+    - avg_shot_ms < 1200  -> "fast"
+    - 1200 <= avg < 3000  -> "medium"
+    - avg_shot_ms >= 3000 -> "slow"
+    """
+    if avg_shot_ms < 1200:
+        return "fast"
+    if avg_shot_ms < 3000:
+        return "medium"
+    return "slow"
+
+
+def parse_scdet_output(text, duration_s):
+    """解析 ffmpeg scdet metadata 输出，返回 (cut_times, warnings)。
+
+    支持 `lavfi.scd.time=1.250` 与 `lavfi.scd.time: 1.250` 两种格式。
+    过滤：0、越界（>= duration_s）、非有限值。
+    无任何 scdet 输出或无法解析时给出明确 warning，避免把"解析失败"
+    与"视频确实没有切点"混为一谈。
+    """
+    warnings = []
+    if not text or "lavfi.scd" not in text:
+        return [], ["未找到任何 lavfi.scd metadata；请检查 ffmpeg 版本与 scdet 滤镜是否可用"]
+    raw = []
+    for match in re.finditer(r"lavfi\.scd\.time[=:]\s*([0-9.]+)", text):
+        try:
+            raw.append(float(match.group(1)))
+        except ValueError:
+            warnings.append(f"无法解析 scdet 时间值: {match.group(1)!r}")
+    if not raw:
+        return [], ["存在 lavfi.scd 输出但未解析到任何时间戳"]
+    before = len(raw)
+    cut_times = []
+    for t in sorted(raw):
+        if not math.isfinite(t) or t <= 0:
+            warnings.append(f"忽略非有限/非正切点: {t}")
+            continue
+        if t >= duration_s:
+            warnings.append(f"忽略越界切点 {t}s（duration={duration_s}s）")
+            continue
+        if not cut_times or abs(t - cut_times[-1]) > 1e-6:
+            cut_times.append(t)
+    if len(cut_times) < before:
+        warnings.append(f"过滤了 {before - len(cut_times)} 个无效/重复切点")
+    return cut_times, warnings
+
+
+def validate_segments(segments, duration_ms, tolerance_ms=5.0):
+    """校验镜头区间完整性：正时长、连续衔接、总时长与 probe 一致。返回 (ok, errors)。"""
+    errors = []
+    if not segments:
+        return False, ["空 segments"]
+    total = 0.0
+    prev_end = 0.0
+    for i, seg in enumerate(segments, 1):
+        start = seg.get("start_ms")
+        dur = seg.get("duration_ms")
+        if not isinstance(start, (int, float)) or not isinstance(dur, (int, float)):
+            errors.append(f"segments[{i}] 缺少数值字段")
+            continue
+        if dur <= 0:
+            errors.append(f"segments[{i}] 零/负时长: {dur}ms")
+        if i > 1 and abs(start - prev_end) > 1e-6:
+            errors.append(f"segments[{i}] start 与前段 end 不连续: {start} != {prev_end}")
+        if i == 1 and abs(start - 0.0) > 1e-6:
+            errors.append(f"segments[1] 应从 0 开始: {start}")
+        total += dur
+        prev_end = start + dur
+    if abs(total - duration_ms) > tolerance_ms:
+        errors.append(f"segments 总时长 {total}ms 与 probe 时长 {duration_ms}ms 偏差超过 {tolerance_ms}ms")
+    return (len(errors) == 0), errors
 
 
 class VideoAdapter:
@@ -106,6 +182,8 @@ class FfmpegAdapter(VideoAdapter):
         if not video_stream:
             raise RuntimeError(f"未找到视频流: {source}")
         duration = float(video_stream.get("duration") or payload.get("format", {}).get("duration") or 0)
+        if not math.isfinite(duration) or duration <= 0:
+            raise RuntimeError(f"无效的视频时长: {duration}s，无法进行场景切分: {source}")
         rate = video_stream.get("avg_frame_rate") or video_stream.get("r_frame_rate") or "0/1"
         num, den = rate.split("/", 1) if "/" in rate else (rate, "1")
         fps = float(num) / float(den) if float(den) else 0.0
@@ -130,20 +208,25 @@ class FfmpegAdapter(VideoAdapter):
             "-an", "-f", "null", "-",
         ])
         text = (result.stdout or "") + "\n" + (result.stderr or "")
-        cut_times = []
-        # ffmpeg metadata 输出通常包含 lavfi.scd.time=...
-        for match in re.finditer(r"lavfi\.scd\.time[=:]\s*([0-9.]+)", text):
-            cut_times.append(float(match.group(1)))
-        cut_times = sorted(set(t for t in cut_times if t > 0 and t < probe["duration_ms"] / 1000))
-        boundaries = [0.0] + cut_times + [probe["duration_ms"] / 1000]
+        duration_s = probe["duration_ms"] / 1000
+        cut_times, warnings = parse_scdet_output(text, duration_s)
+        boundaries = [0.0] + cut_times + [duration_s]
         segments = []
         for index, (start, end) in enumerate(zip(boundaries, boundaries[1:]), 1):
+            if end <= start:
+                continue  # 防御：拒绝零/负时长区间
+            duration_ms = round((end - start) * 1000, 3)
+            if duration_ms <= 0:
+                continue
             segments.append({
                 "index": index,
                 "start_ms": round(start * 1000, 3),
-                "duration_ms": round((end - start) * 1000, 3),
+                "duration_ms": duration_ms,
             })
-        return {"probe": probe, "cut_times_s": cut_times, "segments": segments}
+        ok, errors = validate_segments(segments, probe["duration_ms"])
+        if not ok:
+            raise RuntimeError("镜头区间校验失败: " + "; ".join(errors))
+        return {"probe": probe, "cut_times_s": cut_times, "segments": segments, "warnings": warnings}
 
     def representative_frames(self, source, segments):
         raise NotImplementedError("代表帧采样将在 M3.2/M3.3 实现；M3.1 只输出切分统计")
@@ -214,6 +297,14 @@ def build_rhythm_params(probe, adapter_name="mock"):
         "confidence": 0.5,
         "source": adapter_name,
         "detection_method": "mock-deterministic",
+        "overall_pace": derive_overall_pace(avg),
+        "coverage": {
+            "probe": {"confidence": 1.0, "source": adapter_name, "detection_method": "mock-deterministic"},
+            "shot_statistics": {"confidence": 1.0, "source": adapter_name, "detection_method": "mock-deterministic"},
+            "transition_types": {"confidence": 0.5, "source": adapter_name, "detection_method": "mock-estimate"},
+            "camera_moves": {"confidence": 0.5, "source": adapter_name, "detection_method": "mock-estimate"},
+            "color_continuity": {"confidence": 0.5, "source": adapter_name, "detection_method": "mock-estimate"},
+        },
         "params": {
             "avg_shot_ms": avg,
             "shot_count": len(durations),
@@ -226,8 +317,9 @@ def build_rhythm_params(probe, adapter_name="mock"):
             "transition_types": transition_types,
             "camera_moves": camera_moves,
             "pace_density": {
-                "cuts_per_min": round(60000 / avg, 2),
-                "segment_density": round(len(durations) / max(1, total / 60000), 3),
+                # 统一定义：cuts_per_min = 切点数/分钟 = max(shot_count-1, 0) / duration_minutes
+                "cuts_per_min": round(max(0, len(durations) - 1) / max(total / 60000.0, 1e-9), 3),
+                "segment_density": round(len(durations) / max(total / 60000.0, 1e-9), 3),
             },
             "color_continuity": {
                 "mean_delta_e": round((probe["seed"] % 120) / 10.0, 2),
@@ -262,9 +354,16 @@ def build_segment_rhythm(segment_result):
     duration_minutes = max(total / 60000.0, 1e-9)
     return {
         "status": "partial",
-        "confidence": 1.0,
         "source": "ffmpeg",
         "detection_method": "ffprobe + scdet",
+        "overall_pace": derive_overall_pace(avg),
+        "coverage": {
+            "probe": {"confidence": 1.0, "source": "ffprobe", "detection_method": "ffprobe-metadata"},
+            "shot_statistics": {"confidence": 1.0, "source": "ffmpeg", "detection_method": "scdet"},
+            "transition_types": {"confidence": 0.0, "source": "ffmpeg", "detection_method": "not-implemented-m3.2"},
+            "camera_moves": {"confidence": 0.0, "source": "ffmpeg", "detection_method": "not-implemented-m3.2"},
+            "color_continuity": {"confidence": 0.0, "source": "future-m3.3", "detection_method": "not-implemented-m3.3"},
+        },
         "params": {
             "avg_shot_ms": avg,
             "shot_count": len(durations),
@@ -287,6 +386,7 @@ def build_segment_rhythm(segment_result):
                 "detection_method": "not-implemented-m3.2",
             }],
             "pace_density": {
+                # 统一定义：cuts_per_min = 切点数/分钟 = max(shot_count-1, 0) / duration_minutes
                 "cuts_per_min": round(max(0, len(durations) - 1) / duration_minutes, 3),
                 "segment_density": round(len(durations) / duration_minutes, 3),
             },
@@ -348,6 +448,7 @@ def cmd_segment(args):
         result = FfmpegAdapter(scene_threshold=args.scene_threshold).segment(args.source)
         output = build_segment_rhythm(result)
         output["segments"] = result["segments"]
+        output["warnings"] = result["warnings"]
         print(json.dumps(output, ensure_ascii=False, indent=2))
     except RuntimeError as exc:
         print(json.dumps({"ok": False, "error": str(exc), "adapter": "ffmpeg"}, ensure_ascii=False, indent=2))
@@ -369,10 +470,37 @@ def cmd_validate(args):
     for k in ["avg_shot_ms", "shot_length_distribution", "transition_types", "camera_moves", "pace_density", "color_continuity"]:
         if k not in params:
             errors.append(f"missing params.{k}")
+
+    # M3.1.1：数值合理性校验
+    shot_count = params.get("shot_count")
+    if shot_count is None:
+        errors.append("missing params.shot_count")
+    elif not isinstance(shot_count, int) or shot_count < 1:
+        errors.append(f"params.shot_count 应为正整数: {shot_count!r}")
+    avg = params.get("avg_shot_ms")
+    if avg is not None and (not isinstance(avg, (int, float)) or avg <= 0):
+        errors.append(f"params.avg_shot_ms 应为正数: {avg!r}")
+    dist = params.get("shot_length_distribution") or {}
+    p10, p50, p90 = dist.get("p10"), dist.get("p50"), dist.get("p90")
+    if None not in (p10, p50, p90) and not (p10 <= p50 <= p90):
+        errors.append(f"shot_length_distribution 应满足 p10<=p50<=p90: {p10}/{p50}/{p90}")
     for key in ["transition_types", "camera_moves"]:
         for i, item in enumerate(params.get(key, [])):
             if any(x not in item for x in ["confidence", "source", "detection_method"]):
                 errors.append(f"{key}[{i}] missing confidence/source/detection_method")
+            conf = item.get("confidence") if isinstance(item, dict) else None
+            if conf is not None and (not isinstance(conf, (int, float)) or not 0 <= conf <= 1):
+                errors.append(f"{key}[{i}] confidence 应在 [0,1]: {conf!r}")
+
+    # M3.1.1：coverage 结构（存在时校验）
+    coverage = obj.get("coverage")
+    if coverage is not None:
+        if not isinstance(coverage, dict) or not coverage:
+            errors.append("coverage 应为非空 dict")
+        else:
+            for dim, entry in coverage.items():
+                if not isinstance(entry, dict) or any(x not in entry for x in ["confidence", "source", "detection_method"]):
+                    errors.append(f"coverage.{dim} missing confidence/source/detection_method")
     print(json.dumps({"ok": not errors, "errors": errors}, ensure_ascii=False, indent=2))
 
 

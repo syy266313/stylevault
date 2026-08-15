@@ -4,6 +4,18 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.6] - 2026-08-15
+
+### Fixed (M3.1.1 契约修正)
+- **overall_pace**：新增 `derive_overall_pace(avg_shot_ms)` 确定性规则（<1200ms=fast, <3000ms=medium, >=3000ms=slow），Mock 与 Ffmpeg 输出统一携带 `rhythm.overall_pace`。
+- **验收按 milestone 拆分**：`evaluate_video.py` 新增 `--milestone M3.1|M3.2|M3.3`（默认 M3.1）；M3.1 只验收 probe/shot 统计/overall_pace/segment 完整性，不再因 M3.2 的 transition/camera 未实现而失败；`configs/video-test-suite.json` 改为 `acceptance_by_milestone` 结构。
+- **cuts_per_min 统一定义**：`cuts_per_min = max(shot_count-1, 0) / duration_minutes`（切点数/分钟），Mock 与 Ffmpeg 一致；`segment_density = shot_count / duration_minutes` 保留区分。
+- **confidence 误导修正**：Ffmpeg rhythm 顶层移除 `confidence=1.0`，改为分维度 `coverage`（probe/shot_statistics 各 1.0；transition/camera/color 为 0.0 + not-implemented-m3.x）。
+- **scdet 解析可靠性**：抽出纯函数 `parse_scdet_output()`，支持 `=`/`:` 两种格式，过滤 0/越界/非有限/重复切点，无 scdet 输出时给出明确 warning，不把"解析失败"当"无切点"。
+- **零时长 segment 防护**：`probe()` 拒绝无效时长；`validate_segments()` 校验正时长、首段从 0 开始、区间连续、总时长与 probe 一致；`segment()` 输出解析 warnings。
+- **validate 增强**：校验 shot_count 正整数、avg_shot_ms>0、p10<=p50<=p90、confidence∈[0,1]、coverage 结构。
+- **新增测试**：`tests/test_m3_1_1.py`（17 用例，unittest，不依赖真实 ffmpeg）：缺失 ffmpeg/ffprobe、ffprobe 失败、无视频流、零时长、scdet 解析（标准/冒号/空/重复/越界）、segment 完整性、cuts_per_min 一致性、overall_pace 派生、M3.1/M3.2 验收差异。
+
 ## [0.4.5] - 2026-08-15
 
 ### Added

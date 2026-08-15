@@ -62,11 +62,26 @@
       }
     }
   ],
-  "acceptance": {
-    "shot_count_abs_error": 1,
-    "avg_shot_ms_mae_ratio": 0.15,
-    "transition_jaccard_min": 0.5,
-    "camera_moves_jaccard_min": 0.5,
-    "overall_pace_match": true
-  }
+  "acceptance_by_milestone": {
+    "M3.1": {
+      "shot_count_abs_error": 1,
+      "avg_shot_ms_mae_ratio": 0.15,
+      "overall_pace_match": true
+    },
+    "M3.2": {
+      "shot_count_abs_error": 1,
+      "avg_shot_ms_mae_ratio": 0.15,
+      "overall_pace_match": true,
+      "transition_jaccard_min": 0.5,
+      "camera_moves_jaccard_min": 0.5
+    },
+    "M3.3": {
+      "shot_count_abs_error": 1,
+      "avg_shot_ms_mae_ratio": 0.15,
+      "overall_pace_match": true,
+      "transition_jaccard_min": 0.5,
+      "camera_moves_jaccard_min": 0.5
+    }
+  },
+  "notes": "M3.1 只验收 probe/shot 统计/overall_pace/segment 完整性；transition 与 camera_moves 从 M3.2 起验收。overall_pace 由 avg_shot_ms 派生：<1200ms=fast, <3000ms=medium, >=3000ms=slow。"
 }

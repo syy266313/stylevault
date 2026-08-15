@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""StyleVault 视频分析验收脚本（M3.0.5）
+"""StyleVault 视频分析验收脚本（M3.0.5 + M3.1.1 契约修正）
 
-比较未来 FfmpegAdapter 输出与 ground truth 的误差：
-- shot_count
-- avg_shot_ms
-- transition_types
-- camera_moves
-- overall_pace
+按 milestone 分组验收：
+- M3.1：probe / shot_count / avg_shot_ms / overall_pace / segment 完整性
+- M3.2：追加 transition_types / camera_moves
+- M3.3：追加 color_continuity（ground truth 就绪后启用）
+
+M3.1 验收不因 M3.2 字段未实现（unknown 占位）而失败。
 """
 import argparse
 import json
 import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# 复用 analyze_video 的纯函数（不触发 ffmpeg）
+from analyze_video import validate_segments  # noqa: E402
 
 
 def load_json(path):
@@ -53,6 +57,25 @@ def get_rhythm(pred):
     return pred
 
 
+def get_segments(pred):
+    """从 prediction 提取 segments（根级 / probe.segments / rhythm.probe.segments）。"""
+    if isinstance(pred, dict):
+        if isinstance(pred.get("segments"), list):
+            return pred["segments"]
+        probe = pred.get("probe") or (pred.get("rhythm") or {}).get("probe")
+        if isinstance(probe, dict) and isinstance(probe.get("segments"), list):
+            return probe["segments"]
+    return None
+
+
+def get_duration_ms(pred):
+    if isinstance(pred, dict):
+        probe = pred.get("probe") or (pred.get("rhythm") or {}).get("probe")
+        if isinstance(probe, dict) and isinstance(probe.get("duration_ms"), (int, float)):
+            return probe["duration_ms"]
+    return None
+
+
 def evaluate_sample(gt, pred):
     rhythm = get_rhythm(pred)
     gt_count = gt["shot_count"]
@@ -82,12 +105,38 @@ def evaluate_sample(gt, pred):
     }
 
 
+# 每个 milestone 必须通过的检查项
+MILESTONE_REQUIRED = {
+    "M3.1": ["shot_count", "avg_shot_ms", "overall_pace"],
+    "M3.2": ["shot_count", "avg_shot_ms", "overall_pace", "transition", "camera_moves"],
+    "M3.3": ["shot_count", "avg_shot_ms", "overall_pace", "transition", "camera_moves"],
+}
+
+
+def milestone_thresholds(suite, milestone):
+    by_ms = suite.get("acceptance_by_milestone") or {}
+    return by_ms.get(milestone) or suite.get("acceptance") or {}
+
+
+def check_segment_integrity(pred):
+    """M3.1 segment 完整性：prediction 携带 segments 时校验，缺失则跳过。"""
+    segments = get_segments(pred)
+    if segments is None:
+        return True, ["skipped: prediction 无 segments 数据"]
+    duration_ms = get_duration_ms(pred)
+    if duration_ms is None:
+        return False, ["缺少 probe.duration_ms，无法校验 segments"]
+    return validate_segments(segments, duration_ms)
+
+
 def main():
     ap = argparse.ArgumentParser(description="StyleVault video acceptance evaluator")
     ap.add_argument("--ground-truth", required=True, help="video-test-suite.json")
     ap.add_argument("--prediction", required=True, help="adapter output JSON")
     ap.add_argument("--sample-id", help="仅评估某个样本 id")
     ap.add_argument("--report", help="输出报告 JSON 路径")
+    ap.add_argument("--milestone", choices=sorted(MILESTONE_REQUIRED), default="M3.1",
+                    help="验收里程碑（默认 M3.1，不要求 M3.2 字段）")
     args = ap.parse_args()
 
     suite = load_json(args.ground_truth)
@@ -96,23 +145,39 @@ def main():
     if args.sample_id:
         samples = [s for s in samples if s.get("id") == args.sample_id]
 
+    thresh = milestone_thresholds(suite, args.milestone)
+    required = MILESTONE_REQUIRED[args.milestone]
+
     results = []
     for s in samples:
         sid = s["id"]
         p = pred.get(sid, pred) if isinstance(pred, dict) else {}
         r = evaluate_sample(s["ground_truth"], p)
-        thresh = suite.get("acceptance", {})
-        passed = (
-            (r["shot_count_error"] is None or r["shot_count_error"] <= thresh.get("shot_count_abs_error", 1))
-            and (r["avg_shot_ms_mae_ratio"] is None or r["avg_shot_ms_mae_ratio"] <= thresh.get("avg_shot_ms_mae_ratio", 0.15))
-            and r["transition_jaccard"] >= thresh.get("transition_jaccard_min", 0.5)
-            and r["camera_moves_jaccard"] >= thresh.get("camera_moves_jaccard_min", 0.5)
-            and r["overall_pace_match"] == thresh.get("overall_pace_match", True)
-        )
-        r.update({"sample_id": sid, "title": s.get("title"), "passed": passed})
+        checks = {
+            "shot_count": r["shot_count_error"] is None or r["shot_count_error"] <= thresh.get("shot_count_abs_error", 1),
+            "avg_shot_ms": r["avg_shot_ms_mae_ratio"] is None or r["avg_shot_ms_mae_ratio"] <= thresh.get("avg_shot_ms_mae_ratio", 0.15),
+            "overall_pace": r["overall_pace_match"] == thresh.get("overall_pace_match", True),
+            "transition": r["transition_jaccard"] >= thresh.get("transition_jaccard_min", 0.5),
+            "camera_moves": r["camera_moves_jaccard"] >= thresh.get("camera_moves_jaccard_min", 0.5),
+        }
+        seg_ok, seg_errors = (True, [])
+        if args.milestone == "M3.1":
+            seg_ok, seg_errors = check_segment_integrity(p)
+        passed = all(checks[k] for k in required) and seg_ok
+        r.update({
+            "sample_id": sid,
+            "title": s.get("title"),
+            "passed": passed,
+            "milestone": args.milestone,
+            "required_checks": required,
+            "checks": checks,
+            "segment_integrity_ok": seg_ok,
+            "segment_integrity_errors": seg_errors,
+        })
         results.append(r)
 
     summary = {
+        "milestone": args.milestone,
         "samples": len(results),
         "passed": sum(1 for r in results if r["passed"]),
         "shot_count_mae": None,
@@ -133,7 +198,12 @@ def main():
     if cj:
         summary["camera_moves_jaccard_mean"] = sum(cj) / len(cj)
 
-    report = {"suite": os.path.basename(args.ground_truth), "summary": summary, "results": results}
+    report = {
+        "suite": os.path.basename(args.ground_truth),
+        "milestone": args.milestone,
+        "summary": summary,
+        "results": results,
+    }
     if args.report:
         with open(args.report, "w") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
