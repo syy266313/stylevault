@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "description": "StyleVault 标签聚合索引（派生数据，可随时从 items/*/item.json 重建，非事实来源）",
+  "built_at": null,
+  "item_count": 0,
+  "tags": {},
+  "collections": {},
+  "recent": []
+}

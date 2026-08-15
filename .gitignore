@@ -1,0 +1,7 @@
+# 素材原文件不入库（大文件/二进制），元数据 item.json 入库
+items/*/source.*
+items/*/frames/
+__pycache__/
+*.pyc
+.DS_Store
+*.log

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "description": "StyleVault 标签本体 v1。标签统一格式 维度:值。新值可扩展追加，不删除旧值（保持可重放）。",
+  "dimensions": {
+    "subject": {
+      "description": "主题：拍的是什么",
+      "values": ["portrait", "landscape", "product", "architecture", "food", "fashion", "abstract", "street", "nature", "vehicle", "technology", "character", "scene"]
+    },
+    "style": {
+      "description": "视觉风格",
+      "values": ["cinematic", "minimal", "cyberpunk", "film", "documentary", "neo-chinese", "retro", "vintage", "surreal", "flat-design", "glitch", "lo-fi"]
+    },
+    "mood": {
+      "description": "情绪氛围",
+      "values": ["calm", "warm", "tense", "nostalgic", "energetic", "dreamy", "melancholic", "joyful", "mysterious", "epic", "intimate", "lonely"]
+    },
+    "color": {
+      "description": "色彩特征",
+      "values": ["warm", "cool", "high-sat", "low-sat", "desaturated", "mono", "teal-orange", "pastel", "high-contrast", "natural", "neon", "earth-tone"]
+    },
+    "composition": {
+      "description": "构图手法",
+      "values": ["rule-of-thirds", "symmetry", "frame-in-frame", "leading-line", "negative-space", "center", "diagonal", "golden-ratio", "layered", "minimal-frame"]
+    },
+    "lighting": {
+      "description": "光线运用",
+      "values": ["hard", "soft", "rim", "backlight", "low-key", "high-key", "golden-hour", "blue-hour", "silhouette", "window-light", "neon-glow", "shadow-play"]
+    },
+    "camera": {
+      "description": "摄影语言：机位/焦段/运动",
+      "values": ["close-up", "extreme-close-up", "medium", "wide", "extreme-wide", "low-angle", "high-angle", "eye-level", "tracking", "handheld", "dolly", "aerial", "crane", "shallow-dof", "long-lens", "wide-lens", "first-person"]
+    },
+    "rhythm": {
+      "description": "视频剪辑节奏（视频专属）",
+      "values": ["fast-cut", "long-take", "match-cut", "j-cut", "l-cut", "montage", "slow-motion", "time-lapse", "steady", "sync-beat", "cross-cut", "hard-cut"]
+    }
+  }
+}

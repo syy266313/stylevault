@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "stylevault/item.schema.json",
+  "title": "StyleVault Item",
+  "description": "StyleVault 素材条目元数据。原始文件与 item.json 同目录共存（sidecar）。JSON 是事实来源。",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "type",
+    "source",
+    "file",
+    "created_at",
+    "analyze_version",
+    "analysis"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "条目唯一 ID，格式 sv_YYYYMMDD_<hash8>",
+      "pattern": "^sv_[0-9]{8}_[a-z0-9]{8}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["image", "video", "webpage"],
+      "description": "素材类型。webpage 存截图 + source.url"
+    },
+    "source": {
+      "type": "object",
+      "description": "来源信息（采集通道）",
+      "required": ["origin"],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "enum": ["attachment", "photos", "browser", "url", "import"],
+          "description": "采集通道：附件/相册/浏览器抓取/URL 收藏/手动导入"
+        },
+        "url": { "type": "string", "format": "uri", "description": "网页或来源链接" },
+        "title": { "type": "string", "description": "来源标题（网页等）" },
+        "album": { "type": "string", "description": "来自相册时的相册名" },
+        "note": { "type": "string", "description": "用户备注" },
+        "refs": {
+          "type": "array",
+          "description": "重复导入引用：同一素材被再次导入时不建新 item，只追加来源引用到此数组",
+          "items": {
+            "type": "object",
+            "required": ["origin", "at"],
+            "properties": {
+              "origin": {
+                "type": "string",
+                "enum": ["attachment", "photos", "browser", "url", "import"],
+                "description": "本次重复导入的通道"
+              },
+              "path": { "type": "string", "description": "本次导入的源文件路径（附件/导出路径）" },
+              "url": { "type": "string", "format": "uri", "description": "本次来源 URL" },
+              "note": { "type": "string" },
+              "at": { "type": "string", "format": "date-time", "description": "本次导入时间" }
+            }
+          }
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "description": "物理文件信息",
+      "required": ["path", "mime"],
+      "properties": {
+        "path": { "type": "string", "description": "相对 vault 根的路径，如 items/sv_xxx/source.jpg" },
+        "sha1": { "type": "string", "pattern": "^[a-f0-9]{40}$", "description": "文件 SHA-1，去重键" },
+        "mime": { "type": "string", "description": "MIME 类型" },
+        "size": { "type": "integer", "description": "字节数" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "duration_ms": { "type": "integer", "description": "视频时长（毫秒），非视频为 0" }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "条目创建时间（入库时间）"
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "素材拍摄/发布时间（可选）"
+    },
+    "collections": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "所属灵感板/收藏集，如 portrait-moodboard"
+    },
+    "analyze_version": {
+      "type": "string",
+      "enum": ["v1"],
+      "description": "分析管线版本。升级管线后旧条目按此版本标记待重放"
+    },
+    "analysis": {
+      "type": "object",
+      "description": "语义分析结果（LLM 层，Phase B）",
+      "required": ["status", "model"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pending", "done", "error", "needs_review"],
+          "description": "needs_review = 存在低置信度标签，待人工确认"
+        },
+        "model": {
+          "type": "object",
+          "description": "产生本分析的模型与版本信息",
+          "required": ["provider", "name"],
+          "properties": {
+            "provider": { "type": "string", "description": "如 minis / openai / anthropic" },
+            "name": { "type": "string", "description": "模型名，如 gpt-4o / claude-sonnet" },
+            "version": { "type": "string", "description": "模型版本" }
+          }
+        },
+        "subject": { "$ref": "#/definitions/dimension", "description": "主题：拍的是什么（人像/风景/产品/建筑/美食/抽象…）" },
+        "style": { "$ref": "#/definitions/dimension", "description": "风格：cinematic/极简/赛博朋克/胶片/新中式…" },
+        "mood": { "$ref": "#/definitions/dimension", "description": "情绪：冷静/温暖/紧张/怀旧/活力…" },
+        "color": { "$ref": "#/definitions/dimension", "description": "色彩：冷暖/饱和度/主色调（teal-orange/低饱和/单色…）" },
+        "composition": { "$ref": "#/definitions/dimension", "description": "构图：三分法/对称/框架式/引导线/负空间…" },
+        "lighting": { "$ref": "#/definitions/dimension", "description": "光线：硬光/柔光/轮廓光/逆光/低光/黄金时刻…" },
+        "camera": { "$ref": "#/definitions/dimension", "description": "摄影语言：机位/焦段/运动（低机位/特写/手持/跟拍…）" },
+        "rhythm": {
+          "type": "object",
+          "description": "视频节奏（视频条目专属，图片/网页可缺省）",
+          "properties": {
+            "tags": { "type": "array", "items": { "type": "string" }, "description": "快切/长镜头/匹配剪辑/J-cut…" },
+            "summary": { "type": "string" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "avg_shot_ms": { "type": "number", "description": "平均镜头时长（毫秒），来自 ffmpeg 场景切分统计" },
+            "shot_count": { "type": "integer", "description": "镜头数" }
+          }
+        },
+        "preference": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "个人偏好评分（1-5），可 AI 初评 + 用户修正"
+        },
+        "summary": { "type": "string", "description": "一句话点评" }
+      }
+    },
+    "embedding": {
+      "type": "object",
+      "description": "向量嵌入预留（V2 语义检索）。未启用时 status=none，不占空间",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["none", "pending", "done", "error"],
+          "description": "none=未启用/未生成; pending=排队; done=已生成; error=失败"
+        },
+        "model": { "type": "string", "description": "嵌入模型名" },
+        "version": { "type": "string", "description": "嵌入模型版本" },
+        "dimensions": { "type": "integer", "description": "向量维度" },
+        "vector": { "type": "array", "items": { "type": "number" }, "description": "向量值（V2 启用后写入）" }
+      }
+    },
+    "vision": {
+      "type": "object",
+      "description": "本地确定性特征（Phase A，apple-vision + pillow），分析快照"
+    },
+    "pipeline_log": {
+      "type": "array",
+      "description": "分析执行日志（每次运行追加一条，支持审计与重放）",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": { "type": "string", "format": "date-time" },
+          "analyze_version": { "type": "string" },
+          "action": { "type": "string", "enum": ["ingest", "analyze", "reanalyze", "review"] },
+          "model": { "type": "string" },
+          "status": { "type": "string", "enum": ["ok", "error"] }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "dimension": {
+      "type": "object",
+      "description": "单一分析维度的统一结构",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "标签数组，格式 维度:值，如 composition:rule-of-thirds"
+        },
+        "summary": { "type": "string", "description": "该维度的一句话分析" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1, "description": "置信度，<0.6 需人工复核" }
+      }
+    }
+  }
+}

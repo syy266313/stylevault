@@ -1,0 +1,69 @@
+{
+  "id": "sv_20260811_7b98c1b4",
+  "type": "image",
+  "source": {
+    "origin": "browser",
+    "url": "https://example.com",
+    "title": "https://example.com",
+    "album": null,
+    "note": "网页案例测试",
+    "refs": [
+      {
+        "origin": "browser",
+        "path": "/var/minis/browser/screenshot_1786432766600.jpg",
+        "url": "https://example.com",
+        "note": "修复验证",
+        "at": "2026-08-11T15:19:26+08:00"
+      },
+      {
+        "origin": "browser",
+        "path": "/var/minis/browser/screenshot_1786432775545.jpg",
+        "url": "https://example.org",
+        "note": "新站点验证",
+        "at": "2026-08-11T15:19:35+08:00"
+      }
+    ]
+  },
+  "file": {
+    "path": "items/sv_20260811_7b98c1b4/source.jpg",
+    "sha1": "7b98c1b44db52a5bb23b182c28fe4160cd590d61",
+    "mime": "image/jpg",
+    "size": 105221,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-11T15:18:53+08:00",
+  "captured_at": null,
+  "collections": [],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": null,
+  "pipeline_log": [
+    {
+      "at": "2026-08-11T15:18:53+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "browser",
+      "status": "ok"
+    }
+  ]
+}

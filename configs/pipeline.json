@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "description": "StyleVault 分析管线配置。analyze_version 变更 = 分析器升级，旧条目需重放。",
+  "current_analyze_version": "v1",
+  "pipeline": {
+    "v1": {
+      "phase_a": {
+        "description": "本地确定性特征（免费/离线/快）",
+        "steps": {
+          "image": [
+            "apple-vision analyze (classify + faces)",
+            "py3-pillow: 主色调 Top5 / 亮度 / 饱和度"
+          ],
+          "video": [
+            "ffmpeg: 抽代表帧 + 场景切分(scdet) + 镜头时长统计",
+            "关键帧逐帧走 image 流程"
+          ],
+          "webpage": [
+            "页面截图按 image 流程"
+          ]
+        }
+      },
+      "phase_b": {
+        "description": "LLM 语义分析（严格 JSON，字段见 schemas/item.schema.json）",
+        "input": "item.json 骨架 + 关键帧路径 + tag-ontology.json",
+        "output": "subject/style/mood/color/composition/lighting/camera/rhythm + preference 初评 + summary",
+        "retry": 1,
+        "confidence_threshold": 0.6
+      }
+    }
+  }
+}
