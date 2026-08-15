@@ -29,18 +29,96 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:06:00+08:00",
+    "latency_ms": 16516,
+    "usage": {
+      "prompt_tokens": 6350,
+      "completion_tokens": 758,
+      "total_tokens": 7108,
+      "completion_tokens_details": {
+        "reasoning_tokens": 99
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:abstract"
+      ],
+      "summary": "黑色背景上由平行斜线与中央圆形构成的抽象几何图形。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用极简、平面化的几何视觉风格。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:mysterious"
+      ],
+      "summary": "规整重复的线条与强烈留白营造出冷静而略带神秘感的氛围。",
+      "confidence": 0.78
+    },
+    "color": {
+      "tags": [
+        "color:mono",
+        "color:high-contrast",
+        "color:desaturated"
+      ],
+      "summary": "以黑、白和浅灰构成低饱和单色高对比配色。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:diagonal",
+        "composition:minimal-frame"
+      ],
+      "summary": "圆形主体位于画面中央附近，斜向平行线形成连续背景节奏。",
+      "confidence": 0.97
+    },
+    "lighting": {
+      "tags": [
+        "lighting:hard",
+        "lighting:shadow-play"
+      ],
+      "summary": "不存在自然光照，主要通过硬边黑白关系形成平面化的明暗对比。",
+      "confidence": 0.9
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level",
+        "camera:wide"
+      ],
+      "summary": "呈现正面平视的完整二维画面，视野覆盖整个几何构图。",
+      "confidence": 0.82
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以黑白高对比为核心、通过中央圆形和连续斜向平行线构成视觉节奏的极简抽象几何图像。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持单色黑白灰方案：黑色约占画面54%，白色线条与浅灰圆形的饱和度设为0%，黑白对比度提升至+30。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留16:10画幅，将圆形主体中心固定在画面约50%宽度、48%高度处，斜线统一保持约45度方向并等间距排列。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "使用硬边平面光效果，避免渐变与柔和阴影；背景亮度保持约5%，浅灰主体亮度保持约90%。"
+      }
+    ]
   },
   "vision": {
     "classifications": [],
@@ -93,6 +171,24 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:40:56+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 18084
+    },
+    {
+      "at": "2026-08-15T17:06:00+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 16516
     }
   ]
 }

@@ -29,18 +29,104 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:39:04+08:00",
+    "latency_ms": 21130,
+    "usage": {
+      "prompt_tokens": 6406,
+      "completion_tokens": 930,
+      "total_tokens": 7336,
+      "completion_tokens_details": {
+        "reasoning_tokens": 63
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:architecture",
+        "subject:abstract"
+      ],
+      "summary": "深色背景中由几何高楼与发光粉色圆形构成的抽象城市景观。",
+      "confidence": 0.96
+    },
+    "style": {
+      "tags": [
+        "style:cyberpunk",
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用极简几何图形、霓虹边缘光与深色背景表现赛博朋克视觉。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:mysterious",
+        "mood:calm"
+      ],
+      "summary": "低亮度环境与鲜艳粉色光源营造安静而神秘的夜景氛围。",
+      "confidence": 0.88
+    },
+    "color": {
+      "tags": [
+        "color:neon",
+        "color:cool",
+        "color:high-contrast",
+        "color:high-sat"
+      ],
+      "summary": "以近黑蓝背景为主，搭配高饱和霓虹粉、青蓝和紫色线条形成强烈对比。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:layered",
+        "composition:negative-space"
+      ],
+      "summary": "粉色圆形位于画面中央偏上，几何楼体在下方分层排列，周围保留大面积负空间。",
+      "confidence": 0.97
+    },
+    "lighting": {
+      "tags": [
+        "lighting:low-key",
+        "lighting:neon-glow",
+        "lighting:backlight"
+      ],
+      "summary": "整体处于低调暗光环境，主要亮度来自粉色圆形及建筑上的霓虹线性光源。",
+      "confidence": 0.98
+    },
+    "camera": {
+      "tags": [
+        "camera:wide",
+        "camera:eye-level"
+      ],
+      "summary": "以正面宽幅视角平视抽象城市轮廓，突出整体几何关系而非局部细节。",
+      "confidence": 0.86
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以中心粉色发光圆形和几何楼体为核心的极简赛博朋克抽象城市夜景，具有低调暗光、高饱和霓虹色与清晰分层构图。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持背景色接近#000011；粉色主光饱和度设为125%，青色与紫色线条饱和度设为115%，避免引入黄色和棕色。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光提高+0.2EV，对比度提高+20，高光降低-8，阴影降低-12；为粉色圆形和霓虹线条添加半径12px、强度35%的外发光。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保持16:10画幅，粉色圆形中心放置在画面水平50%、垂直50%附近，建筑底部占画面高度约30%，顶部保留至少35%的深色负空间。"
+      },
+      {
+        "aspect": "style",
+        "rule": "建筑使用垂直矩形与等间距水平线条构成，线条宽度保持3-4px，边缘保持硬朗，不添加纹理、人物或写实细节。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -106,6 +192,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:39:04+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 21130
     }
   ]
 }

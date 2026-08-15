@@ -29,18 +29,94 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:00:30+08:00",
+    "latency_ms": 17252,
+    "usage": {
+      "prompt_tokens": 6692,
+      "completion_tokens": 768,
+      "total_tokens": 7460,
+      "completion_tokens_details": {
+        "reasoning_tokens": 130
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:document"
+      ],
+      "summary": "一页横向拍摄的中文印刷文本，汉字上方标注拼音。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:documentary"
+      ],
+      "summary": "版式简洁克制，以清晰呈现文字内容为主。",
+      "confidence": 0.94
+    },
+    "mood": {
+      "tags": [
+        "mood:calm"
+      ],
+      "summary": "画面安静、平实，具有学习或阅读场景的氛围。",
+      "confidence": 0.86
+    },
+    "color": {
+      "tags": [
+        "color:low-sat",
+        "color:desaturated",
+        "color:natural"
+      ],
+      "summary": "整体以近白色背景和深色文字为主，色彩低饱和。",
+      "confidence": 0.98
+    },
+    "composition": {
+      "tags": [
+        "composition:minimal-frame",
+        "composition:negative-space"
+      ],
+      "summary": "横向画幅中多行文字平行排列，四周保留较多留白。",
+      "confidence": 0.96
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "光线均匀柔和，页面整体明亮，阴影和反差较弱。",
+      "confidence": 0.95
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:eye-level"
+      ],
+      "summary": "以近距离、接近正面的视角记录文字页面。",
+      "confidence": 0.9
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 3,
+    "summary": "这是一张明亮、低饱和、构图简洁的中文拼音标注印刷文本页面图像，重点是文字的清晰可读性。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持色温约5000K，饱和度降至85%，避免增加明显色偏，背景维持近白色。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光控制在+0.2EV，对比度提高至+8，高光降低10，阴影提高5，确保文字清晰且纸面不过曝。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为接近原始横向比例，保持四行文字完整，并在左右及上下保留至少5%的页面留白。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -106,6 +182,35 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:42:59+08:00",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "error",
+      "errors": [
+        "subject 标签格式错误: subject:Chinese-text（应为 维度:值）"
+      ]
+    },
+    {
+      "at": "2026-08-15T16:52:00+08:00",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "error",
+      "errors": [
+        "subject 标签格式错误: subject:printed_page（应为 维度:值）"
+      ]
+    },
+    {
+      "at": "2026-08-15T17:00:30+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 17252
     }
   ]
 }

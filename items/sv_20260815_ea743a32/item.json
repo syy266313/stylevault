@@ -29,18 +29,106 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:42:39+08:00",
+    "latency_ms": 37577,
+    "usage": {
+      "prompt_tokens": 9044,
+      "completion_tokens": 835,
+      "total_tokens": 9879,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 83
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:education",
+        "subject:document",
+        "subject:still-life"
+      ],
+      "summary": "书架前有人用剪刀整理带有语文、数学和英语学习计划的彩色进度表。",
+      "confidence": 0.98
+    },
+    "style": {
+      "tags": [
+        "style:documentary",
+        "style:lo-fi"
+      ],
+      "summary": "以生活记录为主的随手拍摄风格，保留真实的学习环境与操作过程。",
+      "confidence": 0.91
+    },
+    "mood": {
+      "tags": [
+        "mood:focused",
+        "mood:intimate"
+      ],
+      "summary": "画面呈现出专注、亲近且具有日常整理感的氛围。",
+      "confidence": 0.88
+    },
+    "color": {
+      "tags": [
+        "color:natural",
+        "color:high-sat",
+        "color:warm"
+      ],
+      "summary": "彩色表格和书籍形成较鲜明的多色画面，整体偏自然暖色。",
+      "confidence": 0.93
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:diagonal",
+        "composition:frame-in-frame"
+      ],
+      "summary": "多层书架、学习表格、手部和剪刀交叠构成画面，表格边缘与手臂形成明显斜线。",
+      "confidence": 0.95
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "室内光线均匀柔和，整体曝光较明亮，阴影不重。",
+      "confidence": 0.86
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:high-angle",
+        "camera:handheld"
+      ],
+      "summary": "近距离手持拍摄，以略高视角突出手部操作和学习表格细节。",
+      "confidence": 0.94
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "一张记录家庭学习资料整理过程的生活化照片，彩色进度表、书架与手部操作形成丰富的层次和鲜明的视觉节奏。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "白平衡保持在4800K左右，饱和度降低5%，绿色和黄色饱和度分别降低8%，避免彩色表格过度刺眼。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光提高+0.2EV，高光降低-12，阴影提高+8，保持白色书架细节并提升手部暗部层次。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为4:5竖幅，保留剪刀、手部和“语文/数学/英语”表头，右侧学习表格作为主体，减少底部杂物露出。"
+      },
+      {
+        "aspect": "style",
+        "rule": "清晰度提高+8，纹理提高+5，锐化控制在+10以内，保留手持生活记录感，不使用强烈滤镜或背景虚化。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -114,6 +202,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:42:39+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 37577
     }
   ]
 }

@@ -29,18 +29,105 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:31:18+08:00",
+    "latency_ms": 25937,
+    "usage": {
+      "prompt_tokens": 34665,
+      "completion_tokens": 848,
+      "total_tokens": 35513,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 108
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:nature",
+        "subject:foliage",
+        "subject:decorative-plant"
+      ],
+      "summary": "画面呈现一株枝叶繁茂、夹杂干枯花序的绿色观叶植物。",
+      "confidence": 0.98
+    },
+    "style": {
+      "tags": [
+        "style:documentary",
+        "style:lo-fi"
+      ],
+      "summary": "采用自然随拍式近距离记录，保留了部分失焦和枝叶杂乱感。",
+      "confidence": 0.84
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:intimate"
+      ],
+      "summary": "密集绿叶与柔和虚化背景营造出安静、亲近自然的氛围。",
+      "confidence": 0.86
+    },
+    "color": {
+      "tags": [
+        "color:natural",
+        "color:high-sat",
+        "color:earth-tone"
+      ],
+      "summary": "整体以鲜明绿色为主，辅以棕色枯花、灰蓝背景和白色花盆。",
+      "confidence": 0.95
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:frame-in-frame",
+        "composition:minimal-frame"
+      ],
+      "summary": "前景、中景和背景枝叶层叠铺陈，局部留出虚化空间形成视觉纵深。",
+      "confidence": 0.9
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "光线整体柔和均匀，叶片高光明显但阴影不重，接近自然散射光效果。",
+      "confidence": 0.88
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:eye-level"
+      ],
+      "summary": "以近距离平视视角拍摄植物枝叶，景深较浅，背景明显虚化。",
+      "confidence": 0.93
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张以自然绿叶和干枯花序为主体的近距离植物照片，层叠构图与浅景深带来安静而亲密的观感。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "绿色饱和度降低至92%，黄色饱和度降低8%，保留自然绿叶层次，避免荧光绿溢出。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光降低0.2EV，高光降低15，阴影提升8，白色色阶降低5，保留叶片纹理和白色花盆细节。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切至4:5比例，保留左侧干枯花序和中央绿色叶丛，避免裁掉底部花盆边缘。"
+      },
+      {
+        "aspect": "camera",
+        "rule": "模拟50mm微距视角，光圈f/2.8，焦点放在中央偏下的完整叶片，背景保持柔和虚化。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -93,6 +180,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:31:18+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 25937
     }
   ]
 }

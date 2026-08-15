@@ -29,18 +29,105 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:31:49+08:00",
+    "latency_ms": 23001,
+    "usage": {
+      "prompt_tokens": 20248,
+      "completion_tokens": 904,
+      "total_tokens": 21152,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 118
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:animal",
+        "subject:bird",
+        "subject:parakeet"
+      ],
+      "summary": "两只虎皮鹦鹉停在鸟笼栖木上，周围可见彩色玩具和笼条。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:documentary",
+        "style:natural"
+      ],
+      "summary": "生活化抓拍风格，保留鸟笼环境与真实细节。",
+      "confidence": 0.92
+    },
+    "mood": {
+      "tags": [
+        "mood:joyful",
+        "mood:intimate"
+      ],
+      "summary": "两只鸟近距离并置，画面呈现轻松、亲密的宠物日常氛围。",
+      "confidence": 0.88
+    },
+    "color": {
+      "tags": [
+        "color:natural",
+        "color:high-sat",
+        "color:high-contrast"
+      ],
+      "summary": "中性灰白背景衬托黄色、绿色、蓝色与红色等鲜艳色彩。",
+      "confidence": 0.95
+    },
+    "composition": {
+      "tags": [
+        "composition:diagonal",
+        "composition:layered",
+        "composition:rule-of-thirds"
+      ],
+      "summary": "鸟体集中在右下区域，栖木形成斜向引导线，笼条和彩色串珠构成多层背景。",
+      "confidence": 0.94
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "光线整体柔和均匀，白色笼体和鸟羽细节清晰，阴影较弱。",
+      "confidence": 0.9
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:eye-level"
+      ],
+      "summary": "以接近视线高度的近距离视角拍摄两只鹦鹉，突出头部、羽毛和姿态。",
+      "confidence": 0.93
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "两只色彩鲜明的虎皮鹦鹉在鸟笼中近距离同框，斜向栖木和彩色玩具增强了生活感与视觉层次。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "黄色、绿色和蓝色区域饱和度提升至108%，红色区域饱和度提升至103%，白色笼条保持中性，不增加整体色偏。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光提升+0.2EV，对比度提升+8，高光降低-12，阴影提升+6，保留黄色羽毛和白色笼条的细节。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为4:5纵向画幅，保留两只鸟完整头部和主要身体，将黄色鹦鹉的眼睛放在右侧上方三分线附近，并适度减少左侧空白笼条。"
+      },
+      {
+        "aspect": "camera",
+        "rule": "出图时使用约85mm等效焦段、f/2.8光圈，对焦两只鹦鹉的眼睛，背景笼条保持轻微虚化。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -93,6 +180,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:31:49+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 23001
     }
   ]
 }

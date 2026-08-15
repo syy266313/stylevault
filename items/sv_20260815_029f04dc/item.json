@@ -29,66 +29,99 @@
   "analysis": {
     "status": "done",
     "model": {
-      "provider": "minis-agent",
-      "name": "stylevault-analyze-image",
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
       "version": "v1"
     },
-    "analyzed_at": "2026-08-15T16:02:38+08:00",
+    "analyzed_at": "2026-08-15T17:05:43+08:00",
+    "latency_ms": 16935,
+    "usage": {
+      "prompt_tokens": 6213,
+      "completion_tokens": 740,
+      "total_tokens": 6953,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 70
+      }
+    },
     "subject": {
       "tags": [
         "subject:abstract"
       ],
-      "summary": "抽象图形：蓝色渐变背景上的亮青色圆形主体",
-      "confidence": 0.95
+      "summary": "画面由纯色蓝紫背景与中央浅青色圆形构成。",
+      "confidence": 0.99
     },
     "style": {
       "tags": [
-        "style:minimal"
+        "style:minimal",
+        "style:flat-design"
       ],
-      "summary": "极简平面构成，单主体+渐变背景",
-      "confidence": 0.85
+      "summary": "采用极简平面图形风格，元素单一且无纹理细节。",
+      "confidence": 0.99
     },
     "mood": {
       "tags": [
-        "mood:calm",
-        "mood:cool"
+        "mood:calm"
       ],
-      "summary": "冷色系，冷静舒缓",
-      "confidence": 0.8
+      "summary": "冷静、安静，具有低信息量的测试图感。",
+      "confidence": 0.86
     },
     "color": {
       "tags": [
         "color:cool",
         "color:high-sat",
-        "color:mono"
+        "color:high-contrast"
       ],
-      "summary": "蓝青同色系渐变，色调统一",
-      "confidence": 0.9
+      "summary": "以高饱和蓝紫色为背景，搭配明亮浅青色主体，冷色对比明显。",
+      "confidence": 0.99
     },
     "composition": {
       "tags": [
-        "composition:center"
+        "composition:center",
+        "composition:negative-space",
+        "composition:minimal-frame"
       ],
-      "summary": "圆形主体居中，对称稳定",
-      "confidence": 0.9
+      "summary": "圆形主体位于画面中央附近，四周保留大面积均匀负空间。",
+      "confidence": 0.98
     },
     "lighting": {
       "tags": [
-        "lighting:soft"
+        "lighting:high-key"
       ],
-      "summary": "无实景光源，渐变模拟柔和光照",
-      "confidence": 0.7
+      "summary": "整体为均匀平涂效果，无明显光影方向或立体明暗。",
+      "confidence": 0.95
     },
     "camera": {
       "tags": [
-        "camera:eye-level"
+        "camera:eye-level",
+        "camera:wide"
       ],
-      "summary": "平面图形无摄影机位，平视视角",
-      "confidence": 0.6
+      "summary": "呈现正面平视的二维图形视角，画面覆盖范围较宽。",
+      "confidence": 0.78
     },
     "rhythm": null,
     "preference": 3,
-    "summary": "蓝青渐变+亮青圆心的极简平面构成（测试素材）。降级模式推断。"
+    "summary": "这是一张以蓝紫背景和浅青圆形为核心元素的极简高饱和抽象测试图，构图居中、光影平整，整体呈现冷静克制的视觉效果。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保留冷色基调，将背景控制在深蓝至蓝紫范围，色相约225°-245°，饱和度保持105%-115%。"
+      },
+      {
+        "aspect": "color",
+        "rule": "主体圆形使用浅青色，色相约190°，明度保持80%-88%，与背景形成明显明度对比。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保持1:1圆形主体，主体直径约占画面高度50%，中心位置控制在画面水平50%、垂直50%左右。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "使用均匀平光处理，避免添加阴影、渐变、高光、纹理和边缘光晕。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -168,6 +201,15 @@
       "action": "analyze",
       "phase": "b",
       "status": "done"
+    },
+    {
+      "at": "2026-08-15T17:05:43+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 16935
     }
   ]
 }

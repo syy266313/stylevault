@@ -29,18 +29,105 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:11:34+08:00",
+    "latency_ms": 22900,
+    "usage": {
+      "prompt_tokens": 8451,
+      "completion_tokens": 905,
+      "total_tokens": 9356,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 103
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:product",
+        "subject:container"
+      ],
+      "summary": "纸箱内堆放着多种带条形码和文字标签的包装盒、塑料袋及日用品包装。",
+      "confidence": 0.96
+    },
+    "style": {
+      "tags": [
+        "style:documentary",
+        "style:lo-fi"
+      ],
+      "summary": "以随手记录为主的低保真生活纪实风格，画面未经整理且保留明显噪点。",
+      "confidence": 0.91
+    },
+    "mood": {
+      "tags": [
+        "mood:neutral",
+        "mood:melancholic"
+      ],
+      "summary": "光线昏暗、物品杂乱，整体呈现平淡且略显压抑的收纳现场感。",
+      "confidence": 0.68
+    },
+    "color": {
+      "tags": [
+        "color:warm",
+        "color:low-sat",
+        "color:earth-tone"
+      ],
+      "summary": "棕褐色纸箱和暗色背景占主导，局部红色、绿色与蓝色包装形成低亮度色彩点缀。",
+      "confidence": 0.94
+    },
+    "composition": {
+      "tags": [
+        "composition:diagonal",
+        "composition:layered",
+        "composition:close-clutter"
+      ],
+      "summary": "多个包装物以斜向和层叠方式填充画面，主体边界分散，空间较为拥挤。",
+      "confidence": 0.95
+    },
+    "lighting": {
+      "tags": [
+        "lighting:low-key",
+        "lighting:shadow-play"
+      ],
+      "summary": "整体曝光偏低，纸箱内部形成大面积阴影，局部包装表面受到不均匀照明。",
+      "confidence": 0.93
+    },
+    "camera": {
+      "tags": [
+        "camera:high-angle",
+        "camera:close-up",
+        "camera:handheld"
+      ],
+      "summary": "以手持高角度近距离拍摄纸箱内部，画面存在明显倾斜和轻微失稳感。",
+      "confidence": 0.95
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 2,
+    "summary": "这是一张昏暗环境下拍摄的纸箱内部物品堆叠照片，具有明显的生活纪实和低保真质感，画面杂乱、倾斜且以暖褐色调为主。",
+    "editing_rules": [
+      {
+        "aspect": "composition",
+        "rule": "旋转画面约90度使包装盒文字保持水平，并裁切至4:5比例，保留纸箱内部和中央白色包装盒作为视觉主体。"
+      },
+      {
+        "aspect": "color",
+        "rule": "色温调整至4300K，曝光+0.6EV，阴影+18，高光-12，整体饱和度调整至92%，压低棕褐色偏色。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "对比度+10，黑色色阶+8，局部提亮中央包装盒约0.3EV，同时保留纸箱边缘阴影，不使用高光溢出效果。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保留适度纪实质感，锐度+8，降噪强度设为20%，避免过度磨皮和过度清晰化条形码文字。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -114,6 +201,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:11:34+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 22900
     }
   ]
 }

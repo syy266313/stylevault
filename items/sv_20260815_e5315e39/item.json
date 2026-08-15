@@ -29,18 +29,104 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:42:01+08:00",
+    "latency_ms": 25371,
+    "usage": {
+      "prompt_tokens": 9497,
+      "completion_tokens": 939,
+      "total_tokens": 10436,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 159
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:technology",
+        "subject:software-interface"
+      ],
+      "summary": "一张展示深色操作系统品牌页的界面截图，包含标题、蓝色主题标签和功能信息卡片。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用极简、现代的深色品牌界面设计，信息层级清晰，装饰元素克制。",
+      "confidence": 0.96
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:mysterious"
+      ],
+      "summary": "深色背景与充足留白营造出冷静、克制且略带科技神秘感的氛围。",
+      "confidence": 0.9
+    },
+    "color": {
+      "tags": [
+        "color:cool",
+        "color:low-sat",
+        "color:high-contrast"
+      ],
+      "summary": "整体以近黑色和深蓝色为主，搭配高亮白色文字与饱和蓝色按钮形成对比。",
+      "confidence": 0.98
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:negative-space",
+        "composition:layered"
+      ],
+      "summary": "主标题与按钮居中排列，上方大面积留白，下方以横向功能卡片形成分层结构。",
+      "confidence": 0.97
+    },
+    "lighting": {
+      "tags": [
+        "lighting:low-key",
+        "lighting:soft"
+      ],
+      "summary": "画面呈现低调暗光效果，中央深蓝区域提供柔和的视觉聚焦，文字和按钮作为高亮元素突出显示。",
+      "confidence": 0.92
+    },
+    "camera": {
+      "tags": [
+        "camera:screen-capture",
+        "camera:eye-level"
+      ],
+      "summary": "这是垂直网页界面截图，不包含真实摄影机视角；视觉观察点保持正面平视。",
+      "confidence": 0.98
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张以深色、冷蓝配色和居中留白构成的极简科技系统品牌页截图，整体克制现代并突出清晰的信息层级。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持深色背景为近黑蓝色，整体饱和度控制在原图的90%-105%，将蓝色按钮饱和度提升至115%，避免加入暖色调。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "降低整体曝光约0.2EV，阴影压低10，高光保持不变，并在画面中央增加轻微深蓝色柔光，强度不超过15%。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留标题与按钮的水平居中关系，裁切为9:19.5竖幅时保留标题上方至少18%的负空间及底部功能卡片区域。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保留无插画、无纹理的扁平界面风格，卡片圆角控制在20-24px，边框使用低对比度深灰色，避免添加渐变或高光装饰。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -102,6 +188,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:42:01+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 25371
     }
   ]
 }

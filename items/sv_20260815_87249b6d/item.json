@@ -29,18 +29,108 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:40:19+08:00",
+    "latency_ms": 21036,
+    "usage": {
+      "prompt_tokens": 6453,
+      "completion_tokens": 967,
+      "total_tokens": 7420,
+      "completion_tokens_details": {
+        "reasoning_tokens": 161
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:abstract",
+        "subject:landscape",
+        "subject:celestial-body",
+        "subject:silhouette"
+      ],
+      "summary": "极简画面中，暖色天空与地平线前的圆形光体和深色椭圆轮廓形成主体关系。",
+      "confidence": 0.88
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design",
+        "style:surreal"
+      ],
+      "summary": "采用简化几何形状、纯色块与平滑渐变构成具有抽象感的平面视觉。",
+      "confidence": 0.94
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:dreamy",
+        "mood:mysterious"
+      ],
+      "summary": "宁静、克制的日落氛围中带有轻微的神秘感。",
+      "confidence": 0.86
+    },
+    "color": {
+      "tags": [
+        "color:warm",
+        "color:high-contrast",
+        "color:earth-tone"
+      ],
+      "summary": "整体以橙色、赭红色和暗褐黑色为主，黄色光体提供醒目的暖色对比。",
+      "confidence": 0.97
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:layered",
+        "composition:minimal-frame",
+        "composition:negative-space"
+      ],
+      "summary": "主体集中在画面中下部，天空大面积留白，前景地平线与重叠形体形成清晰层次。",
+      "confidence": 0.95
+    },
+    "lighting": {
+      "tags": [
+        "lighting:backlight",
+        "lighting:golden-hour",
+        "lighting:silhouette",
+        "lighting:soft"
+      ],
+      "summary": "大面积柔和暖光背景衬托深色轮廓，呈现简化的逆光剪影效果。",
+      "confidence": 0.94
+    },
+    "camera": {
+      "tags": [
+        "camera:wide",
+        "camera:eye-level"
+      ],
+      "summary": "画面采用类似宽幅平视视角，以环境留白突出中央主体。",
+      "confidence": 0.68
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以暖橙渐变天空、圆形光体和深色剪影为核心的极简抽象画面，构图稳定，具有宁静而略带神秘的日落视觉气质。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保留暖色基调，色温设为 6500K，橙红色饱和度提升至 110%，黄色光体饱和度控制在 105%。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光保持 0EV，对比度提升 18，高光降低 8，阴影降低 20，确保深色轮廓接近纯黑且不出现细节噪点。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保持 16:10 横幅比例，中央主体的水平位置偏移不超过画面宽度的 3%，地平线固定在画面高度约 82% 处。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保留几何色块和平滑渐变，禁止添加纹理、文字、复杂背景细节或额外人物元素。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -114,6 +204,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:40:19+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 21036
     }
   ]
 }

@@ -18,6 +18,7 @@ import json
 import mimetypes
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -38,7 +39,7 @@ ONTOLOGY_FILE = os.path.join(VAULT_ROOT, "configs", "tag-ontology.json")
 CONFIG_FILE = os.path.join(VAULT_ROOT, "configs", "pipeline.json")
 SCHEMA_FILE = os.path.join(VAULT_ROOT, "schemas", "item.schema.json")
 DIMENSIONS = ["subject", "style", "mood", "color", "composition", "lighting", "camera", "rhythm"]
-TAG_RE = re.compile(r"^[a-z-]+:[a-z0-9-]+$")
+TAG_RE = re.compile(r"^[a-z-]+:[a-z0-9_-]+$")
 
 
 def now_iso():
@@ -390,6 +391,19 @@ def img_to_data_url(path):
     return f"data:{mime};base64,{b64}"
 
 
+def preprocess_image(path, item_id):
+    """图片预处理：HEIC 等非通用格式转 JPEG（heif-convert），返回 (可发送路径, 说明)"""
+    ext = os.path.splitext(path)[1].lower()
+    if ext in (".jpg", ".jpeg", ".png", ".webp"):
+        return path, None
+    if ext == ".heic" and shutil.which("heif-convert"):
+        out = f"/tmp/sv_pre_{item_id}.jpg"
+        r = subprocess.run(["heif-convert", "-q", "85", path, out], capture_output=True, text=True, timeout=120)
+        if r.returncode == 0 and os.path.isfile(out):
+            return out, "heic→jpeg"
+    return path, None
+
+
 def extract_json(text):
     if not text:
         return None
@@ -494,6 +508,9 @@ def phase_b(item_id, model=None, base_url=None, api_key=None, force=False, timeo
     if not meta:
         dequeue(item_id)
         return {"ok": False, "error": f"条目不存在: {item_id}（已从队列移除）"}
+    if meta.get("type") == "video":
+        return {"ok": True, "result": "skipped_video", "item_id": item_id,
+                "message": "视频条目由 M3 stylevault-analyze-video 处理，已跳过"}
     if meta.get("analysis", {}).get("status") == "done" and not force:
         return {"ok": True, "result": "skipped", "item_id": item_id, "message": "已有分析，跳过（--force 覆盖）"}
 
@@ -507,7 +524,10 @@ def phase_b(item_id, model=None, base_url=None, api_key=None, force=False, timeo
 
     ontology = load_ontology()
     prompt = phase_b_prompt(meta, ontology)
-    ok, content, latency, usage, err = call_vision_api(model, base_url, api_key, src, prompt, timeout)
+    send_path, pre_note = preprocess_image(src, item_id)
+    if pre_note:
+        log(f"  ↻ {item_id}: 图片预处理 {pre_note}")
+    ok, content, latency, usage, err = call_vision_api(model, base_url, api_key, send_path, prompt, timeout)
     if not ok:
         meta.setdefault("analysis", {}).update({"status": "error", "model": {"provider": "openai", "name": model}})
         meta.setdefault("pipeline_log", []).append(

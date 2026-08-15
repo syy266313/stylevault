@@ -4,6 +4,20 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-08-15
+
+### Added
+- **Golden Dataset 20/20 全量分析完成**（gpt-5.6-terra Vision）：
+  - 20 张图片全部 `done`，editing_rules 覆盖 100%；
+  - 25 次调用 / 平均延迟 24.4s / 总 token ≈29.5 万（in 27.4万 + out 2.1万）；
+  - 抽查质量：editing_rules 含具体色值/EV/百分比/焦段/色温（如 4300K、+0.6EV、4:5 裁切、旋转修正）。
+
+### Fixed
+- 标签正则允许下划线（`subject:printed_page` 不再误拒）。
+- **HEIC 预处理**：HEIC 图片经 `heif-convert`（libheif-tools）转 JPEG 后再调 API，解决上游 502。
+- `phase-b` 跳过视频条目（M3 处理），不再浪费调用。
+- 依赖新增：`apk add libheif-tools`（HEIC 转码，ffmpeg 替代方案，体积小）。
+
 ## [0.4.0] - 2026-08-15
 
 ### Added

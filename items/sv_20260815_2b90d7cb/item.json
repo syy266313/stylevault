@@ -29,18 +29,101 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:40:37+08:00",
+    "latency_ms": 18087,
+    "usage": {
+      "prompt_tokens": 6429,
+      "completion_tokens": 818,
+      "total_tokens": 7247,
+      "completion_tokens_details": {
+        "reasoning_tokens": 54
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:landscape",
+        "subject:abstract"
+      ],
+      "summary": "画面以几何化山形轮廓构成简化的抽象景观。",
+      "confidence": 0.94
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用大面积纯色与利落几何边缘，呈现极简扁平设计风格。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:lonely"
+      ],
+      "summary": "低饱和冷色与空旷构图营造出安静而略显孤寂的氛围。",
+      "confidence": 0.86
+    },
+    "color": {
+      "tags": [
+        "color:cool",
+        "color:desaturated",
+        "color:mono"
+      ],
+      "summary": "以冷调蓝灰色为主，整体低饱和且近似单色配色。",
+      "confidence": 0.98
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:diagonal",
+        "composition:negative-space"
+      ],
+      "summary": "山形斜线横跨画面，前景色块与上方留白形成简洁的层次关系。",
+      "confidence": 0.95
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "画面没有明确光源或阴影，背景呈均匀柔和的明亮蓝色。",
+      "confidence": 0.78
+    },
+    "camera": {
+      "tags": [
+        "camera:wide",
+        "camera:eye-level"
+      ],
+      "summary": "以宽幅平视视角展示完整的几何山形轮廓，强调整体形状而非细节。",
+      "confidence": 0.72
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以冷蓝灰色几何山形构成的极简抽象景观，画面安静、克制并带有空旷感。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持冷蓝灰主色，色温控制在4800K左右，整体饱和度降低至70%-80%，避免加入暖黄色调。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留16:10横幅比例，保持山脊斜线贯穿画面，并保留上方约35%-40%的纯色留白。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "维持均匀平光效果，降低对比度约15，阴影与高光均控制在±5以内，避免生成明显投影和高光。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用无纹理纯色块和硬边几何轮廓，边缘羽化设为0-1像素，不添加颗粒、渐变或细节纹理。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -110,6 +193,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:40:37+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 18087
     }
   ]
 }

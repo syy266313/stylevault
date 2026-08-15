@@ -29,18 +29,103 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:01:11+08:00",
+    "latency_ms": 40222,
+    "usage": {
+      "prompt_tokens": 10254,
+      "completion_tokens": 803,
+      "total_tokens": 11057,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 119
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:document"
+      ],
+      "summary": "一页以中文拼音标注和词语解析为主的语文学习资料。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:documentary"
+      ],
+      "summary": "版式简洁克制，以清晰排版和信息阅读为核心。",
+      "confidence": 0.95
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:intimate"
+      ],
+      "summary": "画面安静理性，呈现专注阅读和学习的氛围。",
+      "confidence": 0.88
+    },
+    "color": {
+      "tags": [
+        "color:cool",
+        "color:low-sat",
+        "color:pastel",
+        "color:desaturated"
+      ],
+      "summary": "整体为低饱和的浅蓝冷色调，黑色文字形成柔和对比。",
+      "confidence": 0.98
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:minimal-frame"
+      ],
+      "summary": "单页内容占据画面主体，文字按横向段落排列，留白分布较均衡。",
+      "confidence": 0.94
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "光线均匀柔和，页面整体明亮，几乎没有明显硬阴影。",
+      "confidence": 0.95
+    },
+    "camera": {
+      "tags": [
+        "camera:high-angle",
+        "camera:close-up"
+      ],
+      "summary": "以较近距离从页面上方拍摄，画面主要聚焦于纸面文字内容。",
+      "confidence": 0.92
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张浅蓝低饱和背景上的中文语文学习资料照片，版式简洁、光线柔和，整体呈现安静清晰的阅读氛围。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保留浅蓝纸面色相，色温控制在4800K左右，饱和度降至85%，避免将背景处理成纯白。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光降低约0.2EV，高光降低15，阴影提升5，保持页面均匀明亮并恢复纸张纹理。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为4:5或原始纵向比例，保留完整主要文字区域，左右边缘留出约6%的安全边距。"
+      },
+      {
+        "aspect": "style",
+        "rule": "增强黑色文字与浅蓝背景的明度对比约10%，锐化强度控制在中低水平，避免出现明显光晕。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -102,6 +187,25 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:52:32+08:00",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "error",
+      "errors": [
+        "subject 标签格式错误: subject:printed_page（应为 维度:值）"
+      ]
+    },
+    {
+      "at": "2026-08-15T17:01:11+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 40222
     }
   ]
 }

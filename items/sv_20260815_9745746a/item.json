@@ -29,18 +29,105 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:41:35+08:00",
+    "latency_ms": 22348,
+    "usage": {
+      "prompt_tokens": 9524,
+      "completion_tokens": 910,
+      "total_tokens": 10434,
+      "completion_tokens_details": {
+        "reasoning_tokens": 131
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:document",
+        "subject:editorial-page",
+        "subject:typography"
+      ],
+      "summary": "一张以大标题和正文排版为核心的浅色极简编辑页面。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design",
+        "style:editorial"
+      ],
+      "summary": "采用克制的文字排版、充足留白和低装饰性的现代极简风格。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:lonely",
+        "mood:intimate"
+      ],
+      "summary": "空旷的版面和稀疏的信息密度营造出安静、克制且略显孤独的氛围。",
+      "confidence": 0.92
+    },
+    "color": {
+      "tags": [
+        "color:mono",
+        "color:desaturated",
+        "color:low-sat",
+        "color:high-key"
+      ],
+      "summary": "整体接近白底灰黑文字的单色低饱和配色，明度极高。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:negative-space",
+        "composition:minimal-frame",
+        "composition:asymmetric"
+      ],
+      "summary": "文字内容集中在页面左上至中上区域，大面积空白构成主要视觉结构。",
+      "confidence": 0.99
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key",
+        "lighting:soft"
+      ],
+      "summary": "画面呈均匀明亮的高调效果，几乎没有明显阴影或光照变化。",
+      "confidence": 0.98
+    },
+    "camera": {
+      "tags": [
+        "camera:flat-view",
+        "camera:eye-level"
+      ],
+      "summary": "画面为正面平视的页面截图或平面文档视图，未呈现透视和镜头运动信息。",
+      "confidence": 0.96
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张以灰黑文字、白色背景和大面积留白为核心的现代极简编辑页面，整体呈现安静克制且高度规范的排版美学。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持白色背景亮度在95%-100%，整体饱和度控制在5%以下，文字使用深灰而非纯黑，建议文字颜色为#29292D。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留至少70%的空白区域，将主要文字块放置在画布左侧偏上位置，左边距约为画布宽度的15%-16%。"
+      },
+      {
+        "aspect": "style",
+        "rule": "标题使用大字号无衬线字体，字重控制在400-500，正文使用中小字号并保持较宽行距，避免添加图标、插图、边框和装饰元素。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "输出高调均匀画面，曝光提高约+0.3EV，对比度控制在-5至+5，高光保持-5以内，避免阴影和局部光斑。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -106,6 +193,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:41:35+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 22348
     }
   ]
 }

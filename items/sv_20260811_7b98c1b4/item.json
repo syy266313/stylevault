@@ -45,65 +45,102 @@
   "analysis": {
     "status": "done",
     "model": {
-      "provider": "minis-agent",
-      "name": "stylevault-analyze-image",
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
       "version": "v1"
     },
-    "analyzed_at": "2026-08-15T16:02:40+08:00",
+    "analyzed_at": "2026-08-15T17:04:46+08:00",
+    "latency_ms": 18084,
+    "usage": {
+      "prompt_tokens": 9509,
+      "completion_tokens": 745,
+      "total_tokens": 10254,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 51
+      }
+    },
     "subject": {
       "tags": [
-        "subject:webpage"
+        "subject:technology",
+        "subject:document"
       ],
-      "summary": "网页截图：Example Domain 占位页（白底黑字极简排版）",
-      "confidence": 0.9
+      "summary": "一张展示示例域名说明文字的网页截图。",
+      "confidence": 0.99
     },
     "style": {
       "tags": [
-        "style:minimal"
+        "style:minimal",
+        "style:flat-design"
       ],
-      "summary": "极简信息型排版",
-      "confidence": 0.8
+      "summary": "采用极简网页排版，使用大面积留白、无衬线字体和单一信息层级。",
+      "confidence": 0.98
     },
     "mood": {
       "tags": [
-        "mood:calm"
+        "mood:calm",
+        "mood:neutral"
       ],
-      "summary": "中性冷静",
-      "confidence": 0.75
+      "summary": "整体氛围安静、中性且偏功能说明性质。",
+      "confidence": 0.91
     },
     "color": {
       "tags": [
-        "color:low-sat",
-        "color:mono"
+        "color:mono",
+        "color:desaturated",
+        "color:low-sat"
       ],
-      "summary": "白底黑字，无彩色倾向",
-      "confidence": 0.9
+      "summary": "画面以浅灰背景和深灰文字为主，仅链接带有低饱和蓝色。",
+      "confidence": 0.99
     },
     "composition": {
       "tags": [
-        "composition:center",
-        "composition:negative-space"
+        "composition:negative-space",
+        "composition:minimal-frame",
+        "composition:left-aligned"
       ],
-      "summary": "内容居中，留白充分",
-      "confidence": 0.8
+      "summary": "文字内容集中在画面上方偏中区域，周围保留大面积负空间。",
+      "confidence": 0.98
     },
     "lighting": {
       "tags": [
-        "lighting:high-key"
+        "lighting:high-key",
+        "lighting:soft"
       ],
-      "summary": "白底亮场",
-      "confidence": 0.7
+      "summary": "画面整体明亮均匀，没有明显阴影或方向性光照。",
+      "confidence": 0.97
     },
     "camera": {
       "tags": [
-        "camera:eye-level"
+        "camera:eye-level",
+        "camera:wide"
       ],
-      "summary": "页面截图，平视",
-      "confidence": 0.6
+      "summary": "属于垂直长幅网页截图，视角平直且覆盖完整页面区域。",
+      "confidence": 0.88
     },
     "rhythm": null,
-    "preference": 2,
-    "summary": "IANA 占位页截图（测试素材），审美参考价值有限。降级模式推断。"
+    "preference": 3,
+    "summary": "这是一张极简、低饱和、高留白的示例网页截图，核心视觉由清晰的无衬线文字排版构成。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持低饱和单色基调：背景亮度约 92%，整体饱和度控制在 5% 以下，链接使用低饱和蓝色且饱和度不超过 35%。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "保持高调均匀曝光：曝光 +0.2EV，高光 -5，阴影 +5，对比度控制在 -5 至 +5。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留垂直长幅构图，文字内容放置在画面水平中线附近并左对齐，四周至少保留 20% 以上留白。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用无衬线字体、浅灰纯色背景和深灰文字，避免纹理、渐变、装饰图形及复杂边框。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -183,6 +220,15 @@
       "action": "analyze",
       "phase": "b",
       "status": "done"
+    },
+    {
+      "at": "2026-08-15T17:04:46+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 18084
     }
   ]
 }

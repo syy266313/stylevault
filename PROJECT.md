@@ -37,7 +37,7 @@ stylevault/
 | M0 基建 | 目录骨架 + Schema + 配置 + 能力盘点 | ✅ 完成 |
 | M1 采集存储 | stylevault-ingest（三入口 + SHA-1 去重 + 分析队列） | ✅ 完成 |
 | M2 图片分析 | stylevault-analyze-image（本地特征 + 语义分析） | ✅ 完成 |
-| M2.5 质量校准 | editing_rules + Golden Dataset(20 张) + Phase B 视觉模型自动管线 | 🔨 管线就绪（gpt-5.6-terra），待 API 配置后跑全量 |
+| M2.5 质量校准 | editing_rules + Golden Dataset(20 张) + gpt-5.6-terra 视觉管线 | ✅ 完成（20/20 全量分析） |
 | M3 视频分析 | ffmpeg 抽帧/切分/节奏统计 | ⬜ 未开始 |
 | M4 检索+UI | stylevault-search + PWA 画廊 | ⬜ 未开始 |
 | M5 知识问答 | 基于知识库的问答 | ⬜ 未开始 |

@@ -27,65 +27,103 @@
     "version": null
   },
   "analysis": {
-    "status": "needs_review",
+    "status": "done",
     "model": {
-      "provider": "minis-agent",
-      "name": "stylevault-analyze-image",
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
       "version": "v1"
     },
-    "analyzed_at": "2026-08-15T16:02:45+08:00",
+    "analyzed_at": "2026-08-15T17:05:26+08:00",
+    "latency_ms": 20849,
+    "usage": {
+      "prompt_tokens": 10010,
+      "completion_tokens": 794,
+      "total_tokens": 10804,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 80
+      }
+    },
     "subject": {
       "tags": [
-        "subject:screenshot"
+        "subject:technology",
+        "subject:document"
       ],
-      "summary": "手机屏幕截图，具体内容需人工复核",
-      "confidence": 0.5
+      "summary": "一张展示终端命令输出与文件校验结果的手机界面截图。",
+      "confidence": 0.99
     },
     "style": {
       "tags": [
-        "style:minimal"
+        "style:minimal",
+        "style:documentary"
       ],
-      "summary": "降级模式推断：界面截图通常为简洁信息排版，需复核",
-      "confidence": 0.4
+      "summary": "界面采用极简的深色终端视觉风格，信息以代码与状态日志为主。",
+      "confidence": 0.98
     },
     "mood": {
       "tags": [
-        "mood:calm"
+        "mood:calm",
+        "mood:focused"
       ],
-      "summary": "中性情绪，需复核",
-      "confidence": 0.35
+      "summary": "整体氛围安静、专注，突出任务执行与校验完成状态。",
+      "confidence": 0.86
     },
     "color": {
       "tags": [
+        "color:mono",
+        "color:high-contrast",
         "color:low-sat"
       ],
-      "summary": "色彩特征需人工复核",
-      "confidence": 0.4
+      "summary": "以黑色和深灰为背景，搭配白色文字与绿色终端输出，色彩低饱和且对比强烈。",
+      "confidence": 0.99
     },
     "composition": {
       "tags": [
-        "composition:layered"
+        "composition:layered",
+        "composition:center"
       ],
-      "summary": "界面层级排布，需复核",
-      "confidence": 0.45
+      "summary": "画面由顶部系统状态区、中部终端内容区和底部任务状态区纵向分层构成。",
+      "confidence": 0.98
     },
     "lighting": {
       "tags": [
-        "lighting:soft"
+        "lighting:low-key",
+        "lighting:high-contrast"
       ],
-      "summary": "屏幕自发光，无实景光照，需复核",
-      "confidence": 0.4
+      "summary": "整体为低调暗色显示效果，明亮文字与图标在黑色背景上形成强烈对比。",
+      "confidence": 0.99
     },
     "camera": {
       "tags": [
+        "camera:close-up",
         "camera:eye-level"
       ],
-      "summary": "屏幕截图，平视",
-      "confidence": 0.6
+      "summary": "以手机屏幕近距离平视截取，重点呈现终端文本和操作状态。",
+      "confidence": 0.96
     },
     "rhythm": null,
     "preference": 3,
-    "summary": "用户相册截图（来源未知）。降级模式无法看图，全部维度待人工复核。"
+    "summary": "这是一张高对比、低饱和的深色终端操作截图，以分层界面清晰呈现JSON校验、目录结构和工具状态信息。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持黑色背景，将整体饱和度控制在15%以下；白色文字亮度保持95%以上，绿色输出使用约#20D95B。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "降低曝光约-0.3EV，压低高光-15，保持阴影-5，并将对比度提高+20以维持终端文字清晰度。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为9:16竖幅，保留顶部状态栏、中部终端面板和底部任务状态区，终端内容占画面高度约70%。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保留等宽字体、圆角深色面板和绿色成功状态提示，不添加装饰性纹理或渐变背景。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -168,6 +206,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:05:26+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 20849
     }
   ]
 }

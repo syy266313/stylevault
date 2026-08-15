@@ -29,18 +29,99 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:41:13+08:00",
+    "latency_ms": 17183,
+    "usage": {
+      "prompt_tokens": 6366,
+      "completion_tokens": 753,
+      "total_tokens": 7119,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 44
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:abstract"
+      ],
+      "summary": "由三个圆角矩形色块组成的简洁抽象几何画面。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用扁平化设计与极简几何构成，去除纹理和具象细节。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:dreamy"
+      ],
+      "summary": "低饱和的柔和色彩和宽阔留白营造出安静、轻盈的氛围。",
+      "confidence": 0.94
+    },
+    "color": {
+      "tags": [
+        "color:pastel",
+        "color:low-sat",
+        "color:desaturated"
+      ],
+      "summary": "画面以米白背景、浅蓝、粉色和浅绿色构成柔和的低饱和粉彩配色。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:negative-space",
+        "composition:minimal-frame"
+      ],
+      "summary": "左侧大色块与右侧上下两个较小色块形成错落分布，周围保留充足负空间。",
+      "confidence": 0.98
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key",
+        "lighting:soft"
+      ],
+      "summary": "整体为均匀明亮的高调平面照明，没有明显阴影、渐变或光源方向。",
+      "confidence": 0.98
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level",
+        "camera:wide"
+      ],
+      "summary": "画面以正面平视的宽幅构图呈现，强调整体几何布局而非局部细节。",
+      "confidence": 0.9
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以柔和粉彩色块、圆角几何形状和充足留白构成的极简抽象平面设计图。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持低饱和粉彩配色：整体饱和度控制在30%以下，色温设为5200K，背景维持米白色，避免加入高纯度或荧光色。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留16:10横幅比例；左侧放置一个约占画面宽度38%、高度76%的浅蓝圆角矩形，右侧上下排列粉色与浅绿色矩形，四周留白不少于7%。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用纯色扁平填充，不添加纹理、描边、投影、渐变和文字；所有矩形圆角半径控制在短边的约15%以内。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -98,6 +179,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:41:13+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 17183
     }
   ]
 }

@@ -29,18 +29,104 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:01:46+08:00",
+    "latency_ms": 35462,
+    "usage": {
+      "prompt_tokens": 9746,
+      "completion_tokens": 878,
+      "total_tokens": 10624,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 110
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:technology",
+        "subject:screenshot"
+      ],
+      "summary": "一张展示手机控制中心界面的竖幅系统截图，包含媒体播放、音量、亮度及快捷功能控件。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用深色极简系统界面风格，以半透明圆角控件和清晰图标构成统一视觉语言。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:orderly"
+      ],
+      "summary": "界面布局规整克制，整体传达安静、稳定和高效的操作感。",
+      "confidence": 0.9
+    },
+    "color": {
+      "tags": [
+        "color:mono",
+        "color:low-sat",
+        "color:high-contrast"
+      ],
+      "summary": "整体以黑灰和白色为主，辅以少量蓝色、黄色、绿色和橙色状态色。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:symmetry",
+        "composition:grid"
+      ],
+      "summary": "多个圆形和胶囊形控制模块按网格排列，顶部媒体卡片形成主要视觉焦点。",
+      "confidence": 0.98
+    },
+    "lighting": {
+      "tags": [
+        "lighting:low-key",
+        "lighting:neon-glow"
+      ],
+      "summary": "黑色背景与高亮白色图标形成低调高对比效果，局部状态色带来屏幕发光感。",
+      "confidence": 0.96
+    },
+    "camera": {
+      "tags": [
+        "camera:flat-screen-capture",
+        "camera:eye-level"
+      ],
+      "summary": "这是经过完整裁切的手机屏幕界面截图，不包含真实摄影视角或镜头景深。",
+      "confidence": 0.99
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张深色极简风格的手机控制中心截图，以规整网格、半透明控件和高对比单色界面呈现媒体与系统快捷操作。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持黑灰单色基调，整体饱和度控制在10%以下；白色图标亮度保持95%以上，仅保留蓝色、黄色、绿色和橙色作为状态强调色。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "维持低调显示效果，曝光降低0.3EV，黑位压低至-10，高光降低5，避免背景出现明显灰雾。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留竖幅9:19.5比例和四列网格结构，顶部媒体卡片占画面宽度约82%，底部保留至少20%的黑色留白。"
+      },
+      {
+        "aspect": "style",
+        "rule": "控件统一使用半透明深灰填充、8%至15%白色描边和大圆角，图标采用高亮白色线性或实心几何样式。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -114,6 +200,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:01:46+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 35462
     }
   ]
 }

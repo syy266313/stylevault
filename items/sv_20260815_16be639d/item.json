@@ -29,18 +29,102 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:30:36+08:00",
+    "latency_ms": 26442,
+    "usage": {
+      "prompt_tokens": 34668,
+      "completion_tokens": 855,
+      "total_tokens": 35523,
+      "completion_tokens_details": {
+        "reasoning_tokens": 76
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:nature",
+        "subject:plant",
+        "subject:decorative-plant"
+      ],
+      "summary": "近距离拍摄的盆栽植物与细长叶片，局部可见花盆和土壤。",
+      "confidence": 0.93
+    },
+    "style": {
+      "tags": [
+        "style:abstract",
+        "style:lo-fi"
+      ],
+      "summary": "主体细节因失焦、反射和局部遮挡而呈现抽象化的观察效果。",
+      "confidence": 0.88
+    },
+    "mood": {
+      "tags": [
+        "mood:dreamy",
+        "mood:calm"
+      ],
+      "summary": "柔焦植物、朦胧反射和低清晰度背景营造出安静而梦幻的氛围。",
+      "confidence": 0.86
+    },
+    "color": {
+      "tags": [
+        "color:natural",
+        "color:cool",
+        "color:low-sat"
+      ],
+      "summary": "整体以灰蓝、深绿和浅绿为主，并夹杂少量暖橙色枝叶与中性色背景。",
+      "confidence": 0.91
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:diagonal",
+        "composition:negative-space"
+      ],
+      "summary": "植物叶片、花盆、玻璃反射和虚化背景形成多层叠加，主体偏向画面下方与右侧。",
+      "confidence": 0.9
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:shadow-play"
+      ],
+      "summary": "光线整体柔和，玻璃表面反光与深色区域共同形成轻微的明暗变化。",
+      "confidence": 0.84
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:high-angle"
+      ],
+      "summary": "采用近距离高角度视角观察植物叶片、枝条、花盆边缘和土壤细节。",
+      "confidence": 0.9
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "一幅以柔焦、反射和层叠构图呈现的盆栽植物近景，冷静低饱和的色调中点缀着绿色叶片与橙色枝条，具有朦胧的抽象观感。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "色温调整至4800K，整体饱和度降低至92%，绿色饱和度保留105%，橙色饱和度降低至90%。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光降低0.2EV，高光降低20，阴影提升8，对比度提升6，避免亮绿色叶片过曝。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切至4:5比例，保留右下方细长叶片作为主体，将花盆开口置于下方三分线附近，并保留左侧虚化留白。"
+      },
+      {
+        "aspect": "style",
+        "rule": "清晰度降低10，纹理降低8，背景模糊强度提升15%，保留叶片轮廓但不要恢复为高锐度写实效果。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -93,6 +177,23 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:13:03+08:00",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "error",
+      "error": "HTTP 502: {\"error\":{\"message\":\"Upstream service temporarily unavailable\",\"type\":\"upstream_error\"}}"
+    },
+    {
+      "at": "2026-08-15T17:30:36+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 26442
     }
   ]
 }

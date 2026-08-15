@@ -29,18 +29,98 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:52:50+08:00",
+    "latency_ms": 17982,
+    "usage": {
+      "prompt_tokens": 7465,
+      "completion_tokens": 753,
+      "total_tokens": 8218,
+      "completion_tokens_details": {
+        "reasoning_tokens": 78
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:document"
+      ],
+      "summary": "一页带汉字拼音标注的中文阅读材料。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:documentary"
+      ],
+      "summary": "版式简洁规整，以黑色文字和白色页面为主，呈现教材或打印文档风格。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm"
+      ],
+      "summary": "信息呈现克制平静，缺少明显情绪化或叙事性视觉元素。",
+      "confidence": 0.9
+    },
+    "color": {
+      "tags": [
+        "color:mono",
+        "color:desaturated",
+        "color:high-contrast"
+      ],
+      "summary": "整体为近黑白单色调，文字与浅色背景形成清晰对比。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:minimal-frame",
+        "composition:negative-space"
+      ],
+      "summary": "文字块集中在页面上方和中部，四周保留较多留白，构图以阅读清晰度为主。",
+      "confidence": 0.96
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "页面受光均匀柔和，整体明亮，没有明显硬阴影或强烈高光。",
+      "confidence": 0.93
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level",
+        "camera:wide"
+      ],
+      "summary": "以接近正面、平视角度记录整页文档，画面覆盖范围较宽。",
+      "confidence": 0.9
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 3,
+    "summary": "这是一张近黑白色调、光线均匀的中文拼音标注文档照片，构图规整简洁，重点突出文字阅读。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "转换为灰度，黑色色阶保持在10以下，白色色阶提升至245以上，饱和度设为0%。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光提升+0.2EV，高光降低-8，阴影提升+5，避免页面边缘出现明显亮度渐变。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切并校正页面边缘，使文档四边基本平行，保留标题和正文，输出比例维持约5:4。"
+      },
+      {
+        "aspect": "style",
+        "rule": "增强文字清晰度，纹理或清晰度提升+10，对比度提升+8，不添加装饰性滤镜或色彩效果。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -102,6 +182,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:52:50+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 17982
     }
   ]
 }

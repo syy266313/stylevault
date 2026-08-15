@@ -29,68 +29,97 @@
   "analysis": {
     "status": "done",
     "model": {
-      "provider": "minis-agent",
-      "name": "stylevault-analyze-image",
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
       "version": "v1"
     },
-    "analyzed_at": "2026-08-15T16:02:43+08:00",
+    "analyzed_at": "2026-08-15T17:05:05+08:00",
+    "latency_ms": 19102,
+    "usage": {
+      "prompt_tokens": 9544,
+      "completion_tokens": 807,
+      "total_tokens": 10351,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 78
+      }
+    },
     "subject": {
       "tags": [
-        "subject:webpage"
+        "subject:technology",
+        "subject:document"
       ],
-      "summary": "网页截图：深色科技风测试页（深蓝黑背景+青色标题+青色圆形图形）",
-      "confidence": 0.9
+      "summary": "一张用于验证 URL 采集与截图落盘功能的深色网页测试页面截图。",
+      "confidence": 0.99
     },
     "style": {
       "tags": [
-        "style:minimal",
-        "style:tech"
+        "style:flat-design",
+        "style:minimal"
       ],
-      "summary": "深色极简科技风",
-      "confidence": 0.8
+      "summary": "采用极简扁平化网页设计，以大字号标题、纯色矩形和圆形几何图形构成界面。",
+      "confidence": 0.98
     },
     "mood": {
       "tags": [
-        "mood:cool",
+        "mood:calm",
         "mood:mysterious"
       ],
-      "summary": "深色冷调，神秘感",
-      "confidence": 0.75
+      "summary": "深色大面积留白与青绿色强调色营造出克制、安静且略带科技感的氛围。",
+      "confidence": 0.86
     },
     "color": {
       "tags": [
         "color:cool",
-        "color:dark",
-        "color:mono"
+        "color:high-contrast",
+        "color:neon"
       ],
-      "summary": "深蓝黑底+青色点缀，暗色统一",
-      "confidence": 0.85
+      "summary": "整体以深海军蓝为底，搭配高亮青绿色和浅灰文字，形成冷色高对比配色。",
+      "confidence": 0.99
     },
     "composition": {
       "tags": [
-        "composition:center",
-        "composition:negative-space"
+        "composition:negative-space",
+        "composition:layered"
       ],
-      "summary": "标题与图形居中，四周留白",
-      "confidence": 0.8
+      "summary": "标题、说明文字和示意图集中在上半部，底部保留大面积负空间，信息层次由上至下展开。",
+      "confidence": 0.98
     },
     "lighting": {
       "tags": [
-        "lighting:low-key"
+        "lighting:low-key",
+        "lighting:neon-glow"
       ],
-      "summary": "暗场背景，青色高亮点缀",
-      "confidence": 0.75
+      "summary": "画面整体处于低亮度环境，青绿色文字与圆形图形承担类似霓虹强调光的视觉作用。",
+      "confidence": 0.91
     },
     "camera": {
       "tags": [
-        "camera:eye-level"
+        "camera:eye-level",
+        "camera:frontal"
       ],
-      "summary": "页面截图，平视",
-      "confidence": 0.6
+      "summary": "以正面、垂直的网页视角呈现，没有透视倾斜或摄影机运动信息。",
+      "confidence": 0.94
     },
     "rhythm": null,
-    "preference": 3,
-    "summary": "深色科技风网页测试页（StyleVault 采集验证用）。降级模式推断。"
+    "preference": 4,
+    "summary": "这是一张冷色高对比、极简扁平化的网页测试截图，以青绿色几何元素和大面积深色留白突出科技感与信息层次。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保留深海军蓝背景，背景亮度控制在 10%-15%；青绿色强调色饱和度设为 105%，文字与背景对比度提高 20%。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "维持竖版 9:19.5 构图，将标题区置于画面上方约 10%-18% 高度处，示意图区域宽度控制在画面宽度的 77%-80%，底部保留至少 45% 负空间。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用无衬线粗体标题、纯色矩形与圆形几何元素，禁止添加纹理、渐变、阴影和复杂装饰。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -178,6 +207,15 @@
       "action": "analyze",
       "phase": "b",
       "status": "done"
+    },
+    {
+      "at": "2026-08-15T17:05:05+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 19102
     }
   ]
 }

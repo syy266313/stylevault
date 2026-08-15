@@ -29,18 +29,97 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:39:58+08:00",
+    "latency_ms": 17706,
+    "usage": {
+      "prompt_tokens": 6405,
+      "completion_tokens": 786,
+      "total_tokens": 7191,
+      "completion_tokens_details": {
+        "reasoning_tokens": 102
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:abstract"
+      ],
+      "summary": "画面由浅色背景上的深色圆形与水平线构成极简抽象几何组合。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "采用纯净留白、基础几何形状和克制色彩的极简平面风格。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:mysterious"
+      ],
+      "summary": "大面积留白与孤立的深色形状营造出安静、疏离且略带神秘感的氛围。",
+      "confidence": 0.78
+    },
+    "color": {
+      "tags": [
+        "color:mono",
+        "color:low-sat",
+        "color:desaturated",
+        "color:high-contrast"
+      ],
+      "summary": "整体为近乎单色的黑白灰配色，背景明亮，图形呈深灰黑色。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:negative-space",
+        "composition:minimal-frame",
+        "composition:asymmetry"
+      ],
+      "summary": "主体偏置于右侧并由大面积负空间包围，圆形与下方短水平线形成纵向关系。",
+      "confidence": 0.98
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key",
+        "lighting:soft"
+      ],
+      "summary": "画面整体明亮均匀，没有可见阴影、渐变或复杂光照效果。",
+      "confidence": 0.96
+    },
+    "camera": {
+      "tags": [
+        "camera:wide",
+        "camera:eye-level"
+      ],
+      "summary": "以完整画布视角呈现抽象图形，强调整体布局而非局部细节。",
+      "confidence": 0.62
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一幅以深色圆形和水平线为核心元素、依靠极大负空间与单色对比建立秩序感的极简抽象图像。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持背景亮度在95%-98%，将图形限制为RGB约34/34/38的深灰色，整体饱和度不超过5%。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留约85%的空白区域，将深色圆形置于画布右侧偏上位置，水平线置于圆形下方并保持左对齐。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用纯色填充和1-2px等宽线条，禁止纹理、渐变、阴影、描边装饰和额外图形。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -106,6 +185,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:39:58+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 17706
     }
   ]
 }

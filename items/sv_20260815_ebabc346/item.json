@@ -29,18 +29,104 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:53:18+08:00",
+    "latency_ms": 27013,
+    "usage": {
+      "prompt_tokens": 9755,
+      "completion_tokens": 883,
+      "total_tokens": 10638,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 125
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:technology",
+        "subject:document"
+      ],
+      "summary": "一张展示过敏性鼻炎与结膜炎评估记录的医疗健康应用界面截图。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:flat-design",
+        "style:minimal"
+      ],
+      "summary": "界面采用扁平化、信息分区清晰的移动端医疗应用设计。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:clinical"
+      ],
+      "summary": "整体氛围克制、理性且具有医疗记录的专业感。",
+      "confidence": 0.94
+    },
+    "color": {
+      "tags": [
+        "color:low-sat",
+        "color:high-key",
+        "color:cool"
+      ],
+      "summary": "以白色和浅灰为主，搭配浅蓝、紫色及高饱和蓝色强调信息状态。",
+      "confidence": 0.98
+    },
+    "composition": {
+      "tags": [
+        "composition:layered",
+        "composition:center",
+        "composition:minimal-frame"
+      ],
+      "summary": "纵向滚动式界面由顶部导航、分层信息卡片和底部导航栏构成，内容居中对齐并具有明显区块层次。",
+      "confidence": 0.98
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key",
+        "lighting:soft"
+      ],
+      "summary": "画面整体明亮均匀，几乎没有明显阴影或光照对比。",
+      "confidence": 0.98
+    },
+    "camera": {
+      "tags": [
+        "camera:screen-capture",
+        "camera:eye-level"
+      ],
+      "summary": "以移动设备屏幕截取视角呈现，画面为垂直长屏比例且无透视变形。",
+      "confidence": 0.99
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张高亮低饱和、结构清晰的医疗健康应用档案界面截图，重点呈现过敏性鼻炎及相关症状评分记录。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持白色背景占比约75%，整体饱和度控制在30%以下；保留蓝色强调色，蓝色区域饱和度设为110%，绿色分数文字保持高亮。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保持9:19.5左右的竖屏构图，顶部状态栏和底部导航栏完整保留，信息卡片左右边距控制在30px左右。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光保持+0.3EV，高光-5，阴影+8，对比度控制在+5以内，确保浅灰辅助文字和白色背景仍能清晰区分。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保留圆角信息卡片、浅蓝分区标题、紫色图标和蓝色疾病标签；界面边框圆角控制在24px以内，避免添加纹理、渐变背景或复杂装饰。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -102,6 +188,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:53:18+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 27013
     }
   ]
 }

@@ -29,18 +29,105 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T17:07:49+08:00",
+    "latency_ms": 32947,
+    "usage": {
+      "prompt_tokens": 10365,
+      "completion_tokens": 882,
+      "total_tokens": 11247,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 122
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:document",
+        "subject:printed_page"
+      ],
+      "summary": "一页以文言文阅读题和拼音标注答案为内容的中文学习资料。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:documentary"
+      ],
+      "summary": "版式朴素直接，以清晰的黑色印刷文字和大面积留白构成学习型文档风格。",
+      "confidence": 0.96
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:intimate"
+      ],
+      "summary": "画面安静、理性，具有个人学习资料般的亲近感。",
+      "confidence": 0.85
+    },
+    "color": {
+      "tags": [
+        "color:cool",
+        "color:low-sat",
+        "color:pastel",
+        "color:desaturated"
+      ],
+      "summary": "整体以低饱和浅蓝色纸张为主，搭配黑色文字，色彩清淡偏冷。",
+      "confidence": 0.99
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:minimal-frame",
+        "composition:negative-space"
+      ],
+      "summary": "文字主体沿页面中轴附近分布，段落间距较大，四周保留明显留白。",
+      "confidence": 0.94
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft",
+        "lighting:high-key"
+      ],
+      "summary": "页面受到均匀柔和的高亮照明，几乎没有明显硬阴影或强烈反光。",
+      "confidence": 0.93
+    },
+    "camera": {
+      "tags": [
+        "camera:close-up",
+        "camera:high-angle"
+      ],
+      "summary": "以近距离高角度拍摄单页文档，画面主要聚焦纸面文字内容。",
+      "confidence": 0.95
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 3,
+    "summary": "这是一张浅蓝底色、黑色中文印刷文字为主体的文言文学习资料照片，构图规整简洁，光线柔和明亮，整体呈现安静克制的文档质感。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "将色温控制在 5200K，色调向青色偏移 3，饱和度降至 85%，保留浅蓝纸张底色并避免过度偏色。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光降低 0.15EV，高光降低 12，阴影提升 5，对比度提升 8，确保黑色文字清晰且纸面纹理不过曝。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "裁切为 4:5 竖幅，保持页面文字主体居中，左右边距接近一致，并保留顶部标题和底部答案内容。"
+      },
+      {
+        "aspect": "style",
+        "rule": "保持纯黑文字与浅蓝纸张的高可读性，锐度提升 10，清晰度提升 8，不添加装饰元素、滤镜颗粒或渐变背景。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -102,6 +189,25 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T17:02:22+08:00",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "error",
+      "errors": [
+        "subject 标签格式错误: subject:printed_page（应为 维度:值）"
+      ]
+    },
+    {
+      "at": "2026-08-15T17:07:49+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 32947
     }
   ]
 }

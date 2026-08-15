@@ -29,18 +29,104 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "openai",
+      "name": "gpt-5.6-terra",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:54:02+08:00",
+    "latency_ms": 43931,
+    "usage": {
+      "prompt_tokens": 9736,
+      "completion_tokens": 798,
+      "total_tokens": 10534,
+      "prompt_tokens_details": {
+        "cached_tokens": 3840
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 50
+      }
+    },
+    "subject": {
+      "tags": [
+        "subject:technology",
+        "subject:screenshot"
+      ],
+      "summary": "一张展示转账成功结果及金融产品推荐内容的手机银行应用截图。",
+      "confidence": 0.99
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:flat-design"
+      ],
+      "summary": "界面采用简洁的金融应用扁平化设计，信息层级清晰，装饰元素克制。",
+      "confidence": 0.98
+    },
+    "mood": {
+      "tags": [
+        "mood:calm",
+        "mood:joyful"
+      ],
+      "summary": "绿色成功标识与完成状态传达出稳定、明确和轻微愉悦的情绪。",
+      "confidence": 0.9
+    },
+    "color": {
+      "tags": [
+        "color:low-sat",
+        "color:pastel",
+        "color:warm"
+      ],
+      "summary": "整体以白色和浅米色为主，辅以绿色成功图标、红色按钮和少量蓝色图标。",
+      "confidence": 0.97
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:layered",
+        "composition:minimal-frame"
+      ],
+      "summary": "页面以中央交易成功信息为视觉核心，下方按模块纵向排列快捷入口和推荐卡片。",
+      "confidence": 0.98
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key",
+        "lighting:soft"
+      ],
+      "summary": "画面为明亮均匀的高调界面，没有明显阴影或强烈光影效果。",
+      "confidence": 0.99
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level",
+        "camera:wide"
+      ],
+      "summary": "采用完整手机屏幕视角，纵向展示较长的应用页面内容。",
+      "confidence": 0.98
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 4,
+    "summary": "这是一张高调、简洁的手机银行转账成功页面截图，以中央成功状态为核心，并通过快捷入口和浅色金融产品卡片延伸信息层级。",
+    "editing_rules": [
+      {
+        "aspect": "color",
+        "rule": "保持白色背景占比约65%，米色区域饱和度控制在85%-95%，绿色成功图标保留中高饱和度，红色按钮色相保持鲜明。"
+      },
+      {
+        "aspect": "lighting",
+        "rule": "曝光提高约+0.3EV，高光降低-5，阴影提高+5，保持整体高调且避免白色界面过曝丢失文字边缘。"
+      },
+      {
+        "aspect": "composition",
+        "rule": "保留9:19.5左右的竖屏比例，交易成功标题和绿色勾选图标置于中轴线，推荐卡片按纵向间距排列，不裁切顶部状态栏和底部完成按钮。"
+      },
+      {
+        "aspect": "style",
+        "rule": "使用无衬线字体、细分隔线和不超过8px的圆角卡片，减少纹理与阴影，维持扁平化金融应用界面风格。"
+      }
+    ]
   },
   "vision": {
     "classifications": [
@@ -110,6 +196,15 @@
       "action": "analyze",
       "phase": "a",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:54:02+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "model": "gpt-5.6-terra",
+      "status": "done",
+      "latency_ms": 43931
     }
   ]
 }
