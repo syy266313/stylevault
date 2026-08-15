@@ -17,8 +17,10 @@ description: >-
 ## 工作流
 1. `mock`：基于 seed/source 生成可复现的节奏参数。
 2. `adapter-dry-run`：只输出 adapter 计划，不调用 ffmpeg。
-3. `merge-dna`：合并 visual 与 rhythm，生成 `style_dna.signature`。
-4. `validate`：校验 rhythm.params 与 style_dna 结构。
+3. `probe`：通过 `FfmpegAdapter` 调用 ffprobe 读取媒体元数据。
+4. `segment`：通过 `FfmpegAdapter` 调用 ffmpeg scdet，输出镜头数量、平均镜头时长和长度分布。
+5. `merge-dna`：合并 visual 与 rhythm，生成 `style_dna.signature`。
+6. `validate`：校验 rhythm.params 与 style_dna 结构。
 
 ## 约束
 - 不直接依赖 ffmpeg；真实实现只需替换 `FfmpegAdapter`。
@@ -31,6 +33,9 @@ description: >-
 ```bash
 python3 scripts/analyze_video.py mock demo-seed
 python3 scripts/analyze_video.py adapter-dry-run sample.mp4
+python3 scripts/analyze_video.py probe sample.mp4
+python3 scripts/analyze_video.py segment sample.mp4 --scene-threshold 0.30
 python3 scripts/analyze_video.py merge-dna --visual visual.json --rhythm rhythm.json
 python3 scripts/analyze_video.py validate rhythm.json
+python3 scripts/evaluate_video.py --ground-truth configs/video-test-suite.json --prediction prediction.json
 ```

@@ -38,7 +38,7 @@ stylevault/
 | M1 采集存储 | stylevault-ingest（三入口 + SHA-1 去重 + 分析队列） | ✅ 完成 |
 | M2 图片分析 | stylevault-analyze-image（本地特征 + 语义分析） | ✅ 完成 |
 | M2.5 质量校准 | editing_rules + Golden Dataset(20 张) + gpt-5.6-terra 视觉管线 | ✅ 完成（20/20 全量分析） |
-| M3 视频分析 | video analysis scaffold + test suite（adapter + mock + rhythm.params + style_dna） | 🔨 M3.0.5 测试准备完成，待 ffmpeg 环境就绪 |
+| M3 视频分析 | video analysis scaffold + test suite + FfmpegAdapter probe/segment | 🔨 M3.1 已实现，待 ffmpeg 环境验收 |
 | M4 检索+UI | stylevault-search + PWA 画廊 | ⬜ 未开始 |
 | M5 知识问答 | 基于知识库的问答 | ⬜ 未开始 |
 | M6 剪辑辅助 | 知识库辅助 AI 剪辑（未来） | ⬜ 规划中 |

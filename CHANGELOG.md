@@ -4,6 +4,19 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-08-15
+
+### Added
+- **M3.1 最小真实运行时**：
+  - `FfmpegAdapter.probe()` 使用 ffprobe 读取时长、分辨率、帧率、编码器与格式；
+  - `FfmpegAdapter.segment()` 使用 ffmpeg `scdet` 输出可复现镜头区间；
+  - 输出 `shot_count`、`avg_shot_ms`、`shot_length_distribution` 与 `pace_density`；
+  - `transition_types` / `camera_moves` 以 `unknown` 低置信度占位，明确记录 `confidence/source/detection_method`，等待 M3.2 实现。
+- 无 ffmpeg/ffprobe 时返回结构化错误，不影响 MockAdapter。
+
+### Changed
+- 所有 ffmpeg/ffprobe 调用严格封装在 `FfmpegAdapter` 内，上层接口不变。
+
 ## [0.4.4] - 2026-08-15
 
 ### Added
