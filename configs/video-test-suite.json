@@ -1,0 +1,72 @@
+{
+  "version": "v0.1-draft",
+  "description": "M3.0.5 视频分析测试样本（architecture only）。样本为可复现的测试场景 ground truth，不依赖真实 ffmpeg。",
+  "samples": [
+    {
+      "id": "fast_cut",
+      "title": "快节奏剪辑",
+      "source": { "kind": "mock", "seed": "fast-cut-v1" },
+      "ground_truth": {
+        "shot_count": 24,
+        "avg_shot_ms": 780,
+        "shot_length_ms": { "p10": 320, "p50": 720, "p90": 1280 },
+        "transition_types": [
+          { "value": "hard_cut", "confidence": 0.95, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "camera_moves": [
+          { "value": "static", "confidence": 0.62, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "pan", "confidence": 0.52, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "overall_pace": "fast"
+      }
+    },
+    {
+      "id": "slow_long_take",
+      "title": "慢节奏长镜头",
+      "source": { "kind": "mock", "seed": "slow-long-take-v1" },
+      "ground_truth": {
+        "shot_count": 5,
+        "avg_shot_ms": 9200,
+        "shot_length_ms": { "p10": 6200, "p50": 9100, "p90": 11800 },
+        "transition_types": [
+          { "value": "hard_cut", "confidence": 0.72, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "dissolve", "confidence": 0.28, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "camera_moves": [
+          { "value": "static", "confidence": 0.88, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "tracking", "confidence": 0.41, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "overall_pace": "slow"
+      }
+    },
+    {
+      "id": "transition_motion",
+      "title": "含明显转场与运镜",
+      "source": { "kind": "mock", "seed": "transition-motion-v1" },
+      "ground_truth": {
+        "shot_count": 12,
+        "avg_shot_ms": 2450,
+        "shot_length_ms": { "p10": 900, "p50": 2200, "p90": 4200 },
+        "transition_types": [
+          { "value": "hard_cut", "confidence": 0.78, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "dissolve", "confidence": 0.74, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "fade", "confidence": 0.56, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "wipe", "confidence": 0.33, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "camera_moves": [
+          { "value": "pan", "confidence": 0.84, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "tracking", "confidence": 0.77, "source": "ground_truth", "detection_method": "manual_annotation" },
+          { "value": "zoom", "confidence": 0.51, "source": "ground_truth", "detection_method": "manual_annotation" }
+        ],
+        "overall_pace": "medium"
+      }
+    }
+  ],
+  "acceptance": {
+    "shot_count_abs_error": 1,
+    "avg_shot_ms_mae_ratio": 0.15,
+    "transition_jaccard_min": 0.5,
+    "camera_moves_jaccard_min": 0.5,
+    "overall_pace_match": true
+  }
+}

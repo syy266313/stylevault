@@ -4,6 +4,14 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-08-15
+
+### Added
+- **M3.0.5 测试准备**：
+  - 3 个视频分析测试样本 ground truth（快节奏剪辑 / 慢节奏长镜头 / 明显转场与运镜）；
+  - 自动验收脚本 `scripts/evaluate_video.py`：比较 future FfmpegAdapter 输出与 ground truth 的 shot_count / avg_shot_ms / transition_types / camera_moves / overall_pace 误差；
+  - `video-test-suite.json` 作为测试基准，不修改 v0.4.1 frozen schema。
+
 ## [0.4.3] - 2026-08-15
 
 ### Added
