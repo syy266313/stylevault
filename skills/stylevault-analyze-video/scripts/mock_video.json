@@ -1,0 +1,17 @@
+{
+  "version": "v0.1-draft",
+  "source": {
+    "origin": "mock",
+    "id": "mock-demo-01",
+    "title": "Mock Demo Video",
+    "note": "用于验证 rhythm.params / style_dna 合并逻辑"
+  },
+  "visual": {
+    "style": ["style:cinematic"],
+    "mood": ["mood:dynamic"],
+    "editing_rules": [
+      {"aspect": "color", "rule": "整体饱和度 +8%，高光 -5，阴影 +3，色温 5200K"},
+      {"aspect": "rhythm", "rule": "平均镜头时长 1.6s，首段 3 秒内完成节奏建立"}
+    ]
+  }
+}

@@ -14,7 +14,7 @@ cp -r skills/stylevault-* /var/minis/skills/
 |---|---|---|---|---|
 | `stylevault-ingest` | **M1** | 采集落盘：接收素材 → 归一化 → 生成 item.json 骨架 → 写 pipeline_log | shell、browser_use、apple-photos export | 无前置 |
 | `stylevault-analyze-image` | M2 | 图片两级分析：本地特征(Phase A) + LLM 语义(Phase B) → 写 analysis | apple-vision、py3-pillow、LLM | ingest 产物 |
-| `stylevault-analyze-video` | M3 | 视频：ffmpeg 抽帧/切分/节奏统计 → 帧走 analyze-image → 合并节奏 | ffmpeg、apple-vision、LLM | analyze-image |
+| `stylevault-analyze-video` | M3.0 | 视频风格建模骨架：统一 adapter、mock、rhythm.params、style_dna 合并 | ffmpeg（后置）、python3 | analyze-image / mock |
 | `stylevault-tag` | M2 | 标签本体维护 + 重建 indexes/tags.json 聚合索引 | python3 | configs/tag-ontology.json |
 | `stylevault-search` | M4 | 标签/关键词/相似度检索 + 知识库问答 | python3、apple-vision similarity、LLM | indexes/tags.json |
 

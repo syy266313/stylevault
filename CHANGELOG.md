@@ -4,6 +4,17 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-08-15
+
+### Added
+- **M3.0 Architecture Only**：
+  - `stylevault-analyze-video` skill 骨架（统一 adapter 接口、mock 分析器、Style DNA 合并逻辑）；
+  - `schemas/drafts/video.schema.json` 草案（rhythm.params + style_dna + transition_types/camera_moves 结构）；
+  - `scripts/analyze_video.py` 支持 `mock` / `adapter-dry-run` / `merge-dna` / `validate`，不依赖 ffmpeg。
+
+### Changed
+- M3 定位明确为“视频风格建模”而非抽帧工程；上层流程不直接依赖 ffmpeg，未来只需实现 adapter。
+
 ## [0.4.2] - 2026-08-15
 
 ### Added

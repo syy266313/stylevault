@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "stylevault/video.schema.v0draft.json",
+  "title": "StyleVault Video Analysis Draft",
+  "description": "M3.0 视频风格建模草案：统一 adapter、rhythm.params 与 style_dna。冻结版 item.schema.json 不变，新字段仅在 drafts 中演进。",
+  "type": "object",
+  "required": ["version", "source", "analysis"],
+  "properties": {
+    "version": { "type": "string", "enum": ["v0.1-draft"] },
+    "source": {
+      "type": "object",
+      "required": ["origin"],
+      "properties": {
+        "origin": { "type": "string", "enum": ["attachment", "photos", "browser", "url", "import", "video"] },
+        "path": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "required": ["status", "rhythm", "style_dna"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "done", "error", "needs_review", "mocked"] },
+        "model": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "name": { "type": "string" },
+            "version": { "type": "string" }
+          }
+        },
+        "rhythm": {
+          "type": "object",
+          "required": ["status", "params", "summary"],
+          "properties": {
+            "status": { "type": "string", "enum": ["mocked", "pending", "done", "error", "needs_review"] },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "source": { "type": "string" },
+            "detection_method": { "type": "string" },
+            "summary": { "type": "string" },
+            "params": {
+              "type": "object",
+              "required": ["avg_shot_ms", "shot_length_distribution", "transition_types", "camera_moves", "pace_density", "color_continuity"],
+              "properties": {
+                "avg_shot_ms": { "type": "number", "minimum": 0 },
+                "shot_length_distribution": {
+                  "type": "object",
+                  "required": ["buckets", "p10", "p50", "p90"],
+                  "properties": {
+                    "buckets": {
+                      "type": "object",
+                      "properties": {
+                        "0-1s": { "type": "integer", "minimum": 0 },
+                        "1-2s": { "type": "integer", "minimum": 0 },
+                        "2-4s": { "type": "integer", "minimum": 0 },
+                        "4s+": { "type": "integer", "minimum": 0 }
+                      }
+                    },
+                    "p10": { "type": "number" },
+                    "p50": { "type": "number" },
+                    "p90": { "type": "number" }
+                  }
+                },
+                "transition_types": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["value", "confidence", "source", "detection_method"],
+                    "properties": {
+                      "value": { "type": "string" },
+                      "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "source": { "type": "string" },
+                      "detection_method": { "type": "string" }
+                    }
+                  }
+                },
+                "camera_moves": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["value", "confidence", "source", "detection_method"],
+                    "properties": {
+                      "value": { "type": "string" },
+                      "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "source": { "type": "string" },
+                      "detection_method": { "type": "string" }
+                    }
+                  }
+                },
+                "pace_density": {
+                  "type": "object",
+                  "properties": {
+                    "cuts_per_min": { "type": "number", "minimum": 0 },
+                    "segment_density": { "type": "number", "minimum": 0 }
+                  }
+                },
+                "color_continuity": {
+                  "type": "object",
+                  "properties": {
+                    "mean_delta_e": { "type": "number", "minimum": 0 },
+                    "drift_rate": { "type": "number", "minimum": 0 },
+                    "dominant_shift": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "style_dna": {
+          "type": "object",
+          "required": ["visual", "rhythm", "signature"],
+          "properties": {
+            "visual": { "type": "object" },
+            "rhythm": { "type": "object" },
+            "signature": { "type": "string" },
+            "computed_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    }
+  }
+}
