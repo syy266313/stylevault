@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "stylevault/item.schema.v2.draft.json",
+  "title": "StyleVault Item v2（草案）",
+  "description": "v2 演进草案：rhythm 参数化 + embedding 细化 + style_dna。以 v1（item.schema.json，冻结于 v0.4.1）为基座，本文件只描述差异部分；未列出的字段沿用 v1 定义。",
+  "x-status": "draft",
+  "x-base": "item.schema.json@v1.0",
+  "x-designed_for": "M3 Video Language Engine / M4 检索",
+  "properties": {
+    "embedding": {
+      "type": "object",
+      "description": "语义向量嵌入（v2 启用）。v1 已预留 status/model/version/dimensions/vector",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["none", "pending", "done", "error"] },
+        "kind": { "type": "string", "enum": ["analysis", "image", "hybrid"], "description": "嵌入来源（默认 analysis：分析结果序列化→文本嵌入）" },
+        "model": { "type": "string" },
+        "version": { "type": "string" },
+        "dimensions": { "type": "integer" },
+        "vector": { "type": "array", "items": { "type": "number" } },
+        "source_text": { "type": "string", "description": "序列化摘要（八维标签+summary+editing_rules），调试/审计用" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "rhythm": {
+      "type": ["object", "null"],
+      "description": "视频节奏（v2 参数结构；图片为 null）。详见 docs/DESIGN-rhythm-v2.md",
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "done", "error"] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "summary": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "params": {
+          "type": "object",
+          "properties": {
+            "avg_shot_ms": { "type": "number", "description": "平均镜头时长" },
+            "shot_count": { "type": "integer" },
+            "shot_length_distribution": {
+              "type": "object",
+              "properties": {
+                "p10": { "type": "number" }, "p50": { "type": "number" }, "p90": { "type": "number" },
+                "bins": { "type": "object", "additionalProperties": { "type": "integer" } }
+              }
+            },
+            "transition_types": { "type": "object", "additionalProperties": { "type": "number" } },
+            "camera_moves": { "type": "object", "additionalProperties": { "type": "number" } },
+            "pace_density": {
+              "type": "object",
+              "properties": {
+                "cuts_per_min": { "type": "number" },
+                "peak_cuts_per_min": { "type": "number" },
+                "curve": { "type": "array", "items": { "type": "number" } }
+              }
+            },
+            "color_continuity": {
+              "type": "object",
+              "properties": {
+                "mean_delta_e": { "type": "number" },
+                "drift_rate": { "type": "number" },
+                "dominant_shift": { "type": "string" },
+                "stable_ratio": { "type": "number" }
+              }
+            }
+          }
+        },
+        "editing_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "style_dna": {
+      "type": ["object", "null"],
+      "description": "统一风格指纹（M3 合并产物）：visual 静态层 ⊕ rhythm 时间层。详见 docs/DESIGN-M3-video-language-engine.md",
+      "properties": {
+        "visual": {
+          "type": "object",
+          "description": "静态层：八维标签 + editing_rules"
+        },
+        "rhythm": {
+          "type": "object",
+          "description": "时间层：rhythm.params + 视频 editing_rules"
+        },
+        "signature": { "type": "string", "description": "风格签名串，如 cyberpunk|fast-cut|neon" },
+        "computed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

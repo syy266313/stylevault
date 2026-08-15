@@ -4,6 +4,18 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-08-15
+
+### Added
+- **v0.4 冻结**：tag `v0.4.1` + 分支 `release/v0.4`；item.schema.json 标记 `x-status: frozen`。
+- **开发文档**：docs/DEVELOPMENT.md（环境/工作流/提交规范/测试/同步）。
+- **设计文档**（M3 前置评审）：
+  - docs/DESIGN-style-embedding.md — 语义向量嵌入字段设计（analysis 嵌入为主路径）；
+  - docs/DESIGN-rhythm-v2.md — rhythm 从标签升级为参数结构（六项视频指标）；
+  - docs/DESIGN-M3-video-language-engine.md — 视频风格建模技术设计（切分/转场/运镜/节奏/色彩连续性 + Style DNA 合并）；
+  - schemas/drafts/item.schema.v2.draft.json — v2 草案（rhythm 参数化 + embedding 细化 + style_dna 预留）。
+- **Style DNA 概念**：visual（静态 editing_rules）⊕ rhythm（时间参数）→ 统一风格指纹，为 M6 剪辑引擎与 M4 语义检索奠基。
+
 ## [0.4.1] - 2026-08-15
 
 ### Added

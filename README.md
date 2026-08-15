@@ -21,7 +21,13 @@ stylevault/
 │   └── example.item.json  # 完整示例
 ├── configs/        # 配置（版本化，可重放）
 │   ├── tag-ontology.json  # 六维标签本体
-│   └── pipeline.json      # 分析管线版本配置
+│   ├── pipeline.json      # 分析管线版本配置
+│   └── golden-dataset.json# M2.5 Golden 基准（20 张 ground truth）
+├── docs/           # 设计与开发文档（v0.4 冻结后新增）
+│   ├── DEVELOPMENT.md                  # 开发指南
+│   ├── DESIGN-style-embedding.md       # style_embedding 设计
+│   ├── DESIGN-rhythm-v2.md             # rhythm 参数化设计
+│   └── DESIGN-M3-video-language-engine.md  # M3 视频风格建模
 └── README.md
 ```
 

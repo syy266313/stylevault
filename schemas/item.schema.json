@@ -3,6 +3,11 @@
   "$id": "stylevault/item.schema.json",
   "title": "StyleVault Item",
   "description": "StyleVault 素材条目元数据。原始文件与 item.json 同目录共存（sidecar）。JSON 是事实来源。",
+  "x-version": "1.0",
+  "x-status": "frozen",
+  "x-frozen_at": "2026-08-15",
+  "x-frozen_tag": "v0.4.1",
+  "$comment": "v1.0 冻结于 v0.4.1。后续演进（rhythm 参数化 / embedding 细化 / style_dna）见 schemas/drafts/item.schema.v2.draft.json，开发在 main 分支进行。",
   "type": "object",
   "additionalProperties": true,
   "required": [
