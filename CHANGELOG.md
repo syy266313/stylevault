@@ -4,6 +4,17 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.7] - 2026-08-15
+
+### Fixed (M3.1.1 加固)
+- **验收器缺失字段即失败**：`shot_count` / `avg_shot_ms` 缺失时不再"缺字段也通过"，`evaluate_video.py` 的 checks 改为 `is not None and <= 阈值`，summary 新增 `missing_fields` 统计。
+- **M3.1 强制 segments**：`check_segment_integrity` 改为 prediction 无 segments 即失败（M3.1 验收必须携带根级或 `probe.segments`），不再跳过。
+- **NaN/Infinity 拒绝**：`validate_segments` 与 `validate` 对所有数值字段（start/dur/duration/avg_shot_ms/分位数/confidence）增加 `math.isfinite` 校验。
+- **ffprobe 健壮性**：malformed JSON、非对象结构、无法解析的时长、非法帧率字符串（如 `abc/def`、分母 0）、非有限 fps 均返回结构化 `RuntimeError`，不再 traceback。
+- **scene_threshold 单位明确**：`FfmpegAdapter.SCENE_THRESHOLD_UNIT = "normalized-0-1"`（与 ffmpeg scdet threshold 原生单位一致，直接透传）；构造时校验范围 [0,1]，超范围抛错。
+- **M3.3 门控**：color_continuity ground truth 就绪前，`--milestone M3.3` 直接结构化报错并 exit 2，不允许伪装成可执行验收；config 中 M3.3 标记 `ready: false`。
+- **新增测试**：`tests/test_m3_1_1_hardening.py`（19 用例）：缺失 shot_count/avg_shot_ms/segments 失败、NaN/Infinity 拒绝（segments 与 validate 两条路径）、malformed ffprobe JSON、非法帧率、阈值范围与单位常量、M3.3 门控。
+
 ## [0.4.6] - 2026-08-15
 
 ### Fixed (M3.1.1 契约修正)

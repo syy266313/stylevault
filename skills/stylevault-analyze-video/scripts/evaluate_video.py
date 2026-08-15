@@ -95,9 +95,11 @@ def evaluate_sample(gt, pred):
         "shot_count_error": shot_count_err,
         "avg_shot_ms_error": avg_shot_ms_err,
         "avg_shot_ms_mae_ratio": avg_shot_ms_mae_ratio,
+        "missing_fields": [k for k, v in [("shot_count", pred_count), ("avg_shot_ms", pred_avg)] if v is None],
         "transition_jaccard": jaccard(trans_gt, trans_pred),
         "camera_moves_jaccard": jaccard(cam_gt, cam_pred),
         "overall_pace_match": rhythm.get("overall_pace") == gt.get("overall_pace"),
+        "color_continuity_match": rhythm.get("color_continuity") == gt.get("color_continuity"),
         "pred_overall_pace": rhythm.get("overall_pace"),
         "gt_overall_pace": gt.get("overall_pace"),
         "pred_transition_types": trans_pred,
@@ -109,7 +111,7 @@ def evaluate_sample(gt, pred):
 MILESTONE_REQUIRED = {
     "M3.1": ["shot_count", "avg_shot_ms", "overall_pace"],
     "M3.2": ["shot_count", "avg_shot_ms", "overall_pace", "transition", "camera_moves"],
-    "M3.3": ["shot_count", "avg_shot_ms", "overall_pace", "transition", "camera_moves"],
+    "M3.3": ["shot_count", "avg_shot_ms", "overall_pace", "transition", "camera_moves", "color_continuity"],
 }
 
 
@@ -119,10 +121,10 @@ def milestone_thresholds(suite, milestone):
 
 
 def check_segment_integrity(pred):
-    """M3.1 segment 完整性：prediction 携带 segments 时校验，缺失则跳过。"""
+    """M3.1 segment 完整性：M3.1 验收强制要求 prediction 携带 segments。"""
     segments = get_segments(pred)
     if segments is None:
-        return True, ["skipped: prediction 无 segments 数据"]
+        return False, ["missing segments: M3.1 验收要求 prediction 携带 segments（根级或 probe.segments）"]
     duration_ms = get_duration_ms(pred)
     if duration_ms is None:
         return False, ["缺少 probe.duration_ms，无法校验 segments"]
@@ -145,6 +147,19 @@ def main():
     if args.sample_id:
         samples = [s for s in samples if s.get("id") == args.sample_id]
 
+    # M3.3 门控：color_continuity ground truth 就绪前不允许伪装成可执行验收
+    if args.milestone == "M3.3":
+        gt_field = "color_continuity"
+        missing_gt = [s["id"] for s in samples if s.get("ground_truth", {}).get(gt_field) is None]
+        if missing_gt:
+            print(json.dumps({
+                "ok": False,
+                "milestone": "M3.3",
+                "error": f"M3.3 尚无 {gt_field} ground truth（样本: {missing_gt}），"
+                         "ground truth 就绪前不允许执行 M3.3 验收",
+            }, ensure_ascii=False, indent=2))
+            sys.exit(2)
+
     thresh = milestone_thresholds(suite, args.milestone)
     required = MILESTONE_REQUIRED[args.milestone]
 
@@ -154,11 +169,13 @@ def main():
         p = pred.get(sid, pred) if isinstance(pred, dict) else {}
         r = evaluate_sample(s["ground_truth"], p)
         checks = {
-            "shot_count": r["shot_count_error"] is None or r["shot_count_error"] <= thresh.get("shot_count_abs_error", 1),
-            "avg_shot_ms": r["avg_shot_ms_mae_ratio"] is None or r["avg_shot_ms_mae_ratio"] <= thresh.get("avg_shot_ms_mae_ratio", 0.15),
+            # 缺失（None）即失败，不允许"缺字段也通过"
+            "shot_count": r["shot_count_error"] is not None and r["shot_count_error"] <= thresh.get("shot_count_abs_error", 1),
+            "avg_shot_ms": r["avg_shot_ms_mae_ratio"] is not None and r["avg_shot_ms_mae_ratio"] <= thresh.get("avg_shot_ms_mae_ratio", 0.15),
             "overall_pace": r["overall_pace_match"] == thresh.get("overall_pace_match", True),
             "transition": r["transition_jaccard"] >= thresh.get("transition_jaccard_min", 0.5),
             "camera_moves": r["camera_moves_jaccard"] >= thresh.get("camera_moves_jaccard_min", 0.5),
+            "color_continuity": r["color_continuity_match"] == thresh.get("color_continuity_match", True),
         }
         seg_ok, seg_errors = (True, [])
         if args.milestone == "M3.1":
@@ -185,6 +202,9 @@ def main():
         "transition_jaccard_mean": None,
         "camera_moves_jaccard_mean": None,
     }
+    missing_fields = sorted({m for r in results for m in r.get("missing_fields", [])})
+    if missing_fields:
+        summary["missing_fields"] = missing_fields
     sc = [r["shot_count_error"] for r in results if r["shot_count_error"] is not None]
     ar = [r["avg_shot_ms_mae_ratio"] for r in results if r["avg_shot_ms_mae_ratio"] is not None]
     tj = [r["transition_jaccard"] for r in results]

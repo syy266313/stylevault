@@ -100,6 +100,9 @@ def validate_segments(segments, duration_ms, tolerance_ms=5.0):
         if not isinstance(start, (int, float)) or not isinstance(dur, (int, float)):
             errors.append(f"segments[{i}] 缺少数值字段")
             continue
+        if not math.isfinite(start) or not math.isfinite(dur):
+            errors.append(f"segments[{i}] 起点/时长非有限值: start={start}, dur={dur}")
+            continue
         if dur <= 0:
             errors.append(f"segments[{i}] 零/负时长: {dur}ms")
         if i > 1 and abs(start - prev_end) > 1e-6:
@@ -108,6 +111,8 @@ def validate_segments(segments, duration_ms, tolerance_ms=5.0):
             errors.append(f"segments[1] 应从 0 开始: {start}")
         total += dur
         prev_end = start + dur
+    if not math.isfinite(duration_ms) or duration_ms <= 0:
+        errors.append(f"probe 时长无效（非有限/非正）: {duration_ms}")
     if abs(total - duration_ms) > tolerance_ms:
         errors.append(f"segments 总时长 {total}ms 与 probe 时长 {duration_ms}ms 偏差超过 {tolerance_ms}ms")
     return (len(errors) == 0), errors
@@ -132,8 +137,16 @@ class VideoAdapter:
 class FfmpegAdapter(VideoAdapter):
     """真实运行时 adapter。所有 ffmpeg/ffprobe 调用必须封装在本类内。"""
     name = "ffmpeg"
+    # scene_threshold 单位：归一化 0-1（与 ffmpeg scdet threshold 原生单位一致，直接透传）。
+    # 若外部配置使用其他单位（如 0-100 百分比），必须在传入前转换，或在构造后显式归一化。
+    SCENE_THRESHOLD_UNIT = "normalized-0-1"
 
     def __init__(self, scene_threshold=0.30, timeout=120):
+        if not (0.0 <= scene_threshold <= 1.0):
+            raise RuntimeError(
+                f"scene_threshold={scene_threshold} 超出归一化范围 [0,1]"
+                f"（单位: {self.SCENE_THRESHOLD_UNIT}，与 ffmpeg scdet threshold 一致）"
+            )
         self.scene_threshold = scene_threshold
         self.timeout = timeout
 
@@ -177,16 +190,32 @@ class FfmpegAdapter(VideoAdapter):
             "ffprobe", "-v", "error", "-print_format", "json",
             "-show_format", "-show_streams", source,
         ])
-        payload = json.loads(result.stdout)
+        try:
+            payload = json.loads(result.stdout)
+        except (json.JSONDecodeError, ValueError) as exc:
+            raise RuntimeError(f"ffprobe 输出无法解析为 JSON: {exc}") from exc
+        if not isinstance(payload, dict):
+            raise RuntimeError(f"ffprobe 输出结构异常: 期望对象，得到 {type(payload).__name__}")
         video_stream = next((s for s in payload.get("streams", []) if s.get("codec_type") == "video"), None)
         if not video_stream:
             raise RuntimeError(f"未找到视频流: {source}")
-        duration = float(video_stream.get("duration") or payload.get("format", {}).get("duration") or 0)
+        try:
+            duration = float(video_stream.get("duration") or payload.get("format", {}).get("duration") or 0)
+        except (TypeError, ValueError) as exc:
+            raise RuntimeError(f"无法解析视频时长 {video_stream.get('duration')!r}: {exc}") from exc
         if not math.isfinite(duration) or duration <= 0:
             raise RuntimeError(f"无效的视频时长: {duration}s，无法进行场景切分: {source}")
         rate = video_stream.get("avg_frame_rate") or video_stream.get("r_frame_rate") or "0/1"
-        num, den = rate.split("/", 1) if "/" in rate else (rate, "1")
-        fps = float(num) / float(den) if float(den) else 0.0
+        try:
+            num, den = rate.split("/", 1) if "/" in rate else (rate, "1")
+            den_f = float(den)
+            if den_f == 0:
+                raise ValueError("分母为 0")
+            fps = float(num) / den_f
+        except ValueError as exc:
+            raise RuntimeError(f"非法帧率值 {rate!r}: {exc}") from exc
+        if not math.isfinite(fps):
+            raise RuntimeError(f"帧率结果非有限值: {fps} ({rate!r})")
         return {
             "adapter": self.name,
             "source": source,
@@ -478,19 +507,21 @@ def cmd_validate(args):
     elif not isinstance(shot_count, int) or shot_count < 1:
         errors.append(f"params.shot_count 应为正整数: {shot_count!r}")
     avg = params.get("avg_shot_ms")
-    if avg is not None and (not isinstance(avg, (int, float)) or avg <= 0):
-        errors.append(f"params.avg_shot_ms 应为正数: {avg!r}")
+    if avg is not None and (not isinstance(avg, (int, float)) or not math.isfinite(avg) or avg <= 0):
+        errors.append(f"params.avg_shot_ms 应为正有限数: {avg!r}")
     dist = params.get("shot_length_distribution") or {}
     p10, p50, p90 = dist.get("p10"), dist.get("p50"), dist.get("p90")
-    if None not in (p10, p50, p90) and not (p10 <= p50 <= p90):
-        errors.append(f"shot_length_distribution 应满足 p10<=p50<=p90: {p10}/{p50}/{p90}")
+    if None not in (p10, p50, p90):
+        vals_ok = all(isinstance(v, (int, float)) and math.isfinite(v) for v in (p10, p50, p90))
+        if not vals_ok or not (p10 <= p50 <= p90):
+            errors.append(f"shot_length_distribution 应为有限值且满足 p10<=p50<=p90: {p10}/{p50}/{p90}")
     for key in ["transition_types", "camera_moves"]:
         for i, item in enumerate(params.get(key, [])):
             if any(x not in item for x in ["confidence", "source", "detection_method"]):
                 errors.append(f"{key}[{i}] missing confidence/source/detection_method")
             conf = item.get("confidence") if isinstance(item, dict) else None
-            if conf is not None and (not isinstance(conf, (int, float)) or not 0 <= conf <= 1):
-                errors.append(f"{key}[{i}] confidence 应在 [0,1]: {conf!r}")
+            if conf is not None and (not isinstance(conf, (int, float)) or not math.isfinite(conf) or not 0 <= conf <= 1):
+                errors.append(f"{key}[{i}] confidence 应为有限值且在 [0,1]: {conf!r}")
 
     # M3.1.1：coverage 结构（存在时校验）
     coverage = obj.get("coverage")
