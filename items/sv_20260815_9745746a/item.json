@@ -1,0 +1,111 @@
+{
+  "id": "sv_20260815_9745746a",
+  "type": "image",
+  "source": {
+    "origin": "browser",
+    "url": "minis://workspace/golden_light.html",
+    "title": "Golden 浅色极简页",
+    "album": null,
+    "note": "golden-dataset: 浅色极简页"
+  },
+  "file": {
+    "path": "items/sv_20260815_9745746a/source.jpg",
+    "sha1": "9745746aabe675b95c7c8ea67bbed15724393ea5",
+    "mime": "image/jpeg",
+    "size": 116134,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:08:54+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.5795827507972717
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.57421875
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.476318359375
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 7,
+      "text": "Refined\nMinimalism\nThis page demonstrates a calm,\neditorial layout with generous\nwhitespace and a restrained serif\ntypography. Nothing else - the\nemptiness is the design."
+    },
+    "palette": [
+      {
+        "hex": "#ffffff",
+        "ratio": 0.929
+      },
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.038
+      },
+      {
+        "hex": "#dddddd",
+        "ratio": 0.013
+      },
+      {
+        "hex": "#cccccc",
+        "ratio": 0.006
+      },
+      {
+        "hex": "#bbbbbb",
+        "ratio": 0.004
+      }
+    ],
+    "brightness": 0.971,
+    "saturation": 0.007,
+    "width": 1170,
+    "height": 2532,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:08:54+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "browser",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:40+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "id": "sv_20260815_ea743a32",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": "2026-08-15T10:48:07+08:00",
+    "album": null,
+    "note": "golden-dataset: photo-1"
+  },
+  "file": {
+    "path": "items/sv_20260815_ea743a32/source.jpg",
+    "sha1": "ea743a3216ea281fc84903c380e90518da22f1f5",
+    "mime": "image/jpeg",
+    "size": 344686,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:04+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.3439141511917114
+      },
+      {
+        "label": "book",
+        "confidence": 0.34130859375
+      },
+      {
+        "label": "structure",
+        "confidence": 0.1949431449174881
+      },
+      {
+        "label": "bookshelf",
+        "confidence": 0.185791015625
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.139404296875
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 169,
+      "text": "FiE\n(ti)\n1FX7\n64\n3-11\n1F X6\n50 186\n198-15\n-VE XR2#\nlE x5\niax\nDàT i\nEE NT\n3A25\n$H24\n$1123\n$ A22\n* :21\n*#20\n$A19\n7.A18\n5817\n3A16\n35 A14\n5 A. 13\n* 12\n1: 10\n7, 19\n(3 it+)\n(E#)\n(K*_#)\n(##*%)\n(/it*)\nVEF\n(73/-12)\n121 7\n38207\n38197-\n201852\n3017 5\n39162\n3 1532\nA ATE\n50137-\n**\nFi.t\n##\n$5427\n8/ 318\n#41k\n#84 л\n8A 30E\n340F\n3374 J\n8A290\n#39 F\n#6$7\n8 F280\n3538F\n#5*л\n38377\n336k\n3 35 =\n8A26E\n8 F 25 E\n8 804\nE4\n$:40₽\n#39k\n·387\n#377\n$36k\n#357\n฿$34€\nSARE\nS87B\nJOE\n38327\n1317\n330K\n$297\n34287\n327K\n36267\n28 25 7\n78 247\n7 23 7\n38 227\n38217\n3020*\n25/92E\n317*\n2816-75\n381572\n35147\n36 13:\n36 12 2\nSALLE\n3377\n1847\n33 7\nAAN AE\n267 R\nF.E\n#20F\n$18F\n*17k\n$$167\n#$157\n$14÷\n#FA\n$42#\n*411\n#40#\n#39%\n#38\n*3\n321\n*31*\n*30 X\n329 1\n3$281\n327 1\n*26h\n#: 25 A0\n3024-200\n373 23105\n322m\n38211\n35201\n281900-\n20 17 40\n28 16 A0\n39 15,907\n381431\n3813 M\n381200\n301100\n38109\n3489 МА\n357 M-\n311 6 M0\n333.\n331\n#330-\n38291\n3281\n*271\n9261\n325 1\n2724 1\n#231\n฿221\n3211\n3201\n28191\n3$181\n138171\nS8161\n05151\n0141\n0131\n121\n10 1\n18 1\n382 m\n301 01\n1\nsktop"
+    },
+    "palette": [
+      {
+        "hex": "#bbbbbb",
+        "ratio": 0.024
+      },
+      {
+        "hex": "#cccccc",
+        "ratio": 0.022
+      },
+      {
+        "hex": "#886655",
+        "ratio": 0.021
+      },
+      {
+        "hex": "#ccccbb",
+        "ratio": 0.016
+      },
+      {
+        "hex": "#aaaaaa",
+        "ratio": 0.016
+      }
+    ],
+    "brightness": 0.574,
+    "saturation": 0.247,
+    "width": 1080,
+    "height": 1880,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:04+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:48+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

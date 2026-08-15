@@ -1,0 +1,107 @@
+{
+  "id": "sv_20260815_dde945a6",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": null,
+    "album": null,
+    "note": "golden-dataset: photo-extra-1"
+  },
+  "file": {
+    "path": "items/sv_20260815_dde945a6/source.png",
+    "sha1": "dde945a61a582ec00d2f66519be6428a9a0a6681",
+    "mime": "image/png",
+    "size": 4811529,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:42+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.8173828721046448
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.8173828125
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 9,
+      "text": "#ÊÈ, Xấл#òÈ,×Ž*ừ,ì*FP# 3|·∞* *\nž\" =^ìāìẩX.\n(shàng)/#(dé)-] (jù) Z(yún) :\n\"(nião)TĚ(sù);t(chí))(biãn)t*J(shù), 1%\n(zì), X (you) ấx (yù) #(zhuo)đx(qião) 7(zì), #(liàn) Z(zhi)*(wèi)*(ding),\nui) (ú)há) (gn) é), sh) sh) 3/n)#sh0) 11=\n(zuò))/E(tui)Đx (gião) Z(zhi) **(shi). #J(shí)#$(hán) ê (yù) #(li)-B(bù)tX\n(quán) F:(ing)/k (zhào), #(do)T(bù) #(jué);# (chông) E(zhì) #(di) =\n(sãn)#(jié), E(zuo) E (yòu)#I(yõng) E(zhì) #(yin)j (gián), (dăo)F(jù)"
+    },
+    "palette": [
+      {
+        "hex": "#cceeee",
+        "ratio": 0.332
+      },
+      {
+        "hex": "#ccddee",
+        "ratio": 0.191
+      },
+      {
+        "hex": "#ddeeee",
+        "ratio": 0.149
+      },
+      {
+        "hex": "#aabbbb",
+        "ratio": 0.052
+      },
+      {
+        "hex": "#ccdddd",
+        "ratio": 0.047
+      }
+    ],
+    "brightness": 0.831,
+    "saturation": 0.122,
+    "width": 1487,
+    "height": 2364,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:42+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:46+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

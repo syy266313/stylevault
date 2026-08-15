@@ -1,0 +1,54 @@
+{
+  "ts": "20260815_161202",
+  "model_a": "H/gpt-5.6-luna-high",
+  "model_b": "H/gpt-5.6-luna-xhigh",
+  "results": [
+    {
+      "item_id": "sv_20260815_36a104d3",
+      "name": "g1_cyberpunk",
+      "golden": {
+        "subject": [
+          "subject:cityscape"
+        ],
+        "style": [
+          "style:cyberpunk"
+        ],
+        "mood": [
+          "mood:energetic",
+          "mood:mysterious"
+        ],
+        "color": [
+          "color:neon",
+          "color:dark",
+          "color:high-sat"
+        ],
+        "composition": [
+          "composition:layered"
+        ],
+        "lighting": [
+          "lighting:neon-glow",
+          "lighting:low-key"
+        ],
+        "camera": [
+          "camera:wide"
+        ],
+        "preference": 4,
+        "editing_rules_expect": "暗底霓虹调色（品红/青互补），高楼剪影分层，主体光晕"
+      },
+      "runs": {
+        "a": [
+          {
+            "ok": false,
+            "error": "Model 'H/gpt-5.6-luna-high — No models available. Go to Settings > Model Groups to add models that the agent can use.' not found. Use 'minis-model-use list' to see available models."
+          }
+        ],
+        "b": [
+          {
+            "ok": false,
+            "error": "Model 'H/gpt-5.6-luna-xhigh — No models available. Go to Settings > Model Groups to add models that the agent can use.' not found. Use 'minis-model-use list' to see available models."
+          }
+        ]
+      }
+    }
+  ]
+}

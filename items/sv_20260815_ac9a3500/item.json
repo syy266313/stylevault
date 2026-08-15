@@ -1,0 +1,115 @@
+{
+  "id": "sv_20260815_ac9a3500",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": "2026-08-13T17:56:02+08:00",
+    "album": null,
+    "note": "golden-dataset: photo-8"
+  },
+  "file": {
+    "path": "items/sv_20260815_ac9a3500/source.png",
+    "sha1": "ac9a35005e0089ca9eb6ed5a3e4de3a0920cd3e3",
+    "mime": "image/png",
+    "size": 904304,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:22+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.8974609375
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.8974609375
+      },
+      {
+        "label": "machine",
+        "confidence": 0.34912174940109253
+      },
+      {
+        "label": "consumer_electronics",
+        "confidence": 0.34912109375
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 7,
+      "text": "17:56\n<\n170,000.00đ39PËI)\n·5ЛKìZ*\nФІНЕА\nIEMJ\n#201"
+    },
+    "palette": [
+      {
+        "hex": "#ffffff",
+        "ratio": 0.64
+      },
+      {
+        "hex": "#ffffee",
+        "ratio": 0.087
+      },
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.033
+      },
+      {
+        "hex": "#ffeedd",
+        "ratio": 0.017
+      },
+      {
+        "hex": "#ffddcc",
+        "ratio": 0.015
+      }
+    ],
+    "brightness": 0.934,
+    "saturation": 0.058,
+    "width": 1206,
+    "height": 2622,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:22+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:41+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

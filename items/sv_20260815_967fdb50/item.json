@@ -1,0 +1,107 @@
+{
+  "id": "sv_20260815_967fdb50",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": "2026-08-14T10:14:47+08:00",
+    "album": null,
+    "note": "golden-dataset: photo-6"
+  },
+  "file": {
+    "path": "items/sv_20260815_967fdb50/source.png",
+    "sha1": "967fdb50e56b35f13189903182b5bfea76b3e8f7",
+    "mime": "image/png",
+    "size": 134987,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:20+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.6591805815696716
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.6591796875
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 5,
+      "text": "#Äš†ỲÈ:\n(shàng)/#(dé)-(ù) z(yún): \"$(niăo)ă(sù);t(chí):t (biān)txt(shù), 1=\n(zì), X (yòu) ết (yù)*(zhuo) x(qião)=(zì), K5(liàn) Z(zhi) *(wèi) E(ding),\n(quán) F(ing)/E(zhào), (dăo)T(bù) *(jué))*(chõng) E(zhi) # (dì)=\n(săn) #5 (jié), #(zuo) E(yòu)/#(yõng) E(zhi)F(yn) ú(gián), (dão)F(ù)"
+    },
+    "palette": [
+      {
+        "hex": "#ffffff",
+        "ratio": 0.482
+      },
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.305
+      },
+      {
+        "hex": "#dddddd",
+        "ratio": 0.057
+      },
+      {
+        "hex": "#bbbbbb",
+        "ratio": 0.054
+      },
+      {
+        "hex": "#cccccc",
+        "ratio": 0.048
+      }
+    ],
+    "brightness": 0.9,
+    "saturation": 0.0,
+    "width": 1189,
+    "height": 957,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:20+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:39+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

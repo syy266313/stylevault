@@ -1,0 +1,98 @@
+{
+  "id": "sv_20260815_241071a5",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": null,
+    "album": null,
+    "note": "golden-dataset: photo-extra-6"
+  },
+  "file": {
+    "path": "items/sv_20260815_241071a5/source.heic",
+    "sha1": "241071a5ff57c21e47bfa5250982defa9f728851",
+    "mime": "image/heic",
+    "size": 1579189,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:10:04+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "animal",
+        "confidence": 0.43823277950286865
+      },
+      {
+        "label": "bird",
+        "confidence": 0.43823274970054626
+      },
+      {
+        "label": "parakeet",
+        "confidence": 0.438232421875
+      },
+      {
+        "label": "structure",
+        "confidence": 0.39893487095832825
+      },
+      {
+        "label": "wood_processed",
+        "confidence": 0.39892578125
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 0,
+      "text": ""
+    },
+    "palette": [],
+    "brightness": null,
+    "saturation": null,
+    "width": 3024,
+    "height": 4032,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:10:04+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:35+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "id": "sv_20260815_1551a340",
+  "type": "image",
+  "source": {
+    "origin": "attachment",
+    "url": null,
+    "title": null,
+    "album": null,
+    "note": "golden-dataset: g5_bw_contrast.png"
+  },
+  "file": {
+    "path": "items/sv_20260815_1551a340/source.png",
+    "sha1": "1551a3402995794a27e002c96aa4aa2aeb63a9e2",
+    "mime": "image/png",
+    "size": 11923,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:08:47+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 0,
+      "text": ""
+    },
+    "palette": [
+      {
+        "hex": "#000000",
+        "ratio": 0.538
+      },
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.125
+      },
+      {
+        "hex": "#111111",
+        "ratio": 0.048
+      },
+      {
+        "hex": "#dddddd",
+        "ratio": 0.034
+      },
+      {
+        "hex": "#222222",
+        "ratio": 0.031
+      }
+    ],
+    "brightness": 0.293,
+    "saturation": 0.0,
+    "width": 800,
+    "height": 500,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:08:47+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "attachment",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:32+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

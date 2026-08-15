@@ -4,6 +4,17 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-15
+
+### Added
+- **M2.5 视觉分析质量校准**：
+  - `editing_rules` 分析维度（schema + 校验 + 提示词模板）：可直接用于 AI 调色/剪辑/出图的可执行规则（aspect 作用域 + 含具体参数的指令）。
+  - **Golden Dataset**（configs/golden-dataset.json）：20 张精选图片（6 生成风格图 + 2 网页截图 + 12 相册真实照片），带 ground truth 标注（内容确定的条目全维度标注，相册照片按 vision/OCR 线索标注、无把握维度 null 不计分）；全部已入库并打 `golden-dataset` collection。
+  - **A/B 评测框架**（scripts/ab_test.py）：对 Golden Dataset 用两个多模态模型对比评测——准确率（vs golden，按维度）、标签稳定性（跨模型 Jaccard）、JSON 一致性（解析+结构校验）、平均延迟、token 成本；结果存 configs/ab_results/。
+
+### Blocked
+- **A/B 实测待模型接入**：当前环境 gpt-5.6-luna-high / gpt-5.6-luna-xhigh 模型条目未配置，且 minis-model-use 无可用模型（agent loop 组仅 deepseek 且不可调）。需在 Settings → Model Groups 添加模型后运行 `python3 scripts/ab_test.py`。
+
 ## [0.2.0] - 2026-08-15
 
 ### Added

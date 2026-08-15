@@ -1,0 +1,107 @@
+{
+  "id": "sv_20260815_797d0436",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": "2026-08-14T10:15:58+08:00",
+    "album": null,
+    "note": "golden-dataset: photo-5"
+  },
+  "file": {
+    "path": "items/sv_20260815_797d0436/source.png",
+    "sha1": "797d0436801b808b2dd6a7964156eeebddd60c98",
+    "mime": "image/png",
+    "size": 4806997,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:19+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.83447265625
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.83447265625
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 8,
+      "text": "li ) 2 in), wi) do ye) nFzu 2 g) zi E)2\n(Yi). \" **(sui)5(yй)*(bìng)m(ér)V(gui), A(liú))E(lián)iÊ(lùn)i#(shi), 5\n(уй)/(wéi) *5 (bù)z*(yi)Ż(zhi)*(jião).\n8iE#777:\n#ŘŻž: #EŻĎÝÈ, ₩åü#5·EЖXÈ.\n#FIF:\nyé\" \"2\"\n*Ż\" Ф# \"X\" #ÑEf™₴, \"Ż\"₴/ì, $8tx∞"
+    },
+    "palette": [
+      {
+        "hex": "#cceeee",
+        "ratio": 0.378
+      },
+      {
+        "hex": "#ccddee",
+        "ratio": 0.191
+      },
+      {
+        "hex": "#ddeeee",
+        "ratio": 0.133
+      },
+      {
+        "hex": "#aabbbb",
+        "ratio": 0.052
+      },
+      {
+        "hex": "#ddeeff",
+        "ratio": 0.042
+      }
+    ],
+    "brightness": 0.831,
+    "saturation": 0.122,
+    "width": 1487,
+    "height": 2364,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:19+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:38+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

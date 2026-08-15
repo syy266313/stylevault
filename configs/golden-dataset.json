@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "created_at": "2026-08-15T16:30:00+08:00",
+  "purpose": "M2.5 视觉分析质量校准基准（A/B 评测 ground truth）",
+  "scoring": "每维度模型输出标签 ∩ golden 标签 / golden 标签数（仅统计有 golden 值的维度，null 不计分）",
+  "images": [
+    {
+      "item_id": "sv_20260815_36a104d3", "name": "g1_cyberpunk", "category": "generated",
+      "golden": {
+        "subject": ["subject:cityscape"], "style": ["style:cyberpunk"], "mood": ["mood:energetic", "mood:mysterious"],
+        "color": ["color:neon", "color:dark", "color:high-sat"], "composition": ["composition:layered"],
+        "lighting": ["lighting:neon-glow", "lighting:low-key"], "camera": ["camera:wide"],
+        "preference": 4,
+        "editing_rules_expect": "暗底霓虹调色（品红/青互补），高楼剪影分层，主体光晕"
+      }
+    },
+    {
+      "item_id": "sv_20260815_cda85cba", "name": "g2_minimal", "category": "generated",
+      "golden": {
+        "subject": ["subject:abstract"], "style": ["style:minimal"], "mood": ["mood:calm"],
+        "color": ["color:mono", "color:low-sat"], "composition": ["composition:negative-space"],
+        "lighting": ["lighting:high-key"], "camera": ["camera:eye-level"],
+        "preference": 3,
+        "editing_rules_expect": "白底黑主体，大量负空间，极简留白构图"
+      }
+    },
+    {
+      "item_id": "sv_20260815_87249b6d", "name": "g3_warm_silhouette", "category": "generated",
+      "golden": {
+        "subject": ["subject:silhouette", "subject:landscape"], "style": ["style:minimal"],
+        "mood": ["mood:warm", "mood:melancholic"], "color": ["color:warm"],
+        "composition": ["composition:center"], "lighting": ["lighting:backlight", "lighting:silhouette"],
+        "camera": ["camera:wide"],
+        "preference": 4,
+        "editing_rules_expect": "暖橙落日渐变，前景剪影，中心构图，地平线低位"
+      }
+    },
+    {
+      "item_id": "sv_20260815_2b90d7cb", "name": "g4_cool_landscape", "category": "generated",
+      "golden": {
+        "subject": ["subject:landscape", "subject:mountain"], "style": ["style:minimal"],
+        "mood": ["mood:calm", "mood:cool"], "color": ["color:cool"],
+        "composition": ["composition:layered"], "lighting": ["lighting:soft"],
+        "camera": ["camera:wide"],
+        "preference": 3,
+        "editing_rules_expect": "青蓝色调，层叠山形剪影，天空渐变，冷调清新"
+      }
+    },
+    {
+      "item_id": "sv_20260815_1551a340", "name": "g5_bw_contrast", "category": "generated",
+      "golden": {
+        "subject": ["subject:abstract"], "style": ["style:minimal"], "mood": ["mood:dramatic"],
+        "color": ["color:mono", "color:high-contrast"], "composition": ["composition:diagonal"],
+        "lighting": ["lighting:high-key", "lighting:low-key"], "camera": ["camera:eye-level"],
+        "preference": 3,
+        "editing_rules_expect": "黑白高对比，白色对角线条，中央亮斑，强光影"
+      }
+    },
+    {
+      "item_id": "sv_20260815_913523d5", "name": "g6_pastel", "category": "generated",
+      "golden": {
+        "subject": ["subject:abstract"], "style": ["style:flat-design"], "mood": ["mood:soft", "mood:calm"],
+        "color": ["color:pastel", "color:low-sat"], "composition": ["composition:layered"],
+        "lighting": ["lighting:soft"], "camera": ["camera:eye-level"],
+        "preference": 3,
+        "editing_rules_expect": "马卡龙粉彩配色（粉蓝/粉红/浅绿），圆角色块并置，柔和低饱和"
+      }
+    },
+    {
+      "item_id": "sv_20260815_9745746a", "name": "web_light_minimal", "category": "webpage",
+      "golden": {
+        "subject": ["subject:webpage"], "style": ["style:minimal", "style:editorial"], "mood": ["mood:calm"],
+        "color": ["color:low-sat", "color:mono"], "composition": ["composition:negative-space"],
+        "lighting": ["lighting:high-key"], "camera": ["camera:eye-level"],
+        "preference": 4,
+        "editing_rules_expect": "米白底衬线排版，大量留白，编辑杂志风"
+      }
+    },
+    {
+      "item_id": "sv_20260815_e5315e39", "name": "web_dark_brand", "category": "webpage",
+      "golden": {
+        "subject": ["subject:webpage"], "style": ["style:dark", "style:tech"], "mood": ["mood:cool", "mood:modern"],
+        "color": ["color:dark", "color:cool"], "composition": ["composition:center"],
+        "lighting": ["lighting:low-key"], "camera": ["camera:eye-level"],
+        "preference": 3,
+        "editing_rules_expect": "深色背景+蓝色强调色，居中 Hero 标题，卡片式布局，蓝紫渐变光晕"
+      }
+    },
+    {
+      "item_id": "sv_20260815_ea743a32", "name": "photo_table", "category": "photo",
+      "golden": {
+        "subject": ["subject:document", "subject:table"], "style": null, "mood": null,
+        "color": null, "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_2b0e6313", "name": "photo_pinyin_notes", "category": "photo",
+      "golden": {
+        "subject": ["subject:document", "subject:handwriting"], "style": null, "mood": null,
+        "color": ["color:low-sat"], "composition": ["composition:layered"], "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_797d0436", "name": "photo_pinyin_2", "category": "photo",
+      "golden": {
+        "subject": ["subject:document", "subject:handwriting"], "style": null, "mood": null,
+        "color": ["color:low-sat"], "composition": ["composition:layered"], "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_967fdb50", "name": "photo_pinyin_3", "category": "photo",
+      "golden": {
+        "subject": ["subject:document", "subject:handwriting"], "style": null, "mood": null,
+        "color": ["color:low-sat"], "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_ac9a3500", "name": "photo_order_screenshot", "category": "photo",
+      "golden": {
+        "subject": ["subject:screenshot", "subject:document"], "style": null, "mood": null,
+        "color": null, "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_cadfe32b", "name": "photo_carton", "category": "photo",
+      "golden": {
+        "subject": ["subject:package", "subject:carton"], "style": null, "mood": null,
+        "color": ["color:dark", "color:earth-tone"], "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_16be639d", "name": "photo_plant", "category": "photo",
+      "golden": {
+        "subject": ["subject:plant", "subject:indoor"], "style": null, "mood": null,
+        "color": null, "composition": null, "lighting": null, "camera": null,
+        "preference": 3,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_d796c586", "name": "photo_plant_2", "category": "photo",
+      "golden": {
+        "subject": ["subject:plant", "subject:foliage"], "style": null, "mood": null,
+        "color": null, "composition": null, "lighting": null, "camera": null,
+        "preference": 3,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_241071a5", "name": "photo_bird", "category": "photo",
+      "golden": {
+        "subject": ["subject:animal", "subject:bird"], "style": null, "mood": null,
+        "color": null, "composition": null, "lighting": null, "camera": null,
+        "preference": 3,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_dde945a6", "name": "photo_notes_4", "category": "photo",
+      "golden": {
+        "subject": ["subject:document", "subject:handwriting"], "style": null, "mood": null,
+        "color": ["color:low-sat"], "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_ebabc346", "name": "photo_ui_screenshot", "category": "photo",
+      "golden": {
+        "subject": ["subject:screenshot", "subject:interface"], "style": null, "mood": null,
+        "color": ["color:low-sat"], "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    },
+    {
+      "item_id": "sv_20260815_ee6853d2", "name": "photo_dark_screenshot", "category": "photo",
+      "golden": {
+        "subject": ["subject:screenshot"], "style": null, "mood": null,
+        "color": ["color:dark"], "composition": null, "lighting": null, "camera": null,
+        "preference": 2,
+        "editing_rules_expect": null
+      }
+    }
+  ]
+}

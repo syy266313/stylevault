@@ -1,0 +1,98 @@
+{
+  "id": "sv_20260815_16be639d",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": null,
+    "album": null,
+    "note": "golden-dataset: photo-extra-3"
+  },
+  "file": {
+    "path": "items/sv_20260815_16be639d/source.heic",
+    "sha1": "16be639d8fa756a2bcd4ae982240d80f428c64aa",
+    "mime": "image/heic",
+    "size": 2423107,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:10:01+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "plant",
+        "confidence": 0.6230786442756653
+      },
+      {
+        "label": "decorative_plant",
+        "confidence": 0.623046875
+      },
+      {
+        "label": "material",
+        "confidence": 0.6188322305679321
+      },
+      {
+        "label": "raw_glass",
+        "confidence": 0.61865234375
+      },
+      {
+        "label": "structure",
+        "confidence": 0.24668025970458984
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 0,
+      "text": ""
+    },
+    "palette": [],
+    "brightness": null,
+    "saturation": null,
+    "width": 4284,
+    "height": 5712,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:10:01+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:35+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

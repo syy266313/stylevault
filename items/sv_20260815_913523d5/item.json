@@ -1,0 +1,103 @@
+{
+  "id": "sv_20260815_913523d5",
+  "type": "image",
+  "source": {
+    "origin": "attachment",
+    "url": null,
+    "title": null,
+    "album": null,
+    "note": "golden-dataset: g6_pastel.png"
+  },
+  "file": {
+    "path": "items/sv_20260815_913523d5/source.png",
+    "sha1": "913523d5bac279674225a93345d1b03d12ee51f3",
+    "mime": "image/png",
+    "size": 3210,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:08:47+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "medicine",
+        "confidence": 0.114990234375
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 0,
+      "text": ""
+    },
+    "palette": [
+      {
+        "hex": "#ffeeee",
+        "ratio": 0.423
+      },
+      {
+        "hex": "#ccddee",
+        "ratio": 0.279
+      },
+      {
+        "hex": "#eecccc",
+        "ratio": 0.157
+      },
+      {
+        "hex": "#ddeebb",
+        "ratio": 0.07
+      },
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.021
+      }
+    ],
+    "brightness": 0.878,
+    "saturation": 0.1,
+    "width": 800,
+    "height": 500,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:08:47+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "attachment",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:39+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}

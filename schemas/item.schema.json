@@ -138,6 +138,25 @@
           "maximum": 5,
           "description": "个人偏好评分（1-5），可 AI 初评 + 用户修正"
         },
+        "editing_rules": {
+          "type": "array",
+          "description": "可直接用于 AI 调色/剪辑/出图的可执行规则（M2.5 新增）。每条含作用域与带参数的具体指令",
+          "items": {
+            "type": "object",
+            "required": ["aspect", "rule"],
+            "properties": {
+              "aspect": {
+                "type": "string",
+                "enum": ["color", "lighting", "composition", "camera", "rhythm", "mood", "style", "subject"],
+                "description": "规则作用域"
+              },
+              "rule": {
+                "type": "string",
+                "description": "可执行指令，必须含具体参数（色值偏移/曝光补偿/焦段/时长/百分比等），如：阴影向青色偏移 hue-8 sat+5，高光偏橙 hue+6"
+              }
+            }
+          }
+        },
         "summary": { "type": "string", "description": "一句话点评" }
       }
     },

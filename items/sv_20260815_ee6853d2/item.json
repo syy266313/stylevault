@@ -1,0 +1,119 @@
+{
+  "id": "sv_20260815_ee6853d2",
+  "type": "image",
+  "source": {
+    "origin": "photos",
+    "url": null,
+    "title": "2026-08-13T17:46:39+08:00",
+    "album": null,
+    "note": "golden-dataset: photo-9"
+  },
+  "file": {
+    "path": "items/sv_20260815_ee6853d2/source.png",
+    "sha1": "ee6853d256b6921a09a313497ebe02b8610f7d10",
+    "mime": "image/png",
+    "size": 4648129,
+    "width": null,
+    "height": null,
+    "duration_ms": 0
+  },
+  "created_at": "2026-08-15T16:09:24+08:00",
+  "captured_at": null,
+  "collections": [
+    "golden-dataset"
+  ],
+  "analyze_version": "v1",
+  "embedding": {
+    "status": "none",
+    "model": null,
+    "version": null
+  },
+  "analysis": {
+    "status": "pending",
+    "model": null,
+    "subject": null,
+    "style": null,
+    "mood": null,
+    "color": null,
+    "composition": null,
+    "lighting": null,
+    "camera": null,
+    "rhythm": null,
+    "preference": null,
+    "summary": null
+  },
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.8447265625
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.8447265625
+      },
+      {
+        "label": "people",
+        "confidence": 0.6544203162193298
+      },
+      {
+        "label": "adult",
+        "confidence": 0.654296875
+      },
+      {
+        "label": "consumer_electronics",
+        "confidence": 0.1870122253894806
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 7,
+      "text": "• ##\n19\n*\n#147#-łZË\n4:50\n-4:29\n((p))"
+    },
+    "palette": [
+      {
+        "hex": "#000000",
+        "ratio": 0.304
+      },
+      {
+        "hex": "#111111",
+        "ratio": 0.271
+      },
+      {
+        "hex": "#444444",
+        "ratio": 0.113
+      },
+      {
+        "hex": "#333333",
+        "ratio": 0.06
+      },
+      {
+        "hex": "#222222",
+        "ratio": 0.058
+      }
+    ],
+    "brightness": 0.199,
+    "saturation": 0.011,
+    "width": 1206,
+    "height": 2622,
+    "source": "apple-vision + pillow"
+  },
+  "pipeline_log": [
+    {
+      "at": "2026-08-15T16:09:24+08:00",
+      "analyze_version": "v1",
+      "action": "ingest",
+      "origin": "photos",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:10:51+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    }
+  ]
+}
