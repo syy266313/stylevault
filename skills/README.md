@@ -1,7 +1,12 @@
 # StyleVault 自定义 Skills 规划
 
 实际 Skill 安装位置：`/var/minis/skills/stylevault-<name>/`（遵循 skill-creator 规范：YAML frontmatter + Workflow + scripts/）。
-本目录仅存放规划说明与设计备忘。
+本目录是 **skill 代码的唯一事实源（Git 版本化）**：代码修改后需同步到运行位置：
+
+```
+# 同步（仓库 → 运行位置）
+cp -r skills/stylevault-* /var/minis/skills/
+```
 
 ## 需要自定义开发的 Skill 清单
 
