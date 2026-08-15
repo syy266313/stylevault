@@ -36,7 +36,7 @@ stylevault/
 |---|---|---|
 | M0 基建 | 目录骨架 + Schema + 配置 + 能力盘点 | ✅ 完成 |
 | M1 采集存储 | stylevault-ingest（三入口 + SHA-1 去重 + 分析队列） | ✅ 完成 |
-| M2 图片分析 | stylevault-analyze-image（本地特征 + 语义分析） | 🔨 开发中 |
+| M2 图片分析 | stylevault-analyze-image（本地特征 + 语义分析） | ✅ 完成 |
 | M3 视频分析 | ffmpeg 抽帧/切分/节奏统计 | ⬜ 未开始 |
 | M4 检索+UI | stylevault-search + PWA 画廊 | ⬜ 未开始 |
 | M5 知识问答 | 基于知识库的问答 | ⬜ 未开始 |

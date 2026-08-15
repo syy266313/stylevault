@@ -1,9 +1,113 @@
 {
   "version": 1,
-  "description": "StyleVault 标签聚合索引（派生数据，可随时从 items/*/item.json 重建，非事实来源）",
-  "built_at": null,
-  "item_count": 0,
-  "tags": {},
-  "collections": {},
-  "recent": []
+  "built_at": "2026-08-15T16:02:55+08:00",
+  "item_count": 6,
+  "analyzed": 6,
+  "pending": 0,
+  "tags": {
+    "subject:screenshot": [
+      "sv_20260811_69503f92",
+      "sv_20260811_d79cb289"
+    ],
+    "style:minimal": [
+      "sv_20260811_69503f92",
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49",
+      "sv_20260811_d79cb289",
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "mood:calm": [
+      "sv_20260811_69503f92",
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_d79cb289",
+      "sv_20260815_029f04dc"
+    ],
+    "color:low-sat": [
+      "sv_20260811_69503f92",
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_d79cb289"
+    ],
+    "composition:layered": [
+      "sv_20260811_69503f92",
+      "sv_20260811_d79cb289"
+    ],
+    "lighting:soft": [
+      "sv_20260811_69503f92",
+      "sv_20260811_d79cb289",
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "camera:eye-level": [
+      "sv_20260811_69503f92",
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49",
+      "sv_20260811_d79cb289",
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "subject:webpage": [
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49"
+    ],
+    "color:mono": [
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49",
+      "sv_20260815_029f04dc"
+    ],
+    "composition:center": [
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49",
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "composition:negative-space": [
+      "sv_20260811_7b98c1b4",
+      "sv_20260811_c53f9f49"
+    ],
+    "lighting:high-key": [
+      "sv_20260811_7b98c1b4"
+    ],
+    "style:tech": [
+      "sv_20260811_c53f9f49"
+    ],
+    "mood:cool": [
+      "sv_20260811_c53f9f49",
+      "sv_20260815_029f04dc"
+    ],
+    "mood:mysterious": [
+      "sv_20260811_c53f9f49"
+    ],
+    "color:cool": [
+      "sv_20260811_c53f9f49",
+      "sv_20260815_029f04dc"
+    ],
+    "color:dark": [
+      "sv_20260811_c53f9f49"
+    ],
+    "lighting:low-key": [
+      "sv_20260811_c53f9f49"
+    ],
+    "subject:abstract": [
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "color:high-sat": [
+      "sv_20260815_029f04dc",
+      "sv_20260815_578c9f27"
+    ],
+    "mood:warm": [
+      "sv_20260815_578c9f27"
+    ],
+    "mood:energetic": [
+      "sv_20260815_578c9f27"
+    ],
+    "color:warm": [
+      "sv_20260815_578c9f27"
+    ],
+    "color:high-contrast": [
+      "sv_20260815_578c9f27"
+    ]
+  },
+  "collections": {}
 }

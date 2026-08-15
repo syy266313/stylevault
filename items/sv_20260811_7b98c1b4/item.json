@@ -43,20 +43,118 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "minis-agent",
+      "name": "stylevault-analyze-image",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:02:40+08:00",
+    "subject": {
+      "tags": [
+        "subject:webpage"
+      ],
+      "summary": "网页截图：Example Domain 占位页（白底黑字极简排版）",
+      "confidence": 0.9
+    },
+    "style": {
+      "tags": [
+        "style:minimal"
+      ],
+      "summary": "极简信息型排版",
+      "confidence": 0.8
+    },
+    "mood": {
+      "tags": [
+        "mood:calm"
+      ],
+      "summary": "中性冷静",
+      "confidence": 0.75
+    },
+    "color": {
+      "tags": [
+        "color:low-sat",
+        "color:mono"
+      ],
+      "summary": "白底黑字，无彩色倾向",
+      "confidence": 0.9
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:negative-space"
+      ],
+      "summary": "内容居中，留白充分",
+      "confidence": 0.8
+    },
+    "lighting": {
+      "tags": [
+        "lighting:high-key"
+      ],
+      "summary": "白底亮场",
+      "confidence": 0.7
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level"
+      ],
+      "summary": "页面截图，平视",
+      "confidence": 0.6
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 2,
+    "summary": "IANA 占位页截图（测试素材），审美参考价值有限。降级模式推断。"
   },
-  "vision": null,
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.5590820908546448
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.55908203125
+      },
+      {
+        "label": "printed_page",
+        "confidence": 0.45361328125
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 6,
+      "text": "Example Domain\nThis domain is for use in\ndocumentation examples\nwithout needing permission.\nAvoid use in operations.\nLearn more"
+    },
+    "palette": [
+      {
+        "hex": "#eeeeee",
+        "ratio": 0.923
+      },
+      {
+        "hex": "#cccccc",
+        "ratio": 0.025
+      },
+      {
+        "hex": "#dddddd",
+        "ratio": 0.021
+      },
+      {
+        "hex": "#ffffff",
+        "ratio": 0.017
+      },
+      {
+        "hex": "#aaaaaa",
+        "ratio": 0.005
+      }
+    ],
+    "brightness": 0.924,
+    "saturation": 0.0,
+    "width": 1170,
+    "height": 2532,
+    "source": "apple-vision + pillow"
+  },
   "pipeline_log": [
     {
       "at": "2026-08-11T15:18:53+08:00",
@@ -64,6 +162,27 @@
       "action": "ingest",
       "origin": "browser",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:00:39+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:01:09+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:02:40+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "status": "done"
     }
   ]
 }

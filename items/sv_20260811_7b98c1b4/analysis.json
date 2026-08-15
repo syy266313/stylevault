@@ -1,0 +1,12 @@
+{
+  "subject": {"tags": ["subject:webpage"], "summary": "网页截图：Example Domain 占位页（白底黑字极简排版）", "confidence": 0.9},
+  "style": {"tags": ["style:minimal"], "summary": "极简信息型排版", "confidence": 0.8},
+  "mood": {"tags": ["mood:calm"], "summary": "中性冷静", "confidence": 0.75},
+  "color": {"tags": ["color:low-sat", "color:mono"], "summary": "白底黑字，无彩色倾向", "confidence": 0.9},
+  "composition": {"tags": ["composition:center", "composition:negative-space"], "summary": "内容居中，留白充分", "confidence": 0.8},
+  "lighting": {"tags": ["lighting:high-key"], "summary": "白底亮场", "confidence": 0.7},
+  "camera": {"tags": ["camera:eye-level"], "summary": "页面截图，平视", "confidence": 0.6},
+  "rhythm": null,
+  "preference": 2,
+  "summary": "IANA 占位页截图（测试素材），审美参考价值有限。降级模式推断。"
+}

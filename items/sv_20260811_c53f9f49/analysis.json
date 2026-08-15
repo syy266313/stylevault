@@ -1,0 +1,12 @@
+{
+  "subject": {"tags": ["subject:webpage"], "summary": "网页截图：深色科技风测试页（深蓝黑背景+青色标题+青色圆形图形）", "confidence": 0.9},
+  "style": {"tags": ["style:minimal", "style:tech"], "summary": "深色极简科技风", "confidence": 0.8},
+  "mood": {"tags": ["mood:cool", "mood:mysterious"], "summary": "深色冷调，神秘感", "confidence": 0.75},
+  "color": {"tags": ["color:cool", "color:dark", "color:mono"], "summary": "深蓝黑底+青色点缀，暗色统一", "confidence": 0.85},
+  "composition": {"tags": ["composition:center", "composition:negative-space"], "summary": "标题与图形居中，四周留白", "confidence": 0.8},
+  "lighting": {"tags": ["lighting:low-key"], "summary": "暗场背景，青色高亮点缀", "confidence": 0.75},
+  "camera": {"tags": ["camera:eye-level"], "summary": "页面截图，平视", "confidence": 0.6},
+  "rhythm": null,
+  "preference": 3,
+  "summary": "深色科技风网页测试页（StyleVault 采集验证用）。降级模式推断。"
+}

@@ -27,20 +27,112 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "needs_review",
+    "model": {
+      "provider": "minis-agent",
+      "name": "stylevault-analyze-image",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:02:45+08:00",
+    "subject": {
+      "tags": [
+        "subject:screenshot"
+      ],
+      "summary": "手机屏幕截图，具体内容需人工复核",
+      "confidence": 0.5
+    },
+    "style": {
+      "tags": [
+        "style:minimal"
+      ],
+      "summary": "降级模式推断：界面截图通常为简洁信息排版，需复核",
+      "confidence": 0.4
+    },
+    "mood": {
+      "tags": [
+        "mood:calm"
+      ],
+      "summary": "中性情绪，需复核",
+      "confidence": 0.35
+    },
+    "color": {
+      "tags": [
+        "color:low-sat"
+      ],
+      "summary": "色彩特征需人工复核",
+      "confidence": 0.4
+    },
+    "composition": {
+      "tags": [
+        "composition:layered"
+      ],
+      "summary": "界面层级排布，需复核",
+      "confidence": 0.45
+    },
+    "lighting": {
+      "tags": [
+        "lighting:soft"
+      ],
+      "summary": "屏幕自发光，无实景光照，需复核",
+      "confidence": 0.4
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level"
+      ],
+      "summary": "屏幕截图，平视",
+      "confidence": 0.6
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 3,
+    "summary": "用户相册截图（来源未知）。降级模式无法看图，全部维度待人工复核。"
   },
-  "vision": null,
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.921875
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.921875
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 60,
+      "text": "15:10 4\nA\n48\nMinis Ax\nJûTE example)===\" &&\nitem. schema.json\npython3 -c\nII\nimport json\nschema\n= json.load(open(' schemas/\nitem. schema. json'))\nexample = json.load(open('schemas/\nexample.item.json'))\nimport jsonschema\n\" 2›/dev/null || echo \"(isonschema *#, ¿kid\n#13133m)\" && echo\n&&\n… echo\n==\"\n&& find . -type f | sort\n&&\n• echo && echo\n\"=== ffmpeg !tzi ===\" &&\n(which ffmpeg &&\nffmpeg -version\nhead\n-1) || echo \"ffmpeg\n*T* → M1 FJÑ] apk add ffmpeg (56**)\"\n=== JSON Âì‡₩$}\n===\nOK\n•/schemas/example.item.json\nOK\n•/schemas/item.schema.json\nOK\n•/configs/tag-ontology.json\nOK\n•/configs/pipeline.json\nOK\n./indexes/tags.json\n=== Schema #*} (# item.schema.json IùE\nexample)===\n(jsonschema\n=== ==\n• /ARCHITECTURE.md\n• /README.md\n•/configs/pipeline.json\n•/configs/tag-ontology.json\n./indexes/tags.json\n•/schemas/example.item.json\n•/schemas/item.schema.json\n./skills/README.md\n=== ffmpeg It* ===\nffmpeg **# → M1 #FI apk add ffmpeg (E\nMinis is using Shell\n3s\n15:10:32\nK\n18 / 19"
+    },
+    "palette": [
+      {
+        "hex": "#000000",
+        "ratio": 0.424
+      },
+      {
+        "hex": "#111111",
+        "ratio": 0.222
+      },
+      {
+        "hex": "#001100",
+        "ratio": 0.1
+      },
+      {
+        "hex": "#333333",
+        "ratio": 0.065
+      },
+      {
+        "hex": "#222222",
+        "ratio": 0.05
+      }
+    ],
+    "brightness": 0.082,
+    "saturation": 0.211,
+    "width": 1206,
+    "height": 2622,
+    "source": "apple-vision + pillow"
+  },
   "pipeline_log": [
     {
       "at": "2026-08-11T15:18:42+08:00",
@@ -48,6 +140,27 @@
       "action": "ingest",
       "origin": "photos",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:00:36+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:01:07+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:02:45+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "status": "needs_review"
     }
   ]
 }

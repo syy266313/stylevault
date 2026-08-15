@@ -1,0 +1,12 @@
+{
+  "subject": {"tags": ["subject:abstract"], "summary": "抽象图形：蓝色渐变背景上的亮青色圆形主体", "confidence": 0.95},
+  "style": {"tags": ["style:minimal"], "summary": "极简平面构成，单主体+渐变背景", "confidence": 0.85},
+  "mood": {"tags": ["mood:calm", "mood:cool"], "summary": "冷色系，冷静舒缓", "confidence": 0.8},
+  "color": {"tags": ["color:cool", "color:high-sat", "color:mono"], "summary": "蓝青同色系渐变，色调统一", "confidence": 0.9},
+  "composition": {"tags": ["composition:center"], "summary": "圆形主体居中，对称稳定", "confidence": 0.9},
+  "lighting": {"tags": ["lighting:soft"], "summary": "无实景光源，渐变模拟柔和光照", "confidence": 0.7},
+  "camera": {"tags": ["camera:eye-level"], "summary": "平面图形无摄影机位，平视视角", "confidence": 0.6},
+  "rhythm": null,
+  "preference": 3,
+  "summary": "蓝青渐变+亮青圆心的极简平面构成（测试素材）。降级模式推断。"
+}

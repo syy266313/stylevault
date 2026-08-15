@@ -1,0 +1,12 @@
+{
+  "subject": {"tags": ["subject:screenshot"], "summary": "手机屏幕截图，具体内容需人工复核", "confidence": 0.5},
+  "style": {"tags": ["style:minimal"], "summary": "降级模式推断：界面截图通常为简洁信息排版，需复核", "confidence": 0.4},
+  "mood": {"tags": ["mood:calm"], "summary": "中性情绪，需复核", "confidence": 0.35},
+  "color": {"tags": ["color:low-sat"], "summary": "色彩特征需人工复核", "confidence": 0.4},
+  "composition": {"tags": ["composition:layered"], "summary": "界面层级排布，需复核", "confidence": 0.45},
+  "lighting": {"tags": ["lighting:soft"], "summary": "屏幕自发光，无实景光照，需复核", "confidence": 0.4},
+  "camera": {"tags": ["camera:eye-level"], "summary": "屏幕截图，平视", "confidence": 0.6},
+  "rhythm": null,
+  "preference": 3,
+  "summary": "用户相册截图（来源未知）。降级模式无法看图，全部维度待人工复核。"
+}

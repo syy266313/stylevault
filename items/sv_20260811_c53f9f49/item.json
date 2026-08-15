@@ -27,20 +27,129 @@
     "version": null
   },
   "analysis": {
-    "status": "pending",
-    "model": null,
-    "subject": null,
-    "style": null,
-    "mood": null,
-    "color": null,
-    "composition": null,
-    "lighting": null,
-    "camera": null,
+    "status": "done",
+    "model": {
+      "provider": "minis-agent",
+      "name": "stylevault-analyze-image",
+      "version": "v1"
+    },
+    "analyzed_at": "2026-08-15T16:02:43+08:00",
+    "subject": {
+      "tags": [
+        "subject:webpage"
+      ],
+      "summary": "网页截图：深色科技风测试页（深蓝黑背景+青色标题+青色圆形图形）",
+      "confidence": 0.9
+    },
+    "style": {
+      "tags": [
+        "style:minimal",
+        "style:tech"
+      ],
+      "summary": "深色极简科技风",
+      "confidence": 0.8
+    },
+    "mood": {
+      "tags": [
+        "mood:cool",
+        "mood:mysterious"
+      ],
+      "summary": "深色冷调，神秘感",
+      "confidence": 0.75
+    },
+    "color": {
+      "tags": [
+        "color:cool",
+        "color:dark",
+        "color:mono"
+      ],
+      "summary": "深蓝黑底+青色点缀，暗色统一",
+      "confidence": 0.85
+    },
+    "composition": {
+      "tags": [
+        "composition:center",
+        "composition:negative-space"
+      ],
+      "summary": "标题与图形居中，四周留白",
+      "confidence": 0.8
+    },
+    "lighting": {
+      "tags": [
+        "lighting:low-key"
+      ],
+      "summary": "暗场背景，青色高亮点缀",
+      "confidence": 0.75
+    },
+    "camera": {
+      "tags": [
+        "camera:eye-level"
+      ],
+      "summary": "页面截图，平视",
+      "confidence": 0.6
+    },
     "rhythm": null,
-    "preference": null,
-    "summary": null
+    "preference": 3,
+    "summary": "深色科技风网页测试页（StyleVault 采集验证用）。降级模式推断。"
   },
-  "vision": null,
+  "vision": {
+    "classifications": [
+      {
+        "label": "document",
+        "confidence": 0.4750984013080597
+      },
+      {
+        "label": "screenshot",
+        "confidence": 0.47509765625
+      },
+      {
+        "label": "outdoor",
+        "confidence": 0.38527408242225647
+      },
+      {
+        "label": "sky",
+        "confidence": 0.37939488887786865
+      },
+      {
+        "label": "night_sky",
+        "confidence": 0.37939453125
+      }
+    ],
+    "faces": {
+      "count": 0
+    },
+    "ocr": {
+      "block_count": 3,
+      "text": "StyleVault URL *\nızü FÙ ingest —-url #MEAX\n5äK·A…"
+    },
+    "palette": [
+      {
+        "hex": "#001122",
+        "ratio": 0.747
+      },
+      {
+        "hex": "#222244",
+        "ratio": 0.09
+      },
+      {
+        "hex": "#111122",
+        "ratio": 0.03
+      },
+      {
+        "hex": "#000022",
+        "ratio": 0.02
+      },
+      {
+        "hex": "#44eecc",
+        "ratio": 0.018
+      }
+    ],
+    "brightness": 0.112,
+    "saturation": 0.591,
+    "width": 1170,
+    "height": 2532,
+    "source": "apple-vision + pillow"
+  },
   "pipeline_log": [
     {
       "at": "2026-08-11T15:19:59+08:00",
@@ -48,6 +157,27 @@
       "action": "ingest",
       "origin": "browser",
       "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:00:39+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:01:10+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "a",
+      "status": "ok"
+    },
+    {
+      "at": "2026-08-15T16:02:43+08:00",
+      "analyze_version": "v1",
+      "action": "analyze",
+      "phase": "b",
+      "status": "done"
     }
   ]
 }
