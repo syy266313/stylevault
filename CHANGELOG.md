@@ -4,6 +4,16 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-15
+
+### Added
+- **Phase B 视觉模型自动分析管线**（gpt-5.6-terra Vision）：
+  - `analyze.py phase-b` 子命令：自动调用 OpenAI 兼容视觉 API（图片 base64 + 视觉提示词）→ JSON 解析 → 结构校验 → 写回 `analysis`（八维 + preference + summary + editing_rules）→ 队列移除；
+  - API 配置可切换，模型名不写死：`STYLEVAULT_MODEL`（默认 gpt-5.6-terra）/ `OPENAI_BASE_URL` / `OPENAI_API_KEY` 环境变量 + `--model/--base-url/--api-key` CLI 覆盖；base URL 自动兼容 `/v1` 后缀；
+  - 失败处理：API 错误/JSON 校验失败 → `status=error` + pipeline_log 审计，不写坏数据；
+  - 降级路径保留（prompt/apply 手工模式）。
+- 记录每次分析的 `latency_ms` 与 token `usage`（供 M2.5 校准统计）。
+
 ## [0.3.0] - 2026-08-15
 
 ### Added
