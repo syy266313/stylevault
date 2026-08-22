@@ -4,11 +4,13 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
-### Added (M3.2 fixture 基础)
-- 新增独立 `configs/video-m3.2-fixtures.json`，定义 6 个可复现 synthetic fixture 及独立 ground truth。
-- 新增运行时 fixture 生成器和 probe 契约 evaluator；视频由规格生成，不提交二进制，不读取算法输出。
-- 新增 4 个 fixture 基础测试，覆盖配置校验、生成、probe、可复现性和临时文件清理。
-- 本轮未实现 `transition_types` / `camera_moves` 检测。
+### Added (M3.2 frame detection)
+- 在 `FfmpegAdapter` 内新增 ffmpeg 帧采样和 Pillow 帧级分析路径，所有 ffmpeg/ffprobe 调用仍封装在 adapter 内。
+- 转场检测使用相对局部帧差、持续窗口、RGB 变化和全局亮度谷值，区分 `hard_cut`、`dissolve` 和 `fade_out_in`。
+- 运镜检测使用镜头内部跨窗口块平移、尺度匹配和显著区域趋势，区分 `static`、`pan`、`zoom`，证据不足时输出 `unknown` candidate。
+- 每个观测包含 `value`、`confidence`、`source`、`detection_method`、`candidate`、`status` 和采样窗口/诊断信息。
+- 独立 M3.2 fixture acceptance 对 6 个 synthetic fixture 达到 `6/6`。
+- 新增检测专项测试，覆盖阈值、采样参数、转场区分、误报约束、非法 confidence、文件不存在和超时错误。
 
 ## [0.4.7] - 2026-08-15
 

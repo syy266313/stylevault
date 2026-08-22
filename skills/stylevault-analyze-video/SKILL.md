@@ -27,8 +27,9 @@ description: >-
 ## M3.2 Fixture 基础
 - `configs/video-m3.2-fixtures.json` 是独立于 M3.1 mock suite 的 synthetic fixture 规格。
 - 当前包含 `static_hard_cut`、`static_dissolve`、`static_fade`、`pan_horizontal`、`zoom_in`、`no_motion` 六个 fixture。
-- `scripts/m3_2_fixtures.py` 按规格在测试运行时生成帧并通过 `FfmpegAdapter` 编码；`scripts/evaluate_m32_fixtures.py` 只校验规格与 probe 元数据。
-- 本阶段不实现完整 `transition_types` / `camera_moves` 检测，也不进入 M3.3。
+- `scripts/m3_2_fixtures.py` 按规格在测试运行时生成帧并通过 `FfmpegAdapter` 编码；`scripts/evaluate_m32_fixtures.py` 运行真实帧级检测并与 synthetic ground truth 比对。
+- M3.2 已实现：转场使用相对窗口 RGB diff、持续变化和亮度谷值；运镜使用跨窗口块平移、尺度匹配和显著区域趋势。
+- 低置信度结果标记为 `candidate`，不能作为确认事实；`unknown` 不得通过 M3.2 acceptance。
 
 ## 工作流
 1. `mock`：基于 seed/source 生成可复现的节奏参数（含 overall_pace/coverage）。
@@ -39,6 +40,7 @@ description: >-
 6. `validate`：校验 rhythm 结构、数值合理性（shot_count/avg_shot_ms/分位数/confidence/coverage），拒绝 NaN/Infinity。
 7. `evaluate_video.py --milestone M3.1|M3.2|M3.3`：按里程碑验收：
    - M3.1：shot_count/avg_shot_ms/overall_pace **缺失即失败**；**必须携带 segments**（根级或 probe.segments），否则失败。
+   - M3.2：必须使用 `configs/video-m3.2-fixtures.json`，6 个 fixture 全部通过；unknown 或低置信度 candidate 不能通过。
    - M3.3：color_continuity ground truth 就绪前直接拒绝执行（exit 2）。
 
 ## 约束
@@ -61,5 +63,5 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 
 ## 验收状态
 - M3.1.1 代码路径和真实 runtime 已验证；ffmpeg 1229403 的 probe/segment 与 M3.1 acceptance 已通过。
-- M3.2 synthetic fixture foundation 已验证（6/6 fixture probe 契约通过）；transition/camera detection 尚未实现，不宣称 M3.2 通过。
+- M3.2 synthetic fixture 与帧级检测已验证；6/6 fixture acceptance 通过，尚不进入 M3.3。
 - M3.3 在 color_continuity ground truth 就绪前不可验收（`ready: false`）。

@@ -27,7 +27,7 @@ Milestone completion:
 - **M3.0** complete: architecture-only video analysis scaffold
 - **M3.0.5** complete: video analysis test preparation and acceptance script
 - **M3.1.1** complete: FfmpegAdapter probe/segment hardening and scdet threshold mapping
-- **M3.2** independent synthetic fixture foundation complete; frame-level transition/camera detection not started
+- **M3.2** complete: frame-level transition/camera detection passes 6 synthetic fixtures
 
 ## 3. Current Architecture
 
@@ -110,15 +110,14 @@ Milestone completion:
 
 - M3.1.1 and threshold mapping are complete and pushed (`77b6909`, `b4b8f6d`)
 - ffmpeg 1229403 is available; real probe/segment checks passed
-- M3.2 fixture foundation is complete; frame-level transition/camera detection is not started
-- M3.2 acceptance is not ready until frame detectors are implemented
+- M3.2 synthetic fixture foundation and frame-level detector are complete
+- M3.2 acceptance: 6/6 fixture cases passed
 
 ## 7. Next Direction
 
-The immediate engineering milestone is **M3.2 frame-level detection**:
-- implement transition classification from cut-adjacent frame windows
-- implement explainable static/pan/zoom motion estimation from intra-shot frames
-- run acceptance against `configs/video-m3.2-fixtures.json`
+The immediate engineering milestone after M3.2 is **M3.3**, subject to its color-continuity ground truth gate:
+- do not start M3.3 until its independent ground truth is ready
+- keep M3.4 and M4 paused
 
 Product directions after the M3.2 runtime baseline are:
 - **Style Retrieval**: semantic + style-dna based retrieval of similar cases

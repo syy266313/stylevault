@@ -1,4 +1,4 @@
-# StyleVault Agent Handoff: M3.1.1 / M3.2 Fixture Rebuild
+# StyleVault Agent Handoff: M3.2 Complete / M3.3 Gated
 
 ## Read first
 - `AGENTS.md`
@@ -13,7 +13,9 @@
 - Threshold correction commit: `b4b8f6d` (`fix: correct ffmpeg scene threshold mapping`), pushed to `origin/main`
 - ffmpeg/ffprobe are available; ffmpeg version `1229403`
 - Frozen file: `schemas/item.schema.json`; unchanged
-- Fixture foundation is ready for checkpoint commit; unrelated untracked `AGENTS.md` is preserved
+- Fixture foundation checkpoint: `8500e8c` (`feat: add deterministic M3.2 video fixtures`), pushed to `origin/main`
+- M3.2 detector/evaluator commit: `a0a38a4` (`feat: implement M3.2 frame-based detection`), pending push in this session
+- Working tree otherwise contains only unrelated untracked `AGENTS.md`
 
 ## M3.1 implementation
 - `FfmpegAdapter.probe()` calls ffprobe for duration, dimensions, fps, codec, format
@@ -21,7 +23,7 @@
 - ffmpeg calls are inside `FfmpegAdapter`
 - missing-tool and command errors return structured JSON from CLI commands
 - public `scene_threshold` remains normalized 0-1; adapter maps it to ffmpeg `scdet` 0-100
-- M3.2 transition and camera detection remain `unknown` placeholders; no heuristic implementation is retained
+- M3.2 transition and camera detection are frame-based and implemented in `FfmpegAdapter`; no shot-statistics-only heuristic is used
 
 ## Verification completed
 - `ffmpeg -h filter=scdet`: native threshold range confirmed as 0-100
@@ -43,15 +45,25 @@
 - Added `tests/test_m3_2_fixtures.py`: configuration, generation, probe, reproducibility, provenance and cleanup checks
 - Ground truth is `synthetic_spec`; no algorithm output is used to create it
 - No video binaries, frames, temporary logs or credentials were added to Git
-- No complete `transition_types` / `camera_moves` detection was implemented
+- Frame/window detection implementation is present in the working tree and has now passed the redesigned acceptance
+- All ffmpeg/ffprobe calls remain inside `FfmpegAdapter`
 
-## Next task
-- Implement frame/window-based transition detection and explainable motion estimation inside `FfmpegAdapter`
-- Keep M3.2 acceptance on this fixture suite only; do not use the M3.1 mock suite
-- Do not enter M3.3, M3.4 or M4
+## M3.2 redesigned acceptance result
+- Diagnostic report generated at `/tmp/m32_diagnostic_report.json` before algorithm changes; it recorded frame count/times, RGB diff distribution, brightness, active groups, dissolve/fade windows, zoom scale errors, pan translation trend and no-motion risk.
+- Diagnostics confirmed real signal: dissolve sustained RGB diff around 0.02-0.03, fade brightness valley around 0.392, zoom foreground extent growth around 1.85x, pan dx trend stable, and no-motion max diff below 0.003.
+- Redesign round 1: `static_hard_cut`, `static_dissolve`, `pan_horizontal`, `no_motion` passed; fade and zoom remained unresolved.
+- Redesign round 2: global brightness valley + monotonicity classified `fade_out_in`; expanded scale search plus salient extent trend classified `zoom`.
+- Final M3.2 acceptance: `6/6` passed.
+- Final predictions include provenance, confidence, candidate/status, sampling windows and diagnostic details.
+- Additional tests cover threshold changes, sampling changes, dissolve/fade separation, pan/zoom/static false-positive guards, unknown rejection, NaN/Infinity/invalid confidence, missing files, timeout and adapter boundaries.
 
-## Next task: M3.1.1 only
-Do not enter M3.2. Fix the six review items above. Add focused tests or executable checks. Do not install ffmpeg unless explicitly approved. Update `PROJECT.md`, `CHANGELOG.md`, and `SKILL.md`. Run py_compile, mock, validate, missing-ffmpeg error checks, and all relevant tests. Report what remains unverified.
+## M3.3 gate
+- Do not enter M3.3 until independent `color_continuity` ground truth is ready.
+- Do not enter M3.4 or M4.
+
+## Checkpoint decision
+- M3.2 is complete and committed as `a0a38a4`; push confirmation follows.
+- M3.3 remains gated by independent color-continuity ground truth.
 
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.

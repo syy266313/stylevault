@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import datetime, timezone
 
 
@@ -267,8 +268,8 @@ class FfmpegAdapter(VideoAdapter):
         self._require_tools()
         if not os.path.isdir(frame_dir):
             raise RuntimeError(f"fixture 帧目录不存在: {frame_dir}")
-        if fps <= 0:
-            raise RuntimeError(f"fixture fps 必须为正数: {fps}")
+        if not isinstance(fps, (int, float)) or not math.isfinite(fps) or fps <= 0:
+            raise RuntimeError(f"fixture fps 必须为正有限数: {fps}")
         self._run([
             "ffmpeg", "-y", "-hide_banner", "-nostats",
             "-framerate", str(fps),
@@ -277,6 +278,273 @@ class FfmpegAdapter(VideoAdapter):
             output_path,
         ])
         return output_path
+
+    def sample_frames(self, source, output_dir, sampling_fps=12.0):
+        """使用 ffmpeg 将视频采样为 PNG 帧；所有媒体调用仍在 adapter 内。"""
+        self._require_tools()
+        if not isinstance(sampling_fps, (int, float)) or not math.isfinite(sampling_fps) or sampling_fps <= 0:
+            raise RuntimeError(f"sampling_fps 必须为正有限数: {sampling_fps}")
+        os.makedirs(output_dir, exist_ok=True)
+        self._run([
+            "ffmpeg", "-y", "-hide_banner", "-nostats",
+            "-i", source,
+            "-vf", f"fps={sampling_fps}",
+            "-vsync", "0", "-q:v", "2",
+            os.path.join(output_dir, "frame_%06d.png"),
+        ])
+        paths = sorted(
+            os.path.join(output_dir, name)
+            for name in os.listdir(output_dir)
+            if name.endswith(".png")
+        )
+        if not paths:
+            raise RuntimeError(f"ffmpeg 未生成采样帧: {source}")
+        return [{"path": path, "time_s": index / float(sampling_fps)} for index, path in enumerate(paths)]
+
+    @staticmethod
+    def _load_frame(path, max_width=96):
+        try:
+            from PIL import Image
+            image = Image.open(path).convert("RGB")
+            if image.width > max_width:
+                image = image.resize((max_width, max(1, round(image.height * max_width / image.width))))
+            return {"rgb": image, "gray": image.convert("L")}
+        except Exception as exc:
+            raise RuntimeError(f"无法读取采样帧 {path}: {exc}") from exc
+
+    @classmethod
+    def _load_gray(cls, path, max_width=96):
+        return cls._load_frame(path, max_width=max_width)["gray"]
+
+    @staticmethod
+    def _mean_abs(a, b):
+        from PIL import ImageChops, ImageStat
+        diff = ImageChops.difference(a, b)
+        return float(sum(ImageStat.Stat(diff).mean) / len(ImageStat.Stat(diff).mean) / 255.0)
+
+    @classmethod
+    def _translation_score(cls, a, b, max_shift=8):
+        """可解释的下采样整数块平移匹配，返回 dx/dy、改进度和残差。"""
+        zero = cls._mean_abs(a, b)
+        best = (0, 0, zero)
+        width, height = a.size
+        for dy in range(-max_shift, max_shift + 1):
+            for dx in range(-max_shift, max_shift + 1):
+                ax0, ax1 = max(0, dx), min(width, width + dx)
+                ay0, ay1 = max(0, dy), min(height, height + dy)
+                bx0, bx1 = max(0, -dx), min(width, width - dx)
+                by0, by1 = max(0, -dy), min(height, height - dy)
+                if ax1 <= ax0 or ay1 <= ay0:
+                    continue
+                acrop = a.crop((ax0, ay0, ax1, ay1))
+                bcrop = b.crop((bx0, by0, bx1, by1))
+                error = cls._mean_abs(acrop, bcrop)
+                if error < best[2]:
+                    best = (dx, dy, error)
+        improvement = (zero - best[2]) / max(zero, 1e-6)
+        return {"dx": best[0], "dy": best[1], "improvement": improvement, "residual": best[2], "raw_diff": zero}
+
+    @staticmethod
+    def _resize_center(image, scale):
+        from PIL import Image
+        width, height = image.size
+        resized = image.resize((max(2, round(width * scale)), max(2, round(height * scale))))
+        if resized.width >= width:
+            left = (resized.width - width) // 2
+            resized = resized.crop((left, 0, left + width, min(height, resized.height)))
+        else:
+            canvas = Image.new("L", (width, resized.height), 0)
+            canvas.paste(resized, ((width - resized.width) // 2, 0))
+            resized = canvas
+        if resized.height >= height:
+            top = (resized.height - height) // 2
+            resized = resized.crop((0, top, width, top + height))
+        else:
+            canvas = Image.new("L", (width, height), 0)
+            canvas.paste(resized, (0, (height - resized.height) // 2))
+            resized = canvas
+        return resized
+
+    @classmethod
+    def _scale_score(cls, a, b):
+        candidates = (0.50, 0.60, 0.70, 0.80, 0.90, 0.94, 0.97, 1.0, 1.03, 1.06, 1.10, 1.20, 1.30, 1.50, 1.75, 2.0)
+        errors = [(scale, cls._mean_abs(a, cls._resize_center(b, scale))) for scale in candidates]
+        scale, error = min(errors, key=lambda item: item[1])
+        baseline = dict(errors)[1.0]
+        return {"scale": scale, "improvement": (baseline - error) / max(baseline, 1e-6), "residual": error, "candidates": errors}
+
+    @staticmethod
+    def _salient_extent(image):
+        """Find a reproducible colored foreground extent for scale trend evidence."""
+        pixels = image.convert("RGB").load()
+        points = []
+        for y in range(image.height):
+            for x in range(image.width):
+                r, g, b = pixels[x, y]
+                if r > g * 1.25 and r > b * 1.25 and r > 80:
+                    points.append((x, y))
+        if not points:
+            return None
+        xs, ys = zip(*points)
+        return {"left": min(xs), "right": max(xs), "top": min(ys), "bottom": max(ys), "area": len(points)}
+
+    @staticmethod
+    def _observation(value, confidence, source, method, threshold):
+        if not isinstance(confidence, (int, float)) or not math.isfinite(confidence) or not 0 <= confidence <= 1:
+            raise RuntimeError(f"检测 confidence 非法: {confidence}")
+        confirmed = confidence >= threshold and value != "unknown"
+        return {
+            "value": value,
+            "confidence": round(confidence, 3),
+            "source": source,
+            "detection_method": method,
+            "candidate": not confirmed,
+            "status": "confirmed" if confirmed else "candidate",
+        }
+
+    def _detect_transitions(self, frames, sampling_fps, confidence_threshold=0.7):
+        """Detect cut-adjacent events using relative temporal windows."""
+        import statistics
+        loaded = [self._load_frame(item["path"]) for item in frames]
+        arrays = [item["gray"] for item in loaded]
+        rgbs = [item["rgb"] for item in loaded]
+        if len(arrays) < 3:
+            return [self._observation("unknown", 0.0, "ffmpeg+Pillow", "frame-window-diff", confidence_threshold)]
+        brightness = [sum(pixel for pixel in frame.getdata()) / (255.0 * frame.width * frame.height) for frame in arrays]
+        diffs = [self._mean_abs(rgbs[i - 1], rgbs[i]) for i in range(1, len(rgbs))]
+        local = max(statistics.median(diffs) * 4.0, 1e-4)
+        hard_cut_threshold = max(local * 8.0, 0.12)
+        candidates = []
+        # A fade-out-in is a global brightness valley, not a local RGB spike.
+        trough_index = min(range(len(brightness)), key=lambda i: brightness[i])
+        if 0 < trough_index < len(brightness) - 1:
+            edge_count = max(3, round(len(brightness) * 0.15))
+            left_level = statistics.median(brightness[:edge_count])
+            right_level = statistics.median(brightness[-edge_count:])
+            valley = min(left_level, right_level) - brightness[trough_index]
+            left_mono = sum(brightness[i] <= brightness[i - 1] + 0.012 for i in range(1, trough_index + 1)) / max(1, trough_index)
+            right_mono = sum(brightness[i] >= brightness[i - 1] - 0.012 for i in range(trough_index + 1, len(brightness))) / max(1, len(brightness) - trough_index - 1)
+            if valley >= 0.12 and left_mono >= 0.65 and right_mono >= 0.65:
+                fade_start = max(0, trough_index - round(sampling_fps * 0.55))
+                fade_end = min(len(diffs) - 1, trough_index + round(sampling_fps * 0.55))
+                fade = self._observation("fade", min(0.98, 0.72 + min(0.22, valley)), "ffmpeg+Pillow", "global-brightness-valley+fade-out-in", confidence_threshold)
+                fade["time_s"] = round(trough_index / float(sampling_fps), 3)
+                fade["window_frames"] = [fade_start, fade_end]
+                fade["brightness_detail"] = {"left": round(left_level, 4), "trough": round(brightness[trough_index], 4), "right": round(right_level, 4), "valley": round(valley, 4), "left_monotonicity": round(left_mono, 3), "right_monotonicity": round(right_mono, 3)}
+                return [fade]
+        for index, diff in enumerate(diffs):
+            if diff >= hard_cut_threshold:
+                candidates.append((index, index, "hard_cut", min(0.99, 0.72 + min(0.27, diff)), "frame-window-diff+short-spike"))
+        # Find sustained relative changes even when every frame is below a fixed absolute threshold.
+        sustained = [diff > max(local * 1.5, 0.004) for diff in diffs]
+        start = None
+        for index, active in enumerate(sustained + [False]):
+            if active and start is None:
+                start = index
+            if start is not None and not active:
+                end = index - 1
+                if end - start + 1 >= max(3, round(sampling_fps * 0.20)):
+                    candidates.append((start, end, "window", 0.0, "frame-window-relative-diff"))
+                start = None
+        observations = []
+        for start, end, kind, confidence, method in candidates:
+            left = max(0, start - max(2, round(sampling_fps * 0.15)))
+            right = min(len(brightness) - 1, end + max(2, round(sampling_fps * 0.15)))
+            window = brightness[left:right + 1]
+            span = end - start + 1
+            left_values = brightness[left:max(left + 1, start)]
+            right_values = brightness[min(right, end + 1):right + 1]
+            left_level = sum(left_values) / max(1, len(left_values))
+            right_level = sum(right_values) / max(1, len(right_values))
+            trough_index = min(range(len(window)), key=lambda i: window[i])
+            trough = window[trough_index]
+            valley = min(left_level, right_level) - trough
+            midpoint = (start + end) // 2
+            if kind == "hard_cut":
+                value, detail, final_confidence = "hard_cut", method, confidence
+            elif valley >= 0.08 and trough_index > 0 and trough_index < len(window) - 1:
+                value = "fade"
+                detail = "frame-window-brightness-valley+fade-out-in"
+                final_confidence = min(0.98, 0.72 + min(0.24, valley))
+            else:
+                value = "dissolve"
+                detail = "frame-window-relative-diff+sustained-blend"
+                end_gap = abs(left_level - right_level)
+                final_confidence = min(0.96, 0.68 + min(0.20, span / max(1.0, sampling_fps * 2.0)) + min(0.08, end_gap))
+            observation = self._observation(value, final_confidence, "ffmpeg+Pillow", detail, confidence_threshold)
+            observation["time_s"] = round(midpoint / float(sampling_fps), 3)
+            observation["window_frames"] = [start, end]
+            observation["brightness_detail"] = {"left": round(left_level, 4), "trough": round(trough, 4), "right": round(right_level, 4), "valley": round(valley, 4)}
+            observations.append(observation)
+        # Deduplicate overlapping windows, keeping the strongest observation.
+        result = {}
+        for observation in observations:
+            result[observation["value"]] = max(result.get(observation["value"], observation), observation, key=lambda item: item["confidence"])
+        return list(result.values())
+
+    def _detect_camera_moves(self, frames, sampling_fps, confidence_threshold=0.7):
+        loaded = [self._load_frame(item["path"]) for item in frames]
+        arrays = [item["gray"] for item in loaded]
+        if len(arrays) < 3:
+            return [self._observation("unknown", 0.0, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
+        extents = [self._salient_extent(item["rgb"]) for item in loaded]
+        translations = []
+        scales = []
+        stride = max(1, len(arrays) // 8)
+        for index in range(0, len(arrays) - stride, stride):
+            first, second = arrays[index], arrays[index + stride]
+            translation = self._translation_score(first, second)
+            scale = self._scale_score(first, second)
+            # Transition spikes are excluded from motion votes by raw-diff threshold.
+            if translation["raw_diff"] <= 0.25:
+                translations.append(translation)
+                scales.append(scale)
+        if not translations:
+            return [self._observation("unknown", 0.0, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
+        dx = [item["dx"] for item in translations]
+        dy = [item["dy"] for item in translations]
+        shift_mag = [(x * x + y * y) ** 0.5 for x, y in zip(dx, dy)]
+        scale_delta = [abs(item["scale"] - 1.0) for item in scales]
+        extent_area = [item["area"] for item in extents if item]
+        extent_growth = (extent_area[-1] - extent_area[0]) / max(1, extent_area[0]) if len(extent_area) >= 2 else 0.0
+        extent_trend = sum(extent_area[i] >= extent_area[i - 1] for i in range(1, len(extent_area))) / max(1, len(extent_area) - 1) if len(extent_area) >= 2 else 0.0
+        directional = max(sum(x > 0 for x in dx) / len(dx), sum(x < 0 for x in dx) / len(dx))
+        pan_votes = [mag >= 0.8 and abs(x) >= abs(y) * 1.5 for x, y, mag in zip(dx, dy, shift_mag)]
+        zoom_votes = [delta >= 0.03 for delta in scale_delta]
+        pan_ratio = sum(pan_votes) / len(pan_votes)
+        zoom_ratio = sum(zoom_votes) / len(zoom_votes)
+        if pan_ratio >= 0.55 and directional >= 0.65:
+            confidence = min(0.98, 0.65 + 0.30 * pan_ratio + 0.05 * directional)
+            return [self._observation("pan", confidence, "ffmpeg+Pillow", "intra-shot-block-translation", confidence_threshold)]
+        if zoom_ratio >= 0.55 or (extent_growth >= 0.35 and extent_trend >= 0.70):
+            evidence = max(zoom_ratio, min(1.0, extent_growth))
+            confidence = min(0.96, 0.62 + 0.32 * evidence)
+            observation = self._observation("zoom", confidence, "ffmpeg+Pillow", "intra-shot-scale-matching+salient-extent-trend", confidence_threshold)
+            observation["scale_detail"] = {"scale_delta_mean": round(sum(scale_delta) / len(scale_delta), 4), "scale_trend_ratio": round(zoom_ratio, 3), "extent_growth": round(extent_growth, 3), "extent_trend_ratio": round(extent_trend, 3)}
+            return [observation]
+        motion_ratio = sum(mag >= 0.8 for mag in shift_mag) / len(shift_mag)
+        if motion_ratio <= 0.20 and sum(delta >= 0.03 for delta in scale_delta) / len(scale_delta) <= 0.20:
+            confidence = min(0.98, 0.78 + 0.18 * (1.0 - motion_ratio))
+            return [self._observation("static", confidence, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
+        return [self._observation("unknown", 0.35, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
+
+    def analyze_m32(self, source, sampling_fps=12.0, confidence_threshold=0.7):
+        """对真实帧执行 M3.2 转场和镜头内运镜检测。"""
+        if not isinstance(confidence_threshold, (int, float)) or not math.isfinite(confidence_threshold) or not 0 <= confidence_threshold <= 1:
+            raise RuntimeError(f"confidence_threshold 必须在 [0,1]: {confidence_threshold}")
+        probe = self.probe(source)
+        with tempfile.TemporaryDirectory(prefix="stylevault_m32_frames_") as frame_dir:
+            frames = self.sample_frames(source, frame_dir, sampling_fps=min(float(sampling_fps), probe["fps"]))
+            transitions = self._detect_transitions(frames, min(float(sampling_fps), probe["fps"]), confidence_threshold)
+            camera_moves = self._detect_camera_moves(frames, min(float(sampling_fps), probe["fps"]), confidence_threshold)
+        return {
+            "source": source,
+            "probe": probe,
+            "sampling": {"sampling_fps": min(float(sampling_fps), probe["fps"]), "frame_count": len(frames)},
+            "thresholds": {"confidence": confidence_threshold, "transition_active_diff": 0.08, "motion_shift_px": 0.8, "motion_scale_delta": 0.03},
+            "transition_types": transitions,
+            "camera_moves": camera_moves,
+        }
 
 
 class MockAdapter(VideoAdapter):
