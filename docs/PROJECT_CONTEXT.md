@@ -27,7 +27,7 @@ Milestone completion:
 - **M3.0** complete: architecture-only video analysis scaffold
 - **M3.0.5** complete: video analysis test preparation and acceptance script
 - **M3.1.1** complete: FfmpegAdapter probe/segment hardening and scdet threshold mapping
-- **M3.2** complete: frame-level transition/camera detection passes 6 synthetic fixtures
+- **M3.3** color-continuity fixture foundation complete; final detector not implemented and gate remains closed
 
 ## 3. Current Architecture
 
@@ -112,6 +112,7 @@ Milestone completion:
 - ffmpeg 1229403 is available; real probe/segment checks passed
 - M3.2 synthetic fixture foundation and frame-level detector are complete
 - M3.2 acceptance: 6/6 fixture cases passed
+- M3.3 fixture foundation: 5/5 color input contracts passed; final color_continuity detector not implemented
 
 ## 7. Next Direction
 

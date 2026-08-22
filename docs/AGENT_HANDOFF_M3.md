@@ -68,9 +68,15 @@
 - Do not enter M3.4 or M4.
 
 ## Checkpoint decision
-- M3.2.1 integration hardening is complete in the working tree pending final verification and commit.
+- M3.2.1 integration hardening commit: `9107921`, pushed to `origin/main`.
+- M3.3 fixture foundation commit: `62b17c1`, pushed to `origin/main`.
 - M3.2 detector commit is `19c6f53`; this is the single authoritative detector commit.
-- M3.3 remains gated by independent color-continuity ground truth.
+- M3.3 fixture foundation is complete: five independent color sequence specs, runtime generation, and reference metrics validation are ready.
+- M3.3 fixture foundation tests: `5/5` passed; independent color input evaluator: `5/5` passed.
+- M3.3 detector is not implemented; the existing `ready: false` gate was verified with exit code `2`.
+- Full video test suite after fixture additions: `58/58` passed; `py_compile` and `git diff --check` passed.
+- Real user video generalization remains unverified.
+- Do not enter M3.4 or M4.
 
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.
