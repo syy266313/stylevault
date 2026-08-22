@@ -21,6 +21,7 @@ description: >-
 - `pace_density.segment_density`：镜头数/分钟 = `shot_count / duration_minutes`。
 - 顶层不用整体 confidence 表示完整分析可信度；改用分维度 `coverage`（每维带 confidence/source/detection_method）。
 - `transition_types` / `camera_moves` 必须带 `confidence`、`source`、`detection_method`；M3.1 未实现，值固定为 `unknown` + `not-implemented-m3.2`，低置信度结果只作候选，不当作事实。
+- `scene_threshold` 对外单位为 normalized 0-1；`FfmpegAdapter` 内部显式映射到 ffmpeg `scdet` 的 0-100 原生范围。
 - 零时长、不连续、总时长与 probe 不符的 segments 视为无效（`validate_segments`）；NaN/Infinity 一律拒绝。
 
 ## 工作流

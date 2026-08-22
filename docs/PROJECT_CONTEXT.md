@@ -26,7 +26,8 @@ Milestone completion:
 - **M2.5** complete: visual quality calibration with Golden Dataset and editing_rules
 - **M3.0** complete: architecture-only video analysis scaffold
 - **M3.0.5** complete: video analysis test preparation and acceptance script
-- **M3.1** not started
+- **M3.1.1** complete: FfmpegAdapter probe/segment hardening and scdet threshold mapping
+- **M3.2** fixture-based frame detection in progress
 
 ## 3. Current Architecture
 
@@ -113,7 +114,12 @@ Milestone completion:
 
 ## 7. Next Direction
 
-After M3.0.5, the next product directions are:
+The immediate engineering milestone is **M3.1**, once the ffmpeg environment is explicitly approved and ready:
+- implement `FfmpegAdapter` behind the existing adapter contract
+- produce scene cuts, shot statistics, and representative-frame plans
+- run the acceptance suite against `configs/video-test-suite.json`
+
+Product directions after the M3 runtime baseline are:
 - **Style Retrieval**: semantic + style-dna based retrieval of similar cases
 - **Preference Feedback**: user preference correction loop and ranking
 - **Style DNA**: unify visual rules and rhythm parameters into one reusable style signature

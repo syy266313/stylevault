@@ -137,17 +137,19 @@ class VideoAdapter:
 class FfmpegAdapter(VideoAdapter):
     """真实运行时 adapter。所有 ffmpeg/ffprobe 调用必须封装在本类内。"""
     name = "ffmpeg"
-    # scene_threshold 单位：归一化 0-1（与 ffmpeg scdet threshold 原生单位一致，直接透传）。
-    # 若外部配置使用其他单位（如 0-100 百分比），必须在传入前转换，或在构造后显式归一化。
+    # 对外保留归一化 0-1；ffmpeg scdet 原生 threshold 实际为 0-100。
+    # 这里显式做尺度映射，避免把 scdet 版本差异误当作阈值单位差异。
     SCENE_THRESHOLD_UNIT = "normalized-0-1"
+    FFMPEG_SCDET_THRESHOLD_UNIT = "0-100"
 
     def __init__(self, scene_threshold=0.30, timeout=120):
         if not (0.0 <= scene_threshold <= 1.0):
             raise RuntimeError(
                 f"scene_threshold={scene_threshold} 超出归一化范围 [0,1]"
-                f"（单位: {self.SCENE_THRESHOLD_UNIT}，与 ffmpeg scdet threshold 一致）"
+                f"（单位: {self.SCENE_THRESHOLD_UNIT}，映射到 ffmpeg {self.FFMPEG_SCDET_THRESHOLD_UNIT}）"
             )
         self.scene_threshold = scene_threshold
+        self.ffmpeg_scene_threshold = scene_threshold * 100.0
         self.timeout = timeout
 
     def _require_tools(self):
@@ -233,7 +235,7 @@ class FfmpegAdapter(VideoAdapter):
         probe = self.probe(source)
         result = self._run([
             "ffmpeg", "-hide_banner", "-nostats", "-i", source,
-            "-vf", f"scdet=threshold={self.scene_threshold},metadata=print",
+            "-vf", f"scdet=threshold={self.ffmpeg_scene_threshold},metadata=print",
             "-an", "-f", "null", "-",
         ])
         text = (result.stdout or "") + "\n" + (result.stderr or "")

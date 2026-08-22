@@ -248,6 +248,10 @@ class TestFfmpegAdapterRobustness(unittest.TestCase):
 
     def test_threshold_unit_constant(self):
         self.assertEqual(av.FfmpegAdapter.SCENE_THRESHOLD_UNIT, "normalized-0-1")
+        self.assertEqual(av.FfmpegAdapter.FFMPEG_SCDET_THRESHOLD_UNIT, "0-100")
+
+    def test_threshold_maps_to_ffmpeg_scale(self):
+        self.assertEqual(av.FfmpegAdapter(scene_threshold=0.30).ffmpeg_scene_threshold, 30.0)
 
 
 class TestM33Gate(unittest.TestCase):
