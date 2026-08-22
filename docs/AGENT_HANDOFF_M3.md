@@ -15,7 +15,7 @@
 - Frozen file: `schemas/item.schema.json`; unchanged
 - Fixture foundation checkpoint: `8500e8c` (`feat: add deterministic M3.2 video fixtures`), pushed to `origin/main`
 - M3.2 detector/evaluator commit: `19c6f53` (`feat: implement M3.2 frame-based detection`), pushed to `origin/main`
-- M3.2.1 integration hardening is complete in the working tree and pending commit
+- M3.2.1 integration hardening commit: `eb3ca6c` (`fix: harden M3.2 integration contract`), pending push in this session
 - Working tree otherwise contains only unrelated untracked `AGENTS.md`
 
 ## M3.1 implementation
