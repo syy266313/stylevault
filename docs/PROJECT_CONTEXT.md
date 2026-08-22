@@ -27,7 +27,7 @@ Milestone completion:
 - **M3.0** complete: architecture-only video analysis scaffold
 - **M3.0.5** complete: video analysis test preparation and acceptance script
 - **M3.1.1** complete: FfmpegAdapter probe/segment hardening and scdet threshold mapping
-- **M3.3** color-continuity fixture foundation complete; final detector not implemented and gate remains closed
+- **M3.3** complete: color-continuity detector passes 5 synthetic fixtures; legacy mock route remains rejected
 
 ## 3. Current Architecture
 
@@ -112,14 +112,14 @@ Milestone completion:
 - ffmpeg 1229403 is available; real probe/segment checks passed
 - M3.2 synthetic fixture foundation and frame-level detector are complete
 - M3.2 acceptance: 6/6 fixture cases passed
-- M3.3 fixture foundation: 5/5 color input contracts passed; final color_continuity detector not implemented
+- M3.3 color fixture and detector acceptance: 5/5 passed under metrics contract `m3.3.v1`
 
 ## 7. Next Direction
 
-The immediate engineering milestone after M3.2.1 is **M3.3**, subject to its color-continuity ground truth gate:
+M3.3 is complete through the dedicated color-fixture route:
 - M3.2.1 integration hardening is complete: formal CLI, segment-aware analysis and event-position validation
+- M3.3 uses metrics contract `m3.3.v1` and passes 5/5 independent color fixtures
 - real user video generalization remains unverified
-- do not start M3.3 until its independent ground truth is ready
 - keep M3.4 and M4 paused
 
 Product directions after the M3.2 runtime baseline are:
@@ -152,4 +152,4 @@ Product directions after the M3.2 runtime baseline are:
 - Video architecture and M3.1.1 runtime are complete
 - M3.2 synthetic fixtures, frame-level detection, and integration hardening are complete
 - Formal `analyze-m32` CLI and event-position validation are complete
-- Real user video generalization is unverified; M3.3 remains gated and M4 remains paused
+- Real user video generalization is unverified; M3.3 dedicated fixture gate passed and M3.4/M4 remain paused

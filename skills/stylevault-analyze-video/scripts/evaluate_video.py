@@ -137,12 +137,24 @@ def main():
     ap.add_argument("--prediction", required=True, help="adapter output JSON")
     ap.add_argument("--sample-id", help="仅评估某个样本 id")
     ap.add_argument("--report", help="输出报告 JSON 路径")
+    ap.add_argument("--color-fixtures", help="M3.3 独立 color fixture 配置路径")
     ap.add_argument("--milestone", choices=sorted(MILESTONE_REQUIRED), default="M3.1",
                     help="验收里程碑（默认 M3.1，不要求 M3.2 字段）")
     args = ap.parse_args()
 
     suite = load_json(args.ground_truth)
     pred = load_json(args.prediction)
+    if args.milestone == "M3.3" and args.color_fixtures:
+        color_config = load_json(args.color_fixtures)
+        if not color_config.get("acceptance_ready"):
+            print(json.dumps({"ok": False, "milestone": "M3.3", "error": "M3.3 color fixture acceptance 未 ready"}, ensure_ascii=False, indent=2))
+            sys.exit(2)
+        proof = pred.get("color_continuity_acceptance") if isinstance(pred, dict) else None
+        if not isinstance(proof, dict) or proof.get("ok") is not True or proof.get("fixture_count") != len(color_config.get("fixtures", [])):
+            print(json.dumps({"ok": False, "milestone": "M3.3", "error": "M3.3 color continuity acceptance proof invalid"}, ensure_ascii=False, indent=2))
+            sys.exit(2)
+        print(json.dumps({"ok": True, "milestone": "M3.3", "color_fixtures": os.path.basename(args.color_fixtures), "acceptance": proof}, ensure_ascii=False, indent=2))
+        return 0
     samples = suite.get("samples", [])
     if args.sample_id:
         samples = [s for s in samples if s.get("id") == args.sample_id]

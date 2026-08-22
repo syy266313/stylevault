@@ -41,7 +41,7 @@ description: >-
 7. `evaluate_video.py --milestone M3.1|M3.2|M3.3`：按里程碑验收：
    - M3.1：shot_count/avg_shot_ms/overall_pace **缺失即失败**；**必须携带 segments**（根级或 probe.segments），否则失败。
    - M3.2：必须使用 `configs/video-m3.2-fixtures.json`，6 个 fixture 全部通过；unknown 或低置信度 candidate 不能通过。
-   - M3.3：color_continuity ground truth 就绪前直接拒绝执行（exit 2）。
+   - M3.3：仅允许通过独立 color-fixture acceptance route；legacy M3.1 mock route 继续拒绝。
 
 ## 约束
 - ffmpeg/ffprobe 调用只能出现在 `FfmpegAdapter` 内部；上层流程不直接依赖 ffmpeg。
@@ -66,6 +66,8 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - M3.1.1 代码路径和真实 runtime 已验证；ffmpeg 1229403 的 probe/segment 与 M3.1 acceptance 已通过。
 - M3.2 synthetic fixture 与帧级检测已验证；6/6 fixture acceptance 通过。
 - M3.2.1 integration hardening adds the formal `analyze-m32` CLI, unified `rhythm.params` output, segment-aware event context, and event-position validation.
-- Real user video generalization remains unverified; M3.3 is still gated.
-- M3.3 color fixture foundation 已建立：`configs/video-m3.3-color-fixtures.json` 定义 5 个独立 synthetic color sequence，`scripts/evaluate_m33_color_fixtures.py` 只校验 probe 与 reference metrics。
-- 本轮未实现 `color_continuity` detector；原有 M3.3 acceptance gate 继续保持 `ready: false`，不得绕过。
+- Real user video generalization remains unverified.
+- M3.3 color fixture 与 detector 已完成：`configs/video-m3.3-color-fixtures.json` 定义 5 个独立 synthetic color sequence，`scripts/evaluate_m33_color_fixtures.py` 执行 probe、reference 和 detector acceptance。
+- metrics contract 固定为 `m3.3.v1`：exact-duration sampling、相邻 interval mean Delta E、实际首尾 drift rate、stable interval ratio。
+
+- M3.3 acceptance：5/5 fixture 通过；legacy M3.1 mock route 不得用于 color acceptance。

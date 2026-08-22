@@ -88,6 +88,26 @@ def parse_scdet_output(text, duration_s):
     return cut_times, warnings
 
 
+def _srgb_channel(value):
+    value /= 255.0
+    return value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4
+
+
+def rgb_to_lab(rgb):
+    r, g, b = (_srgb_channel(value) for value in rgb)
+    x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047
+    y = (r * 0.2126 + g * 0.3576 + b * 0.0722) / 1.00000
+    z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883
+    def f(value):
+        return value ** (1 / 3) if value > 0.008856 else 7.787 * value + 16 / 116
+    fx, fy, fz = f(x), f(y), f(z)
+    return (116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz))
+
+
+def delta_e(first, second):
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(first, second)))
+
+
 def validate_segments(segments, duration_ms, tolerance_ms=5.0):
     """校验镜头区间完整性：正时长、连续衔接、总时长与 probe 一致。返回 (ok, errors)。"""
     errors = []
@@ -278,6 +298,34 @@ class FfmpegAdapter(VideoAdapter):
             output_path,
         ])
         return output_path
+
+    def sample_frame_at_time(self, source, output_path, time_s):
+        """Extract one terminal sample frame; ffmpeg remains adapter-owned."""
+        self._require_tools()
+        if not isinstance(time_s, (int, float)) or not math.isfinite(time_s) or time_s < 0:
+            raise RuntimeError(f"time_s 必须为非负有限数: {time_s}")
+        self._run([
+            "ffmpeg", "-y", "-hide_banner", "-nostats", "-ss", str(time_s),
+            "-i", source, "-frames:v", "1", "-q:v", "2", output_path,
+        ])
+        if not os.path.exists(output_path):
+            raise RuntimeError(f"ffmpeg 未生成指定时间帧: {time_s}s")
+        return output_path
+
+    def sample_frames_at_times(self, source, output_dir, sample_times_s):
+        """Extract an exact inclusive time axis for color-continuity metrics."""
+        self._require_tools()
+        if not sample_times_s or any(not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0 for value in sample_times_s):
+            raise RuntimeError("sample_times_s 必须是非空非负有限数列")
+        if any(second <= first for first, second in zip(sample_times_s, sample_times_s[1:])):
+            raise RuntimeError("sample_times_s 必须严格递增")
+        os.makedirs(output_dir, exist_ok=True)
+        frames = []
+        for index, time_s in enumerate(sample_times_s):
+            path = os.path.join(output_dir, f"frame_exact_{index:06d}.png")
+            self.sample_frame_at_time(source, path, time_s)
+            frames.append({"path": path, "time_s": float(time_s)})
+        return frames
 
     def sample_frames(self, source, output_dir, sampling_fps=12.0):
         """使用 ffmpeg 将视频采样为 PNG 帧；所有媒体调用仍在 adapter 内。"""
@@ -534,6 +582,84 @@ class FfmpegAdapter(VideoAdapter):
             item["segment_index"] = segment_index
             item["window_ms"] = [round(start_ms, 3), round(end_ms, 3)]
         return observations
+
+    @staticmethod
+    def _color_metrics_from_frames(frames, sampling_interval_s, stable_delta_e_threshold=2.5):
+        if not isinstance(sampling_interval_s, (int, float)) or not math.isfinite(sampling_interval_s) or sampling_interval_s <= 0:
+            raise RuntimeError(f"sampling_interval_s 必须为正有限数: {sampling_interval_s}")
+        loaded = [FfmpegAdapter._load_frame(item["path"])["rgb"] for item in frames]
+        if len(loaded) < 2:
+            raise RuntimeError("color_continuity 至少需要 2 个采样帧")
+        colors = []
+        for image in loaded:
+            pixels = list(image.getdata())
+            count = max(1, len(pixels))
+            colors.append(tuple(sum(pixel[channel] for pixel in pixels) / count for channel in range(3)))
+        labs = [rgb_to_lab(color) for color in colors]
+        lab_vectors = [tuple(second[index] - first[index] for index in range(3)) for first, second in zip(labs, labs[1:])]
+        deltas = [delta_e(first, second) for first, second in zip(labs, labs[1:])]
+        mean_delta = sum(deltas) / max(1, len(deltas))
+        paired_deltas = [delta_e(labs[index], labs[index + 2]) for index in range(max(0, len(labs) - 2))]
+        direction_changes = sum(sum(a * b for a, b in zip(lab_vectors[index - 1], lab_vectors[index])) < 0 for index in range(1, len(lab_vectors)))
+        direction_change_rate = direction_changes / max(1, len(lab_vectors) - 1)
+        periodicity_score = direction_change_rate
+        stable_ratio = sum(value <= stable_delta_e_threshold for value in deltas) / max(1, len(deltas))
+        total_drift = delta_e(labs[0], labs[-1])
+        sample_times = [float(item["time_s"]) for item in frames]
+        duration_s = max(sample_times[-1] - sample_times[0], sampling_interval_s)
+        drift_rate = total_drift / max(duration_s, 1e-9)
+        first, last = colors[0], colors[-1]
+        first_lab, last_lab = labs[0], labs[-1]
+        luminance = [0.2126 * color[0] + 0.7152 * color[1] + 0.0722 * color[2] for color in colors]
+        trough = min(luminance)
+        trough_index = luminance.index(trough)
+        edge_luma = min(luminance[0], luminance[-1])
+        fade_shape = 0 < trough_index < len(luminance) - 1 and trough <= edge_luma * 0.55
+        left_mono = sum(luminance[i] <= luminance[i - 1] + 4.0 for i in range(1, trough_index + 1)) / max(1, trough_index)
+        right_mono = sum(luminance[i] >= luminance[i - 1] - 4.0 for i in range(trough_index + 1, len(luminance))) / max(1, len(luminance) - trough_index - 1)
+        if fade_shape and left_mono >= 0.65 and right_mono >= 0.65:
+            dominant_shift = "cool_to_warm_via_neutral"
+        elif mean_delta <= stable_delta_e_threshold and stable_ratio >= 0.8:
+            dominant_shift = "none"
+        elif mean_delta > stable_delta_e_threshold * 4 and 0.3 <= stable_ratio <= 0.7:
+            dominant_shift = "alternating"
+            drift_rate = 0.0
+        elif stable_ratio >= 0.8 and max(deltas) > mean_delta * 8:
+            dominant_shift = "cool_to_warm_abrupt"
+        elif total_drift <= stable_delta_e_threshold:
+            dominant_shift = "none"
+        else:
+            direction = "cool_to_warm" if (last_lab[2] - first_lab[2]) > 2 and (last_lab[1] - first_lab[1]) > 2 else "color_shift"
+            dominant_shift = direction
+        neutral_valley_index = round(trough_index / max(1, len(luminance) - 1), 4)
+        return {"metrics_contract_version": "m3.3.v1", "mean_delta_e": mean_delta, "drift_rate": drift_rate, "stable_ratio": stable_ratio, "dominant_shift": dominant_shift, "deltas": deltas, "interval_count": len(deltas), "sample_times_s": [round(item["time_s"], 6) for item in frames], "frame_count": len(frames), "sampling_interval_s": sampling_interval_s, "terminal_frame_policy": "exact-duration", "cycle_delta_e": sum(paired_deltas) / max(1, len(paired_deltas)), "paired_delta_e": sum(paired_deltas) / max(1, len(paired_deltas)), "direction_change_rate": direction_change_rate, "periodicity_score": periodicity_score, "transition_window": [round(max(0, trough_index - 2) * sampling_interval_s, 6), round(min(len(luminance) - 1, trough_index + 2) * sampling_interval_s, 6)] if fade_shape else None, "transition_window_mean_delta_e": sum(deltas[max(0, trough_index - 2):min(len(deltas), trough_index + 2)]) / max(1, len(deltas[max(0, trough_index - 2):min(len(deltas), trough_index + 2)])) if fade_shape else None, "neutral_valley_index": neutral_valley_index if fade_shape else None, "fade_pattern": "fade_out_in" if fade_shape else None}
+
+    @staticmethod
+    def _color_observation(metrics, confidence_threshold, source="ffmpeg+Pillow"):
+        values = (metrics["mean_delta_e"], metrics["drift_rate"], metrics["stable_ratio"])
+        if any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in values):
+            raise RuntimeError("color_continuity metrics 包含 NaN/Infinity")
+        confidence = min(0.98, 0.75 + min(0.20, abs(metrics["stable_ratio"] - 0.5) * 0.4))
+        if metrics["frame_count"] < 2:
+            confidence = 0.0
+        confirmed = confidence >= confidence_threshold
+        return {"value": "color_continuity", "confidence": round(confidence, 3), "source": source, "detection_method": "sampled-rgb-to-lab-delta-e", "candidate": not confirmed, "status": "confirmed" if confirmed else "candidate", "metrics": metrics}
+
+    def analyze_color_continuity(self, source, sampling_interval_s=0.25, confidence_threshold=0.7, stable_delta_e_threshold=2.5):
+        """Compute M3.3 color metrics from sampled frames; does not alter M3.3 gate."""
+        if not isinstance(confidence_threshold, (int, float)) or not math.isfinite(confidence_threshold) or not 0 <= confidence_threshold <= 1:
+            raise RuntimeError(f"confidence_threshold 必须在 [0,1]: {confidence_threshold}")
+        if not isinstance(stable_delta_e_threshold, (int, float)) or not math.isfinite(stable_delta_e_threshold) or stable_delta_e_threshold <= 0:
+            raise RuntimeError(f"stable_delta_e_threshold 必须为正有限数: {stable_delta_e_threshold}")
+        probe = self.probe(source)
+        duration_s = probe["duration_ms"] / 1000.0
+        sample_count = max(1, round(duration_s / sampling_interval_s))
+        sample_times = [round(index * sampling_interval_s, 6) for index in range(sample_count + 1)]
+        with tempfile.TemporaryDirectory(prefix="stylevault_m33_color_frames_") as frame_dir:
+            frames = self.sample_frames_at_times(source, frame_dir, sample_times)
+            metrics = self._color_metrics_from_frames(frames, sampling_interval_s, stable_delta_e_threshold)
+        observation = self._color_observation(metrics, confidence_threshold)
+        return {"source": source, "probe": probe, "observation": observation, "metrics": metrics, "sampling": {"metrics_contract_version": "m3.3.v1", "sampling_interval_s": sampling_interval_s, "sampling_fps": 1.0 / sampling_interval_s, "frame_count": metrics["frame_count"], "interval_count": metrics["interval_count"], "include_start": True, "include_end": True, "terminal_frame_policy": "exact-duration"}, "thresholds": {"confidence": confidence_threshold, "stable_delta_e": stable_delta_e_threshold}}
 
     def analyze_m32(self, source, sampling_fps=12.0, confidence_threshold=0.7):
         """对真实帧执行 M3.2 检测，按 segment 边界区分转场和镜头内运镜。"""

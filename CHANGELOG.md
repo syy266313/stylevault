@@ -4,11 +4,12 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
-### Added (M3.3 color continuity fixture foundation)
-- 新增独立 `configs/video-m3.3-color-fixtures.json`，定义 `stable_color`、`gradual_color_drift`、`abrupt_color_shift`、`alternating_color`、`fade_color_change` 五个 synthetic fixture。
-- 新增运行时颜色序列生成器和独立 reference metrics evaluator；ground truth 来自 `synthetic_spec`，不读取 detector 输出。
-- 颜色输入契约包含采样间隔、`mean_delta_e`、`drift_rate`、`stable_ratio`、`dominant_shift` 和 tolerance。
-- 五个 fixture 的 probe/颜色输入契约测试通过；本轮未实现 `color_continuity` detector，现有 M3.3 gate 保持拒绝。
+### Added (M3.3 color continuity detection)
+- 新增统一 `m3.3.v1` color metrics contract：exact-duration sampling axis、相邻 interval `mean_delta_e`、实际首尾时间跨度 `drift_rate`、interval `stable_ratio`。
+- 在 `FfmpegAdapter` 内新增 color continuity detector，输出 `mean_delta_e`、`drift_rate`、`stable_ratio`、`dominant_shift`、confidence/provenance、采样和诊断信息。
+- `dominant_shift` 由独立 detector 分类：`none`、`cool_to_warm`、`cool_to_warm_abrupt`、`alternating`、`cool_to_warm_via_neutral`、`unknown`。
+- alternating/fade 增加周期、方向变化、transition window、neutral valley 等派生诊断，不替换统一核心指标。
+- 5 个独立 synthetic color fixture 的 detector acceptance 达到 `5/5`；真实用户视频泛化仍未验证。
 
 ### Added (M3.2 frame detection)
 - 在 `FfmpegAdapter` 内新增 ffmpeg 帧采样和 Pillow 帧级分析路径，所有 ffmpeg/ffprobe 调用仍封装在 adapter 内。
@@ -32,8 +33,8 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 - **NaN/Infinity 拒绝**：`validate_segments` 与 `validate` 对所有数值字段（start/dur/duration/avg_shot_ms/分位数/confidence）增加 `math.isfinite` 校验。
 - **ffprobe 健壮性**：malformed JSON、非对象结构、无法解析的时长、非法帧率字符串（如 `abc/def`、分母 0）、非有限 fps 均返回结构化 `RuntimeError`，不再 traceback。
 - **scene_threshold 单位修正**：对外保留 normalized 0-1，`FfmpegAdapter` 内映射到 ffmpeg `scdet` 的原生 0-100 范围；构造时校验对外范围 [0,1]。
-- **M3.3 门控**：color_continuity ground truth 就绪前，`--milestone M3.3` 直接结构化报错并 exit 2，不允许伪装成可执行验收；config 中 M3.3 标记 `ready: false`。
-- **新增测试**：`tests/test_m3_1_1_hardening.py`（19 用例）：缺失 shot_count/avg_shot_ms/segments 失败、NaN/Infinity 拒绝（segments 与 validate 两条路径）、malformed ffprobe JSON、非法帧率、阈值范围与单位常量、M3.3 门控。
+- **M3.3 门控**：独立 color-fixture acceptance route 就绪后允许执行 M3.3 proof；legacy M3.1 mock route 仍拒绝，避免用旧 ground truth 伪装 color acceptance。
+- **新增测试**：`tests/test_m3_1_1_hardening.py`（19 用例）：缺失 shot_count/avg_shot_ms/segments 失败、NaN/Infinity 拒绝（segments 与 validate 两条路径）、malformed ffprobe JSON、非法帧率、阈值范围与单位常量。
 
 ## [0.4.6] - 2026-08-15
 

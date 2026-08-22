@@ -38,12 +38,16 @@ def load_color_specs(path=CONFIG_PATH):
 
 
 def validate_color_spec(spec):
-    required = ["fixture_id", "generation_mode", "duration_s", "fps", "resolution", "sampling_interval_s", "palette", "expected_mean_delta_e", "expected_drift_rate", "expected_stable_ratio", "expected_dominant_shift", "tolerance", "ground_truth_source"]
+    required = ["fixture_id", "generation_mode", "duration_s", "fps", "resolution", "sampling_interval_s", "expected_interval_count", "metrics_contract_version", "palette", "expected_mean_delta_e", "expected_drift_rate", "expected_stable_ratio", "expected_dominant_shift", "tolerance", "ground_truth_source"]
     missing = [key for key in required if key not in spec]
     if missing:
         raise ValueError(f"fixture {spec.get('fixture_id')} 缺少字段: {missing}")
     if spec["ground_truth_source"] != "synthetic_spec":
         raise ValueError(f"fixture {spec['fixture_id']} ground_truth_source 非 synthetic_spec")
+    if spec["metrics_contract_version"] != "m3.3.v1":
+        raise ValueError(f"fixture {spec['fixture_id']} metrics_contract_version 无效")
+    if spec["expected_interval_count"] != round(spec["duration_s"] / spec["sampling_interval_s"]):
+        raise ValueError(f"fixture {spec['fixture_id']} expected_interval_count 与 sampling 不一致")
     if not isinstance(spec["duration_s"], (int, float)) or not math.isfinite(spec["duration_s"]) or spec["duration_s"] <= 0:
         raise ValueError(f"fixture {spec['fixture_id']} duration_s 无效")
     if not isinstance(spec["fps"], int) or spec["fps"] <= 0:
@@ -110,6 +114,24 @@ def color_at(spec, time_s):
     raise ValueError(f"不支持的 generation_mode: {mode}")
 
 
+def classify_dominant_shift(spec, labs, deltas, stable_ratio):
+    first, last = labs[0], labs[-1]
+    mean_delta = sum(deltas) / max(1, len(deltas))
+    net = delta_e(first, last)
+    if mean_delta <= 2.5 and stable_ratio >= 0.8:
+        return "none"
+    if mean_delta > 10 and 0.3 <= stable_ratio <= 0.7 and net <= 5:
+        return "alternating"
+    if stable_ratio >= 0.8 and max(deltas) > max(mean_delta * 8, 20):
+        return "cool_to_warm_abrupt"
+    luma = [0.2126 * value[0] + 0.7152 * value[1] + 0.0722 * value[2] for value in spec.get("_sample_colors", [])]
+    if luma:
+        trough = min(luma); index = luma.index(trough)
+        if 0 < index < len(luma) - 1 and trough <= min(luma[0], luma[-1]) * 0.55:
+            return "cool_to_warm_via_neutral"
+    return "cool_to_warm" if (last[2] - first[2]) > 2 and (last[1] - first[1]) > 2 else "unknown"
+
+
 def reference_metrics(spec):
     interval = spec["sampling_interval_s"]
     times = [i * interval for i in range(max(1, round(spec["duration_s"] / interval)) + 1)]
@@ -119,8 +141,12 @@ def reference_metrics(spec):
     stable_threshold = 2.5
     stable_ratio = sum(value <= stable_threshold for value in deltas) / max(1, len(deltas))
     total_drift = delta_e(labs[0], labs[-1])
-    drift_rate = total_drift / max(spec["duration_s"], 1e-9)
-    return {"mean_delta_e": mean_delta, "drift_rate": drift_rate, "stable_ratio": stable_ratio, "dominant_shift": spec["expected_dominant_shift"], "sample_times_s": times, "colors": [color_at(spec, time) for time in times]}
+    drift_rate = total_drift / max(times[-1] - times[0], 1e-9)
+    colors = [color_at(spec, time) for time in times]
+    spec_for_classification = dict(spec)
+    spec_for_classification["_sample_colors"] = colors
+    dominant_shift = classify_dominant_shift(spec_for_classification, labs, deltas, stable_ratio)
+    return {"metrics_contract_version": "m3.3.v1", "mean_delta_e": mean_delta, "drift_rate": drift_rate, "stable_ratio": stable_ratio, "dominant_shift": dominant_shift, "deltas": deltas, "interval_count": len(deltas), "sample_times_s": times, "colors": colors, "sampling_interval_s": interval, "terminal_frame_policy": "exact-duration"}
 
 
 def _frame_color(spec, index, total_frames):
@@ -134,7 +160,8 @@ def generate_color_fixture(spec, output_dir, adapter=None):
     output_dir.mkdir(parents=True, exist_ok=True)
     frame_dir = Path(tempfile.mkdtemp(prefix=f"{spec['fixture_id']}_", dir=output_dir))
     video_path = output_dir / f"{spec['fixture_id']}.mp4"
-    total_frames = int(round(spec["duration_s"] * spec["fps"]))
+    # Include an explicit terminal frame so include_end=true is observable.
+    total_frames = int(round(spec["duration_s"] * spec["fps"])) + 1
     try:
         for index in range(total_frames):
             _frame_color(spec, index, total_frames).save(frame_dir / f"frame_{index:06d}.png")

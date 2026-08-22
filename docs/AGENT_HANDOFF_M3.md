@@ -1,4 +1,4 @@
-# StyleVault Agent Handoff: M3.2.1 Integration Hardening / M3.3 Gated
+# StyleVault Agent Handoff: M3.3 Complete / M3.4 Gated
 
 ## Read first
 - `AGENTS.md`
@@ -17,7 +17,7 @@
 - M3.2 detector/evaluator commit: `19c6f53` (`feat: implement M3.2 frame-based detection`), pushed to `origin/main`
 - M3.2.1 integration hardening commit: `eb3ca6c` (`fix: harden M3.2 integration contract`), pushed to `origin/main`
 - Agent contract is present on `main` in the subsequent docs commit `5b288fb`, pushed to `origin/main`
-- Working tree otherwise contains only unrelated untracked `AGENTS.md`
+- M3.3 detector implementation is complete in the working tree and has passed unified `m3.3.v1` acceptance `5/5`; pending commit
 
 ## M3.1 implementation
 - `FfmpegAdapter.probe()` calls ffprobe for duration, dimensions, fps, codec, format
@@ -64,7 +64,8 @@
 - Real user video generalization remains unverified.
 
 ## M3.3 gate
-- Do not enter M3.3 until independent `color_continuity` ground truth is ready.
+- Independent color ground truth and detector acceptance are complete through the dedicated color-fixture route.
+- The legacy M3.1 mock route remains rejected for M3.3 color acceptance.
 - Do not enter M3.4 or M4.
 
 ## Checkpoint decision
@@ -73,8 +74,15 @@
 - M3.2 detector commit is `19c6f53`; this is the single authoritative detector commit.
 - M3.3 fixture foundation is complete: five independent color sequence specs, runtime generation, and reference metrics validation are ready.
 - M3.3 fixture foundation tests: `5/5` passed; independent color input evaluator: `5/5` passed.
-- M3.3 detector is not implemented; the existing `ready: false` gate was verified with exit code `2`.
-- Full video test suite after fixture additions: `58/58` passed; `py_compile` and `git diff --check` passed.
+- M3.3 detector implementation is complete: unified `m3.3.v1` sampling axis, Delta E metrics, independent dominant-shift classification, and derived alternating/fade diagnostics.
+- Detector output includes exact sample times, interval count, terminal-frame policy, cycle/paired deltas, direction-change/periodicity diagnostics, and fade transition-window diagnostics.
+- M3.3 detector acceptance: `5/5` passed under the current working tree.
+- Diagnostic sequence audit: all fixtures use 17 samples at `0.0..4.0s`, yielding exactly 16 adjacent intervals; `mean_delta_e` is the arithmetic mean of those intervals, `drift_rate` uses the actual first/last sample span, and stable ratio counts intervals only.
+- `alternating_color` is classified independently from periodic/paired evidence with zero net drift; `fade_color_change` is classified independently from a neutral luminance valley. Neither derived classifier replaces the core mean metric.
+- Ground truth was not modified; the independent color fixture proof is the only M3.3 acceptance source.
+- Verification: full video unittest `61/61`, M3.1.1 regression `37/37`, M3.2 regression `16/16`, M3.3 tests `8/8`, py_compile, frozen-schema check and diff check passed.
+- The legacy M3.1 mock suite remains insufficient for M3.3 color acceptance.
+- The dedicated color-fixture gate proof passed with `fixture_count=5`, `passed=5`, and `metrics_contract_version=m3.3.v1`.
 - Real user video generalization remains unverified.
 - Do not enter M3.4 or M4.
 
