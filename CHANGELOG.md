@@ -4,6 +4,12 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+### Added (M3.3 color continuity fixture foundation)
+- 新增独立 `configs/video-m3.3-color-fixtures.json`，定义 `stable_color`、`gradual_color_drift`、`abrupt_color_shift`、`alternating_color`、`fade_color_change` 五个 synthetic fixture。
+- 新增运行时颜色序列生成器和独立 reference metrics evaluator；ground truth 来自 `synthetic_spec`，不读取 detector 输出。
+- 颜色输入契约包含采样间隔、`mean_delta_e`、`drift_rate`、`stable_ratio`、`dominant_shift` 和 tolerance。
+- 五个 fixture 的 probe/颜色输入契约测试通过；本轮未实现 `color_continuity` detector，现有 M3.3 gate 保持拒绝。
+
 ### Added (M3.2 frame detection)
 - 在 `FfmpegAdapter` 内新增 ffmpeg 帧采样和 Pillow 帧级分析路径，所有 ffmpeg/ffprobe 调用仍封装在 adapter 内。
 - 转场检测使用相对局部帧差、持续窗口、RGB 变化和全局亮度谷值，区分 `hard_cut`、`dissolve` 和 `fade_out_in`。

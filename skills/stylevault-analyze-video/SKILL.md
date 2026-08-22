@@ -67,4 +67,5 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - M3.2 synthetic fixture 与帧级检测已验证；6/6 fixture acceptance 通过。
 - M3.2.1 integration hardening adds the formal `analyze-m32` CLI, unified `rhythm.params` output, segment-aware event context, and event-position validation.
 - Real user video generalization remains unverified; M3.3 is still gated.
-- M3.3 在 color_continuity ground truth 就绪前不可验收（`ready: false`）。
+- M3.3 color fixture foundation 已建立：`configs/video-m3.3-color-fixtures.json` 定义 5 个独立 synthetic color sequence，`scripts/evaluate_m33_color_fixtures.py` 只校验 probe 与 reference metrics。
+- 本轮未实现 `color_continuity` detector；原有 M3.3 acceptance gate 继续保持 `ready: false`，不得绕过。
