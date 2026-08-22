@@ -1,0 +1,104 @@
+{
+  "version": "v0.1",
+  "milestone": "M3.2",
+  "description": "独立的 M3.2 合成视频 fixture 规格；视频在测试运行时生成，不提交二进制。",
+  "ground_truth_source": "synthetic_spec",
+  "defaults": {
+    "duration_s": 4.0,
+    "fps": 12,
+    "resolution": [160, 90],
+    "confidence_threshold": 0.7,
+    "tolerance": {
+      "duration_ms": 100,
+      "boundary_ms": 100,
+      "resolution_exact": true,
+      "fps_abs": 0.1
+    }
+  },
+  "fixtures": [
+    {
+      "fixture_id": "static_hard_cut",
+      "generation_mode": "static_hard_cut",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3101,
+      "shot_boundaries_ms": [0, 2000, 4000],
+      "transition_ground_truth": [{"value": "hard_cut", "confidence": 1.0, "candidate": false}],
+      "camera_ground_truth": [{"value": "static", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    },
+    {
+      "fixture_id": "static_dissolve",
+      "generation_mode": "static_dissolve",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3102,
+      "shot_boundaries_ms": [0, 1500, 2500, 4000],
+      "transition_ground_truth": [{"value": "dissolve", "confidence": 1.0, "candidate": false}],
+      "camera_ground_truth": [{"value": "static", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    },
+    {
+      "fixture_id": "static_fade",
+      "generation_mode": "static_fade",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3103,
+      "shot_boundaries_ms": [0, 1500, 2500, 4000],
+      "transition_ground_truth": [{"value": "fade", "pattern": "fade_out_in", "confidence": 1.0, "candidate": false}],
+      "camera_ground_truth": [{"value": "static", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    },
+    {
+      "fixture_id": "pan_horizontal",
+      "generation_mode": "pan_horizontal",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3104,
+      "shot_boundaries_ms": [0, 4000],
+      "transition_ground_truth": [],
+      "camera_ground_truth": [{"value": "pan", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    },
+    {
+      "fixture_id": "zoom_in",
+      "generation_mode": "zoom_in",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3105,
+      "shot_boundaries_ms": [0, 4000],
+      "transition_ground_truth": [],
+      "camera_ground_truth": [{"value": "zoom", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    },
+    {
+      "fixture_id": "no_motion",
+      "generation_mode": "no_motion",
+      "duration_s": 4.0,
+      "fps": 12,
+      "resolution": [160, 90],
+      "seed": 3106,
+      "shot_boundaries_ms": [0, 4000],
+      "transition_ground_truth": [],
+      "camera_ground_truth": [{"value": "static", "confidence": 1.0, "candidate": false}],
+      "ground_truth_source": "synthetic_spec",
+      "confidence_threshold": 0.7,
+      "tolerance": {"duration_ms": 100, "boundary_ms": 100, "resolution_exact": true, "fps_abs": 0.1}
+    }
+  ]
+}

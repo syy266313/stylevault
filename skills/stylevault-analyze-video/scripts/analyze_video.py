@@ -262,6 +262,22 @@ class FfmpegAdapter(VideoAdapter):
     def representative_frames(self, source, segments):
         raise NotImplementedError("代表帧采样将在 M3.2/M3.3 实现；M3.1 只输出切分统计")
 
+    def encode_frame_sequence(self, frame_dir, output_path, fps):
+        """将 fixture 生成的 PNG 帧编码为视频；ffmpeg 调用仅在 adapter 内。"""
+        self._require_tools()
+        if not os.path.isdir(frame_dir):
+            raise RuntimeError(f"fixture 帧目录不存在: {frame_dir}")
+        if fps <= 0:
+            raise RuntimeError(f"fixture fps 必须为正数: {fps}")
+        self._run([
+            "ffmpeg", "-y", "-hide_banner", "-nostats",
+            "-framerate", str(fps),
+            "-i", os.path.join(frame_dir, "frame_%06d.png"),
+            "-c:v", "mpeg4", "-q:v", "5", "-pix_fmt", "yuv420p",
+            output_path,
+        ])
+        return output_path
+
 
 class MockAdapter(VideoAdapter):
     name = "mock"

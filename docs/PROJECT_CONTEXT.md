@@ -27,7 +27,7 @@ Milestone completion:
 - **M3.0** complete: architecture-only video analysis scaffold
 - **M3.0.5** complete: video analysis test preparation and acceptance script
 - **M3.1.1** complete: FfmpegAdapter probe/segment hardening and scdet threshold mapping
-- **M3.2** fixture-based frame detection in progress
+- **M3.2** independent synthetic fixture foundation complete; frame-level transition/camera detection not started
 
 ## 3. Current Architecture
 
@@ -108,18 +108,19 @@ Milestone completion:
 
 ## 6. Current Paused Items
 
-- `ffmpeg` is **not installed** in the current environment
-- M3.1 is **not started**
-- No further attempts should be made to install ffmpeg unless explicitly requested
+- M3.1.1 and threshold mapping are complete and pushed (`77b6909`, `b4b8f6d`)
+- ffmpeg 1229403 is available; real probe/segment checks passed
+- M3.2 fixture foundation is complete; frame-level transition/camera detection is not started
+- M3.2 acceptance is not ready until frame detectors are implemented
 
 ## 7. Next Direction
 
-The immediate engineering milestone is **M3.1**, once the ffmpeg environment is explicitly approved and ready:
-- implement `FfmpegAdapter` behind the existing adapter contract
-- produce scene cuts, shot statistics, and representative-frame plans
-- run the acceptance suite against `configs/video-test-suite.json`
+The immediate engineering milestone is **M3.2 frame-level detection**:
+- implement transition classification from cut-adjacent frame windows
+- implement explainable static/pan/zoom motion estimation from intra-shot frames
+- run acceptance against `configs/video-m3.2-fixtures.json`
 
-Product directions after the M3 runtime baseline are:
+Product directions after the M3.2 runtime baseline are:
 - **Style Retrieval**: semantic + style-dna based retrieval of similar cases
 - **Preference Feedback**: user preference correction loop and ranking
 - **Style DNA**: unify visual rules and rhythm parameters into one reusable style signature
@@ -146,6 +147,6 @@ Product directions after the M3 runtime baseline are:
 - Ingest is done
 - Image analysis is done
 - Visual calibration is done
-- Video architecture is scaffolded
-- Video runtime implementation is paused until ffmpeg is ready
-- The next major product step after ffmpeg readiness is M3.1
+- Video architecture and M3.1.1 runtime are complete
+- M3.2 synthetic fixture foundation is complete
+- The next task is frame-level transition and camera detection; M3.3 and M4 remain paused

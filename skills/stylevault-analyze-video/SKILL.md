@@ -24,6 +24,12 @@ description: >-
 - `scene_threshold` 对外单位为 normalized 0-1；`FfmpegAdapter` 内部显式映射到 ffmpeg `scdet` 的 0-100 原生范围。
 - 零时长、不连续、总时长与 probe 不符的 segments 视为无效（`validate_segments`）；NaN/Infinity 一律拒绝。
 
+## M3.2 Fixture 基础
+- `configs/video-m3.2-fixtures.json` 是独立于 M3.1 mock suite 的 synthetic fixture 规格。
+- 当前包含 `static_hard_cut`、`static_dissolve`、`static_fade`、`pan_horizontal`、`zoom_in`、`no_motion` 六个 fixture。
+- `scripts/m3_2_fixtures.py` 按规格在测试运行时生成帧并通过 `FfmpegAdapter` 编码；`scripts/evaluate_m32_fixtures.py` 只校验规格与 probe 元数据。
+- 本阶段不实现完整 `transition_types` / `camera_moves` 检测，也不进入 M3.3。
+
 ## 工作流
 1. `mock`：基于 seed/source 生成可复现的节奏参数（含 overall_pace/coverage）。
 2. `adapter-dry-run`：只输出 adapter 计划，不调用 ffmpeg。
@@ -37,7 +43,7 @@ description: >-
 
 ## 约束
 - ffmpeg/ffprobe 调用只能出现在 `FfmpegAdapter` 内部；上层流程不直接依赖 ffmpeg。
-- `scene_threshold` 单位：归一化 0-1（`SCENE_THRESHOLD_UNIT`，与 ffmpeg scdet threshold 原生单位一致，adapter 内校验 [0,1] 后直接透传）。
+- `scene_threshold` 对外单位为归一化 0-1；`FfmpegAdapter` 内部映射到 ffmpeg `scdet` 原生 0-100 范围（0.30 -> 30.0）。
 - 视频处理顺序：场景切分 → 镜头级采样 → 代表帧分析 → 时间窗口统计。
 - 冻结版 `schemas/item.schema.json` 不修改；新增字段仅进入 `schemas/drafts/`。
 
@@ -54,6 +60,6 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
 ## 验收状态
-- M3.1 代码路径完成（契约修正 + 加固）；**真实 runtime acceptance 未完成**（当前环境未安装 ffmpeg/ffprobe）。
-- 无 ffmpeg 环境只验证结构化错误路径（exit=2），不宣称 runtime 通过。
+- M3.1.1 代码路径和真实 runtime 已验证；ffmpeg 1229403 的 probe/segment 与 M3.1 acceptance 已通过。
+- M3.2 synthetic fixture foundation 已验证（6/6 fixture probe 契约通过）；transition/camera detection 尚未实现，不宣称 M3.2 通过。
 - M3.3 在 color_continuity ground truth 就绪前不可验收（`ready: false`）。

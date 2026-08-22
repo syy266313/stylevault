@@ -4,6 +4,12 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+### Added (M3.2 fixture 基础)
+- 新增独立 `configs/video-m3.2-fixtures.json`，定义 6 个可复现 synthetic fixture 及独立 ground truth。
+- 新增运行时 fixture 生成器和 probe 契约 evaluator；视频由规格生成，不提交二进制，不读取算法输出。
+- 新增 4 个 fixture 基础测试，覆盖配置校验、生成、probe、可复现性和临时文件清理。
+- 本轮未实现 `transition_types` / `camera_moves` 检测。
+
 ## [0.4.7] - 2026-08-15
 
 ### Fixed (M3.1.1 加固)
