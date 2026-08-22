@@ -402,7 +402,7 @@ class FfmpegAdapter(VideoAdapter):
             "status": "confirmed" if confirmed else "candidate",
         }
 
-    def _detect_transitions(self, frames, sampling_fps, confidence_threshold=0.7):
+    def _detect_transitions(self, frames, sampling_fps, confidence_threshold=0.7, time_offset_s=0.0):
         """Detect cut-adjacent events using relative temporal windows."""
         import statistics
         loaded = [self._load_frame(item["path"]) for item in frames]
@@ -472,7 +472,7 @@ class FfmpegAdapter(VideoAdapter):
                 end_gap = abs(left_level - right_level)
                 final_confidence = min(0.96, 0.68 + min(0.20, span / max(1.0, sampling_fps * 2.0)) + min(0.08, end_gap))
             observation = self._observation(value, final_confidence, "ffmpeg+Pillow", detail, confidence_threshold)
-            observation["time_s"] = round(midpoint / float(sampling_fps), 3)
+            observation["time_s"] = round(time_offset_s + midpoint / float(sampling_fps), 3)
             observation["window_frames"] = [start, end]
             observation["brightness_detail"] = {"left": round(left_level, 4), "trough": round(trough, 4), "right": round(right_level, 4), "valley": round(valley, 4)}
             observations.append(observation)
@@ -528,19 +528,60 @@ class FfmpegAdapter(VideoAdapter):
             return [self._observation("static", confidence, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
         return [self._observation("unknown", 0.35, "ffmpeg+Pillow", "intra-shot-motion", confidence_threshold)]
 
+    @staticmethod
+    def _with_segment_context(observations, segment_index, start_ms, end_ms):
+        for item in observations:
+            item["segment_index"] = segment_index
+            item["window_ms"] = [round(start_ms, 3), round(end_ms, 3)]
+        return observations
+
     def analyze_m32(self, source, sampling_fps=12.0, confidence_threshold=0.7):
-        """对真实帧执行 M3.2 转场和镜头内运镜检测。"""
+        """对真实帧执行 M3.2 检测，按 segment 边界区分转场和镜头内运镜。"""
         if not isinstance(confidence_threshold, (int, float)) or not math.isfinite(confidence_threshold) or not 0 <= confidence_threshold <= 1:
             raise RuntimeError(f"confidence_threshold 必须在 [0,1]: {confidence_threshold}")
-        probe = self.probe(source)
+        if not isinstance(sampling_fps, (int, float)) or not math.isfinite(sampling_fps) or sampling_fps <= 0:
+            raise RuntimeError(f"sampling_fps 必须为正有限数: {sampling_fps}")
+        segment_result = self.segment(source)
+        probe = segment_result.get("probe") or self.probe(source)
+        segments = segment_result.get("segments") or [{"index": 1, "start_ms": 0.0, "duration_ms": probe["duration_ms"]}]
+        actual_fps = min(float(sampling_fps), probe["fps"])
         with tempfile.TemporaryDirectory(prefix="stylevault_m32_frames_") as frame_dir:
-            frames = self.sample_frames(source, frame_dir, sampling_fps=min(float(sampling_fps), probe["fps"]))
-            transitions = self._detect_transitions(frames, min(float(sampling_fps), probe["fps"]), confidence_threshold)
-            camera_moves = self._detect_camera_moves(frames, min(float(sampling_fps), probe["fps"]), confidence_threshold)
+            frames = self.sample_frames(source, frame_dir, sampling_fps=actual_fps)
+            grouped = []
+            for segment in segments:
+                start_ms = float(segment["start_ms"])
+                end_ms = start_ms + float(segment["duration_ms"])
+                selected = [frame for frame in frames if start_ms / 1000.0 <= frame["time_s"] <= end_ms / 1000.0]
+                grouped.append((segment, selected))
+            camera_moves = []
+            for segment, selected in grouped:
+                if len(selected) < 3:
+                    continue
+                detected = self._detect_camera_moves(selected, actual_fps, confidence_threshold)
+                camera_moves.extend(self._with_segment_context(detected, segment["index"], segment["start_ms"], segment["start_ms"] + segment["duration_ms"]))
+            transitions = []
+            for left, right in zip(grouped, grouped[1:]):
+                left_segment, left_frames = left
+                right_segment, right_frames = right
+                boundary_frames = left_frames[-3:] + right_frames[:3]
+                if len(boundary_frames) >= 3:
+                    boundary_start_s = max(0.0, float(left_segment["start_ms"]) / 1000.0 + float(left_segment["duration_ms"]) / 1000.0 - 3.0 / actual_fps)
+                    detected = self._detect_transitions(boundary_frames, actual_fps, confidence_threshold, time_offset_s=boundary_start_s)
+                    transitions.extend(self._with_segment_context(detected, right_segment["index"], right_segment["start_ms"], right_segment["start_ms"] + right_segment["duration_ms"]))
+            # If scdet exposes no boundary, retain a whole-video window so synthetic
+            # fixtures remain observable while still recording the segment result.
+            if not transitions and len(segments) == 1:
+                detected = self._detect_transitions(frames, actual_fps, confidence_threshold)
+                transitions.extend(self._with_segment_context(detected, segments[0]["index"], segments[0]["start_ms"], segments[0]["start_ms"] + segments[0]["duration_ms"]))
+            if not camera_moves and len(segments) == 1:
+                detected = self._detect_camera_moves(frames, actual_fps, confidence_threshold)
+                camera_moves.extend(self._with_segment_context(detected, segments[0]["index"], segments[0]["start_ms"], segments[0]["start_ms"] + segments[0]["duration_ms"]))
         return {
             "source": source,
             "probe": probe,
-            "sampling": {"sampling_fps": min(float(sampling_fps), probe["fps"]), "frame_count": len(frames)},
+            "segments": segments,
+            "segment_result": {"cut_times_s": segment_result.get("cut_times_s", []), "warnings": segment_result.get("warnings", [])},
+            "sampling": {"sampling_fps": actual_fps, "frame_count": len(frames)},
             "thresholds": {"confidence": confidence_threshold, "transition_active_diff": 0.08, "motion_shift_px": 0.8, "motion_scale_delta": 0.03},
             "transition_types": transitions,
             "camera_moves": camera_moves,
@@ -771,6 +812,28 @@ def cmd_segment(args):
     return 0
 
 
+def cmd_analyze_m32(args):
+    try:
+        adapter = FfmpegAdapter(scene_threshold=args.scene_threshold)
+        result = adapter.analyze_m32(args.source, sampling_fps=args.sampling_fps, confidence_threshold=args.confidence_threshold)
+        segment_result = {"probe": result["probe"], "segments": result["segments"]}
+        rhythm = build_segment_rhythm(segment_result)
+        rhythm["status"] = "partial"
+        rhythm["source"] = "ffmpeg+Pillow"
+        rhythm["detection_method"] = "ffprobe+scdet+frame-windows"
+        rhythm["params"]["transition_types"] = result["transition_types"]
+        rhythm["params"]["camera_moves"] = result["camera_moves"]
+        rhythm["coverage"]["transition_types"] = {"confidence": max((x["confidence"] for x in result["transition_types"]), default=0.0), "source": "ffmpeg+Pillow", "detection_method": "frame-window-analysis"}
+        rhythm["coverage"]["camera_moves"] = {"confidence": max((x["confidence"] for x in result["camera_moves"]), default=0.0), "source": "ffmpeg+Pillow", "detection_method": "intra-segment-analysis"}
+        rhythm["segments"] = result["segments"]
+        output = {"version": "v0.1-draft", "source": {"origin": "file", "path": args.source}, "adapter": "ffmpeg", "probe": result["probe"], "segments": result["segments"], "sampling": result["sampling"], "thresholds": result["thresholds"], "rhythm": rhythm}
+        print(json.dumps(output, ensure_ascii=False, indent=2))
+    except RuntimeError as exc:
+        print(json.dumps({"ok": False, "error": str(exc), "adapter": "ffmpeg"}, ensure_ascii=False, indent=2))
+        return 2
+    return 0
+
+
 def cmd_validate(args):
     obj = load_json(args.rhythm, {})
     # 兼容 rhythm 直接输入，或完整 mock 结构里的 analysis.rhythm
@@ -849,6 +912,13 @@ def main():
     p.add_argument("source", help="视频文件路径")
     p.add_argument("--scene-threshold", type=float, default=0.30)
     p.set_defaults(func=cmd_segment)
+
+    p = sub.add_parser("analyze-m32", help="使用 FfmpegAdapter 执行 M3.2 帧级分析")
+    p.add_argument("source", help="视频文件路径")
+    p.add_argument("--sampling-fps", type=float, default=12.0)
+    p.add_argument("--confidence-threshold", type=float, default=0.70)
+    p.add_argument("--scene-threshold", type=float, default=0.30)
+    p.set_defaults(func=cmd_analyze_m32)
 
     p = sub.add_parser("validate", help="校验 rhythm 结构")
     p.add_argument("rhythm", help="rhythm JSON 文件")

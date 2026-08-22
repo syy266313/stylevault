@@ -20,7 +20,7 @@ description: >-
 - `pace_density.cuts_per_min`：切点数/分钟 = `max(shot_count-1, 0) / duration_minutes`（Mock/Ffmpeg 同一公式）。
 - `pace_density.segment_density`：镜头数/分钟 = `shot_count / duration_minutes`。
 - 顶层不用整体 confidence 表示完整分析可信度；改用分维度 `coverage`（每维带 confidence/source/detection_method）。
-- `transition_types` / `camera_moves` 必须带 `confidence`、`source`、`detection_method`；M3.1 未实现，值固定为 `unknown` + `not-implemented-m3.2`，低置信度结果只作候选，不当作事实。
+- `transition_types` / `camera_moves` 必须带 `confidence`、`source`、`detection_method`；低置信度结果只作候选，不当作事实。M3.1 的基础 rhythm 输出仍保留 `unknown` 占位，M3.2 的 `analyze-m32` 输出真实帧级观测。
 - `scene_threshold` 对外单位为 normalized 0-1；`FfmpegAdapter` 内部显式映射到 ffmpeg `scdet` 的 0-100 原生范围。
 - 零时长、不连续、总时长与 probe 不符的 segments 视为无效（`validate_segments`）；NaN/Infinity 一律拒绝。
 
@@ -55,6 +55,7 @@ python3 scripts/analyze_video.py mock demo-seed
 python3 scripts/analyze_video.py adapter-dry-run sample.mp4
 python3 scripts/analyze_video.py probe sample.mp4
 python3 scripts/analyze_video.py segment sample.mp4 --scene-threshold 0.30
+python3 scripts/analyze_video.py analyze-m32 sample.mp4
 python3 scripts/analyze_video.py merge-dna --visual visual.json --rhythm rhythm.json
 python3 scripts/analyze_video.py validate rhythm.json
 python3 scripts/evaluate_video.py --ground-truth configs/video-test-suite.json --prediction prediction.json --milestone M3.1
@@ -63,5 +64,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 
 ## 验收状态
 - M3.1.1 代码路径和真实 runtime 已验证；ffmpeg 1229403 的 probe/segment 与 M3.1 acceptance 已通过。
-- M3.2 synthetic fixture 与帧级检测已验证；6/6 fixture acceptance 通过，尚不进入 M3.3。
+- M3.2 synthetic fixture 与帧级检测已验证；6/6 fixture acceptance 通过。
+- M3.2.1 integration hardening adds the formal `analyze-m32` CLI, unified `rhythm.params` output, segment-aware event context, and event-position validation.
+- Real user video generalization remains unverified; M3.3 is still gated.
 - M3.3 在 color_continuity ground truth 就绪前不可验收（`ready: false`）。

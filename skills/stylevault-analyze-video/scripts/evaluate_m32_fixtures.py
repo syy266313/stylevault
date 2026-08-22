@@ -39,6 +39,13 @@ def _validate_observation(item):
     confidence = item["confidence"]
     if not isinstance(confidence, (int, float)) or not math.isfinite(confidence) or not 0 <= confidence <= 1:
         return [f"invalid confidence: {confidence!r}"]
+    if item["status"] not in {"confirmed", "candidate"}:
+        return [f"invalid status: {item['status']!r}"]
+    if not isinstance(item["candidate"], bool):
+        return [f"candidate must be bool: {item['candidate']!r}"]
+    for key in ("value", "source", "detection_method"):
+        if not isinstance(item[key], str) or not item[key].strip():
+            return [f"{key} must be non-empty string"]
     if item["status"] == "confirmed" and item["candidate"]:
         return ["confirmed observation cannot be candidate"]
     if item["status"] == "candidate" and not item["candidate"]:
@@ -61,6 +68,29 @@ def compare_detection(spec, prediction, threshold=None):
     camera_expected = {item["value"] for item in spec["camera_ground_truth"]}
     transition_actual = _values(transition_pred, threshold)
     camera_actual = _values(camera_pred, threshold)
+    boundaries = {round(float(value), 3) for value in spec["shot_boundaries_ms"]}
+    for expected in spec["transition_ground_truth"]:
+        if expected.get("boundary_ms") is not None:
+            boundary_ms = float(expected["boundary_ms"])
+            if round(boundary_ms, 3) not in boundaries:
+                errors.append(f"ground truth boundary is not in shot_boundaries_ms: {boundary_ms}")
+            matches = [item for item in transition_pred if item.get("value") == expected["value"] and not item.get("candidate")]
+            if not matches:
+                errors.append(f"missing transition event position: {expected['value']}")
+            else:
+                allowed_ms = expected.get("allowed_window_ms", spec["tolerance"]["boundary_ms"])
+                distances = [abs(float(item.get("time_s", float('inf'))) * 1000.0 - boundary_ms) for item in matches]
+                if min(distances) > allowed_ms:
+                    errors.append(f"transition event position error: {expected['value']} min_ms={min(distances):.1f} allowed_ms={allowed_ms}")
+        elif expected.get("time_s") is not None:
+            matches = [item for item in transition_pred if item.get("value") == expected["value"] and not item.get("candidate")]
+            if not matches:
+                errors.append(f"missing transition event position: {expected['value']}")
+            else:
+                allowed_ms = expected.get("allowed_window_ms", spec["tolerance"]["boundary_ms"])
+                distances = [abs(float(item.get("time_s", float('inf'))) - expected["time_s"]) * 1000.0 for item in matches]
+                if min(distances) > allowed_ms:
+                    errors.append(f"transition event position error: {expected['value']} min_ms={min(distances):.1f} allowed_ms={allowed_ms}")
     if transition_expected != transition_actual:
         errors.append(f"transition mismatch: predicted={sorted(transition_actual)} ground_truth={sorted(transition_expected)}")
     if camera_expected != camera_actual:

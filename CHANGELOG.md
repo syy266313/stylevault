@@ -12,6 +12,12 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 - 独立 M3.2 fixture acceptance 对 6 个 synthetic fixture 达到 `6/6`。
 - 新增检测专项测试，覆盖阈值、采样参数、转场区分、误报约束、非法 confidence、文件不存在和超时错误。
 
+### Fixed (M3.2.1 integration hardening)
+- 新增 `analyze-m32` 正式 CLI，输出统一进入 `rhythm.params.transition_types` 与 `rhythm.params.camera_moves`。
+- `analyze_m32()` 先消费 `segment()` 结果：相邻 segment 边界用于转场窗口，单个 segment 内用于运镜分析；事件携带 `segment_index`、`time_s` 或 `window_ms`。
+- fixture evaluator 增加 transition 事件位置误差检查和严格 observation provenance 校验。
+- 修正 handoff 中 detector commit 为 `19c6f53`；明确真实用户视频泛化尚未验证。
+
 ## [0.4.7] - 2026-08-15
 
 ### Fixed (M3.1.1 加固)

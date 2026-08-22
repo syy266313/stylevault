@@ -1,4 +1,4 @@
-# StyleVault Agent Handoff: M3.2 Complete / M3.3 Gated
+# StyleVault Agent Handoff: M3.2.1 Integration Hardening / M3.3 Gated
 
 ## Read first
 - `AGENTS.md`
@@ -14,7 +14,8 @@
 - ffmpeg/ffprobe are available; ffmpeg version `1229403`
 - Frozen file: `schemas/item.schema.json`; unchanged
 - Fixture foundation checkpoint: `8500e8c` (`feat: add deterministic M3.2 video fixtures`), pushed to `origin/main`
-- M3.2 detector/evaluator commit: `a0a38a4` (`feat: implement M3.2 frame-based detection`), pending push in this session
+- M3.2 detector/evaluator commit: `19c6f53` (`feat: implement M3.2 frame-based detection`), pushed to `origin/main`
+- M3.2.1 integration hardening is complete in the working tree and pending commit
 - Working tree otherwise contains only unrelated untracked `AGENTS.md`
 
 ## M3.1 implementation
@@ -35,6 +36,7 @@
 - M3.1 acceptance: `3/3` passed
 - Fixture foundation tests: `4/4` passed; full video test suite: `41/41` passed
 - Fixture evaluator: `6/6` probe contracts passed
+- M3.2.1 integration targets: formal `analyze-m32` CLI, unified `rhythm.params`, segment-aware context, event position windows, strict observation validation
 - `schemas/item.schema.json`: unchanged
 
 ## M3.2 fixture foundation completed
@@ -53,16 +55,20 @@
 - Diagnostics confirmed real signal: dissolve sustained RGB diff around 0.02-0.03, fade brightness valley around 0.392, zoom foreground extent growth around 1.85x, pan dx trend stable, and no-motion max diff below 0.003.
 - Redesign round 1: `static_hard_cut`, `static_dissolve`, `pan_horizontal`, `no_motion` passed; fade and zoom remained unresolved.
 - Redesign round 2: global brightness valley + monotonicity classified `fade_out_in`; expanded scale search plus salient extent trend classified `zoom`.
-- Final M3.2 acceptance: `6/6` passed.
-- Final predictions include provenance, confidence, candidate/status, sampling windows and diagnostic details.
-- Additional tests cover threshold changes, sampling changes, dissolve/fade separation, pan/zoom/static false-positive guards, unknown rejection, NaN/Infinity/invalid confidence, missing files, timeout and adapter boundaries.
+- Final M3.2 synthetic acceptance: `6/6` passed.
+- M3.2.1 integration now requires a formal `analyze-m32` CLI and emits detections under `rhythm.params.transition_types` / `rhythm.params.camera_moves`.
+- Detection events carry `segment_index`, `time_s` or `window_ms`; evaluator checks event position against fixture `allowed_window_ms`.
+- Observation validation is strict for status, candidate type, non-empty provenance strings, and finite confidence in [0,1].
+- M3.2.1 verification: full suite `53/53`, M3.2.1 integration tests `12/12`, fixture acceptance `6/6`, real `analyze-m32` CLI passed, `py_compile` passed, and `git diff --check` passed.
+- Real user video generalization remains unverified.
 
 ## M3.3 gate
 - Do not enter M3.3 until independent `color_continuity` ground truth is ready.
 - Do not enter M3.4 or M4.
 
 ## Checkpoint decision
-- M3.2 is complete and committed as `a0a38a4`; push confirmation follows.
+- M3.2.1 integration hardening is complete in the working tree pending final verification and commit.
+- M3.2 detector commit is `19c6f53`; this is the single authoritative detector commit.
 - M3.3 remains gated by independent color-continuity ground truth.
 
 ## Model workflow

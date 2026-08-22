@@ -115,7 +115,9 @@ Milestone completion:
 
 ## 7. Next Direction
 
-The immediate engineering milestone after M3.2 is **M3.3**, subject to its color-continuity ground truth gate:
+The immediate engineering milestone after M3.2.1 is **M3.3**, subject to its color-continuity ground truth gate:
+- M3.2.1 integration hardening is complete: formal CLI, segment-aware analysis and event-position validation
+- real user video generalization remains unverified
 - do not start M3.3 until its independent ground truth is ready
 - keep M3.4 and M4 paused
 
@@ -147,5 +149,6 @@ Product directions after the M3.2 runtime baseline are:
 - Image analysis is done
 - Visual calibration is done
 - Video architecture and M3.1.1 runtime are complete
-- M3.2 synthetic fixture foundation is complete
-- The next task is frame-level transition and camera detection; M3.3 and M4 remain paused
+- M3.2 synthetic fixtures, frame-level detection, and integration hardening are complete
+- Formal `analyze-m32` CLI and event-position validation are complete
+- Real user video generalization is unverified; M3.3 remains gated and M4 remains paused
