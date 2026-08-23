@@ -1,0 +1,15 @@
+{
+  "version": "m4.0.regression.v1",
+  "purpose": "deterministic local query regression; durable properties only",
+  "vault_root": ".",
+  "queries": [
+    {"id": "tag_and", "args": {"tags": ["style:minimal", "color:low-sat"], "mode": "and"}, "expect": {"non_empty": true, "filters": ["tags_and"]}},
+    {"id": "tag_or", "args": {"tags": ["style:cyberpunk", "style:minimal"], "mode": "or"}, "expect": {"non_empty": true, "filters": ["tags_or"]}},
+    {"id": "type", "args": {"item_type": "image"}, "expect": {"non_empty": true, "filters": ["type"]}},
+    {"id": "collection", "args": {"collection": "golden-dataset"}, "expect": {"non_empty": true, "filters": ["collection"]}},
+    {"id": "preference_min", "args": {"preference_min": 0.7}, "expect": {"non_empty": true, "filters": ["preference_min"]}},
+    {"id": "summary_text", "args": {"text": "低饱和 夜景"}, "expect": {"non_empty": true}},
+    {"id": "editing_rules_text", "args": {"text": "饱和度 负空间"}, "expect": {"non_empty": true}},
+    {"id": "no_results", "args": {"tags": ["style:__m4_regression_no_result__"], "mode": "and"}, "expect": {"empty": true}}
+  ]
+}

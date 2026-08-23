@@ -34,3 +34,5 @@ Tag matches dominate. Text fields add smaller evidence. Preference is only a sma
 ## Verification boundary
 
 Tests cover AND/OR, metadata filters, preference thresholds, summary/rule search, no results, missing fields, corrupt JSON, duplicate suppression, stable ordering, missing-index fallback, source immutability, and frozen schema preservation.
+
+`configs/search-m4.0-regression.json` and `scripts/evaluate_regression.py` add a read-only regression layer for the eight durable query classes. It checks command success, expected empty/non-empty shape, filter respect, duplicate-free results, descending score, item-id tie ordering, repeat determinism, and unchanged item/index/source snapshots. It does not encode subjective relevance judgments or introduce synonyms.
