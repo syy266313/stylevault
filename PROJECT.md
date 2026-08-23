@@ -39,7 +39,7 @@ stylevault/
 | M2 图片分析 | stylevault-analyze-image（本地特征 + 语义分析） | ✅ 完成 |
 | M2.5 质量校准 | editing_rules + Golden Dataset(20 张) + gpt-5.6-terra 视觉管线 | ✅ 完成（20/20 全量分析） |
 | M3 视频分析 | video analysis scaffold + test suite + FfmpegAdapter probe/segment | ✅ M3.3 color continuity detector 与 5/5 fixture acceptance 完成；真实用户视频泛化待验证 |
-| M4 检索+UI | stylevault-search + PWA 画廊 | ⬜ 未开始 |
+| M4 检索+UI | stylevault-search + PWA 画廊 | 🔨 M4.0 最小本地检索完成；PWA 画廊未开始 |
 | M5 知识问答 | 基于知识库的问答 | ⬜ 未开始 |
 | M6 剪辑辅助 | 知识库辅助 AI 剪辑（未来） | ⬜ 规划中 |
 

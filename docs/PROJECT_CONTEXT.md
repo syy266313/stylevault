@@ -113,14 +113,17 @@ Milestone completion:
 - M3.2 synthetic fixture foundation and frame-level detector are complete
 - M3.2 acceptance: 6/6 fixture cases passed
 - M3.3 color fixture and detector acceptance: 5/5 passed under metrics contract `m3.3.v1`
+- M3.3.1 benchmark contract fixed; manifest empty, real-video evaluator not implemented
+- M4.0 deterministic local search implemented; PWA UI and embedding remain unstarted
 
 ## 7. Next Direction
 
 M3.3 is complete through the dedicated color-fixture route:
 - M3.2.1 integration hardening is complete: formal CLI, segment-aware analysis and event-position validation
 - M3.3 uses metrics contract `m3.3.v1` and passes 5/5 independent color fixtures
-- real user video generalization remains unverified
-- keep M3.4 and M4 paused
+- M3.3.1 is an independent report-only benchmark; real user video generalization remains unverified
+- M4.0 now provides local tag/text retrieval over image knowledge items without vector storage
+- keep M3.4 and embedding/vector search paused
 
 Product directions after the M3.2 runtime baseline are:
 - **Style Retrieval**: semantic + style-dna based retrieval of similar cases

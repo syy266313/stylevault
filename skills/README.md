@@ -16,7 +16,7 @@ cp -r skills/stylevault-* /var/minis/skills/
 | `stylevault-analyze-image` | M2 | 图片两级分析：本地特征(Phase A) + LLM 语义(Phase B) → 写 analysis | apple-vision、py3-pillow、LLM | ingest 产物 |
 | `stylevault-analyze-video` | M3.0/M3.0.5 | 视频风格建模骨架 + 测试套件：统一 adapter、mock、rhythm.params、style_dna 合并、ground truth 验收 | ffmpeg（后置）、python3 | analyze-image / mock / test-suite |
 | `stylevault-tag` | M2 | 标签本体维护 + 重建 indexes/tags.json 聚合索引 | python3 | configs/tag-ontology.json |
-| `stylevault-search` | M4 | 标签/关键词/相似度检索 + 知识库问答 | python3、apple-vision similarity、LLM | indexes/tags.json |
+| `stylevault-search` | M4.0 | 本地确定性标签/关键词检索；embedding、PWA 和问答暂未实现 | python3 | item.json + indexes/tags.json（可选加速） |
 
 ## 不需要开发的（已存在）
 

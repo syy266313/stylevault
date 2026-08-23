@@ -86,7 +86,9 @@
 - Real user video generalization remains unverified.
 - M3.3.1 benchmark contract is fixed in `docs/DESIGN-M3.3.1-generalization-benchmark.md` and `configs/video-m3.3.1-benchmark.json`; manifest is empty, no real videos were collected, and no evaluator was implemented.
 - The benchmark is report-only and isolated from synthetic acceptance; holdout samples are forbidden for tuning and source media/frames/logs remain outside Git.
-- Do not enter M3.4 or M4.
+- M4.0 deterministic local search is implemented in `skills/stylevault-search/`; it reads item.json as source of truth, uses tags.json only as an optional accelerator, and does not use embeddings, vector storage, cloud services, or Style DNA.
+- M4.0 tests cover query modes, filters, text fields, malformed/missing data, duplicate suppression, stable sorting, stale/missing index fallback, source immutability, and frozen schema preservation.
+- Do not enter M3.4 or M4.1/PWA.
 
 
 ## Model workflow

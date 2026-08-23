@@ -4,6 +4,15 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 
 ## [Unreleased]
 
+### Added (M4.0 deterministic local search)
+- 新增 `stylevault-search` skill，基于 `item.json` 的标签、summary、editing_rules、type、collection 和 preference 提供本地 JSON 检索。
+- 支持标签 AND/OR、元数据过滤、文本匹配、可解释评分、稳定排序和索引缺失/过期时从 item.json 降级扫描。
+- 不使用 embedding、向量数据库、云端服务或 Style DNA；检索只读原始条目。
+
+### Added (M3.3.1 generalization benchmark contract)
+- 新增真实用户视频 benchmark 契约文档和空配置 manifest。
+- benchmark 与 synthetic acceptance 隔离，仅生成泛化报告；holdout 不得用于调参，真实素材/帧/日志不入 Git。
+
 ### Added (M3.3 color continuity detection)
 - 新增统一 `m3.3.v1` color metrics contract：exact-duration sampling axis、相邻 interval `mean_delta_e`、实际首尾时间跨度 `drift_rate`、interval `stable_ratio`。
 - 在 `FfmpegAdapter` 内新增 color continuity detector，输出 `mean_delta_e`、`drift_rate`、`stable_ratio`、`dominant_shift`、confidence/provenance、采样和诊断信息。
