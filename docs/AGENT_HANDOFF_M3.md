@@ -17,7 +17,7 @@
 - M3.2 detector/evaluator commit: `19c6f53` (`feat: implement M3.2 frame-based detection`), pushed to `origin/main`
 - M3.2.1 integration hardening commit: `eb3ca6c` (`fix: harden M3.2 integration contract`), pushed to `origin/main`
 - Agent contract is present on `main` in the subsequent docs commit `5b288fb`, pushed to `origin/main`
-- M3.3 detector implementation is complete in the working tree and has passed unified `m3.3.v1` acceptance `5/5`; pending commit
+- M3.3 detector is complete and pushed at `f4af546`; unified `m3.3.v1` synthetic acceptance is `5/5`
 
 ## M3.1 implementation
 - `FfmpegAdapter.probe()` calls ffprobe for duration, dimensions, fps, codec, format
@@ -66,7 +66,7 @@
 ## M3.3 gate
 - Independent color ground truth and detector acceptance are complete through the dedicated color-fixture route.
 - The legacy M3.1 mock route remains rejected for M3.3 color acceptance.
-- Do not enter M3.4 or M4.
+- Do not enter M3.4, M4.1, PWA, embeddings, vector storage, cloud retrieval, or Style DNA completion.
 
 ## Checkpoint decision
 - M3.2.1 integration hardening commit: `9107921`, pushed to `origin/main`.
@@ -90,6 +90,13 @@
 - M4.0 tests cover query modes, filters, text fields, malformed/missing data, duplicate suppression, stable sorting, stale/missing index fallback, source immutability, and frozen schema preservation.
 - Do not enter M3.4 or M4.1/PWA.
 
+## Overnight M4.0 read-only quality assessment
+- Remote `origin/main` was verified at `74d9a77` after one secure push; no further push was attempted.
+- Real knowledge-base queries covered tag AND/OR, type, collection, preference minimum, summary text, editing-rule text, and no-result behavior.
+- All 8 queries produced deterministic repeat results; top-five results had no duplicates and were sorted by descending score.
+- No deterministic M4.0 bug was found. Observed relevance limits are subjective/semantic: Chinese token matching has no synonym expansion, and filter-only queries intentionally rank primarily by preference then item id.
+- Report was written only to `/tmp/m4_quality_report.json`; no item, index, source media, or repository report was modified.
+- `docs/OVERNIGHT_TASK.md` and `docs/PROMPT_M3.3_DIAGNOSTIC.md` remain untracked and untouched.
 
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.
