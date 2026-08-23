@@ -1,0 +1,38 @@
+{
+  "version": "m3.3.1.v1",
+  "milestone": "M3.3.1",
+  "purpose": "real-video generalization benchmark; independent from synthetic acceptance",
+  "acceptance_role": "benchmark_report_only",
+  "synthetic_acceptance_config": "configs/video-m3.3-color-fixtures.json",
+  "samples": [],
+  "allowed_splits": ["development", "validation", "holdout"],
+  "holdout_policy": "never_use_for_tuning",
+  "deduplication": {
+    "primary_key": "source_sha1",
+    "forbid_cross_split_duplicates": true,
+    "forbid_known_derivatives_across_splits": true
+  },
+  "privacy": {
+    "source_media_in_git": false,
+    "frames_in_git": false,
+    "logs_in_git": false,
+    "default_status": "pending",
+    "allowed_statuses": ["pending", "approved_local_only", "excluded"]
+  },
+  "annotation_contract": {
+    "status_values": ["not_started", "in_progress", "complete", "needs_review"],
+    "shot_boundaries": {"unit": "ms", "allow_unknown": true},
+    "transition_types": ["hard_cut", "dissolve", "fade", "unknown"],
+    "camera_moves": ["static", "pan", "zoom", "unknown"],
+    "color_continuity": ["stable", "gradual_drift", "abrupt_shift", "alternating", "fade_like", "unknown"],
+    "confidence_range": [0, 1],
+    "require_annotator_code": true,
+    "require_annotated_at": true
+  },
+  "reporting": {
+    "automatic_milestone_gate": false,
+    "group_by": ["duration_bucket", "resolution", "fps_bucket", "codec", "source_origin"],
+    "include_excluded_samples": true,
+    "include_failure_examples": true
+  }
+}

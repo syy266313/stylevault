@@ -84,7 +84,10 @@
 - The legacy M3.1 mock suite remains insufficient for M3.3 color acceptance.
 - The dedicated color-fixture gate proof passed with `fixture_count=5`, `passed=5`, and `metrics_contract_version=m3.3.v1`.
 - Real user video generalization remains unverified.
+- M3.3.1 benchmark contract is fixed in `docs/DESIGN-M3.3.1-generalization-benchmark.md` and `configs/video-m3.3.1-benchmark.json`; manifest is empty, no real videos were collected, and no evaluator was implemented.
+- The benchmark is report-only and isolated from synthetic acceptance; holdout samples are forbidden for tuning and source media/frames/logs remain outside Git.
 - Do not enter M3.4 or M4.
+
 
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.
