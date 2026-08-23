@@ -65,6 +65,6 @@ The evaluator must not:
 
 Before adding a sample: confirm local consent, source SHA-1, no cross-split duplicate, metadata completeness, and `privacy_status=approved_local_only`. Exclude faces, speech, location, or other sensitive material unless the user explicitly accepts local-only processing. Remove or redact identifying notes from the manifest.
 
-## Planned implementation boundary
+## Implemented report scaffold boundary
 
-Future work may add a manifest validator and a separate `evaluate_m33_real_benchmark.py`. Neither is part of this contract-only phase. Synthetic acceptance remains the authoritative M3.3 gate.
+`validate_m331_benchmark.py` validates the manifest contract and emits a report-only scaffold. It accepts an empty manifest honestly, reports zero eligible samples, and marks real benchmark metrics unavailable. It does not collect media, invoke detector evaluation, connect to `evaluate_video.py`, or write to item/index files. A future evaluator remains separate from this validator and from synthetic M3.3 acceptance.

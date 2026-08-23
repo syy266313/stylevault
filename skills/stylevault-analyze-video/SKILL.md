@@ -71,3 +71,4 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - metrics contract 固定为 `m3.3.v1`：exact-duration sampling、相邻 interval mean Delta E、实际首尾 drift rate、stable interval ratio。
 
 - M3.3 acceptance：5/5 fixture 通过；legacy M3.1 mock route 不得用于 color acceptance。
+- M3.3.1 `scripts/validate_m331_benchmark.py` 只做独立 manifest 校验和 report scaffold；不采集真实媒体、不连接 milestone acceptance、不写回 item/index。
