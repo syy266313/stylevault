@@ -9,6 +9,11 @@ StyleVault 变更记录。格式遵循 [Keep a Changelog](https://keepachangelog
 - 支持标签 AND/OR、元数据过滤、文本匹配、可解释评分、稳定排序和索引缺失/过期时从 item.json 降级扫描。
 - 不使用 embedding、向量数据库、云端服务或 Style DNA；检索只读原始条目。
 
+### Added (M3.3.1 generalization benchmark evaluator)
+- 新增独立 `evaluate_m331_benchmark.py` report-only CLI：仅评估 `approved_local_only` 且 annotation `complete` 的样本。
+- 按 split、codec、FPS、时长、分辨率和来源汇总覆盖率、事件容差匹配、颜色标签匹配、unknown/candidate 覆盖及失败样本。
+- 缺失 detector 输出时结构化标记 unavailable；holdout 只生成最终报告，不接入 synthetic milestone acceptance，也不写回 item/index。
+
 ### Added (M3.3.1 generalization benchmark contract)
 - 新增真实用户视频 benchmark 契约文档和空配置 manifest。
 - benchmark 与 synthetic acceptance 隔离，仅生成泛化报告；holdout 不得用于调参，真实素材/帧/日志不入 Git。

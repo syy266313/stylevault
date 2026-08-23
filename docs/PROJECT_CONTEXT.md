@@ -113,7 +113,7 @@ Milestone completion:
 - M3.2 synthetic fixture foundation and frame-level detector are complete
 - M3.2 acceptance: 6/6 fixture cases passed
 - M3.3 color fixture and detector acceptance: 5/5 passed under metrics contract `m3.3.v1`
-- M3.3.1 benchmark contract fixed; manifest empty, real-video evaluator not implemented
+- M3.3.1 benchmark contract and independent report-only evaluator complete; manifest remains empty, real-video generalization remains unverified
 - M4.0 deterministic local search implemented; PWA UI and embedding remain unstarted
 
 ## 7. Next Direction

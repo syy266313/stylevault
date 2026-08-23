@@ -59,6 +59,7 @@ python3 scripts/analyze_video.py analyze-m32 sample.mp4
 python3 scripts/analyze_video.py merge-dna --visual visual.json --rhythm rhythm.json
 python3 scripts/analyze_video.py validate rhythm.json
 python3 scripts/evaluate_video.py --ground-truth configs/video-test-suite.json --prediction prediction.json --milestone M3.1
+python3 scripts/evaluate_m331_benchmark.py --manifest manifest.json --predictions predictions.json --output report.json
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
@@ -71,4 +72,4 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - metrics contract 固定为 `m3.3.v1`：exact-duration sampling、相邻 interval mean Delta E、实际首尾 drift rate、stable interval ratio。
 
 - M3.3 acceptance：5/5 fixture 通过；legacy M3.1 mock route 不得用于 color acceptance。
-- M3.3.1 `scripts/validate_m331_benchmark.py` 只做独立 manifest 校验和 report scaffold；不采集真实媒体、不连接 milestone acceptance、不写回 item/index。
+- M3.3.1 `scripts/validate_m331_benchmark.py` 独立校验 manifest；`scripts/evaluate_m331_benchmark.py` 只生成 report-only 泛化评估，要求 approved_local_only + complete，缺失媒体/预测输出为 unavailable，不连接 milestone acceptance、不写回 item/index，holdout 不用于调参。
