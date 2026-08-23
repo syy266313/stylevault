@@ -98,6 +98,21 @@
 - Report was written only to `/tmp/m4_quality_report.json`; no item, index, source media, or repository report was modified.
 - `docs/OVERNIGHT_TASK.md` and `docs/PROMPT_M3.3_DIAGNOSTIC.md` remain untracked and untouched.
 
+## Next automation checkpoint
+- Handoff reconciliation was committed locally as `b39dbd9`; its first secure push attempt timed out, so remote verification is pending.
+- M3.3.1 validator/report scaffold is implemented locally in `scripts/validate_m331_benchmark.py`; it validates empty and synthetic metadata-only manifests, duplicate SHA/split rules, privacy and annotation contracts, and emits no fabricated metrics.
+- M4.0 query regression config/evaluator/tests are implemented locally; the real vault regression passed all eight durable query classes with unchanged source snapshots.
+- No real video was collected; synthetic ground truth and M4 search behavior were not changed.
+- The next single recommendation is to run the full test matrix, then push each local commit once when network allows.
+
+## M3.3.1 validator and M4.0 regression completion
+- Handoff reconciliation commit `b39dbd9` was created; its first push attempt timed out and was later included in the successfully pushed `5151060` ancestry.
+- M3.3.1 validator/report scaffold commit `5151060` is pushed and remotely verified. It validates the empty manifest and temporary metadata-only samples, enforces source SHA/split/privacy/annotation/media exclusion rules, and reports unavailable metrics honestly without collecting real videos.
+- M4.0 deterministic query regression commit `8eb0fa9` is pushed and remotely verified. Eight versioned query classes pass durable checks for expected shape, filters, duplicates, score ordering, tie ordering, repeat determinism, and unchanged item/index/source snapshots.
+- Final full matrix: video unittest `70/70`; search unittest `10/10`; benchmark validator `9/9`; M4 regression `8/8`; py_compile, diff check, and frozen schema comparison passed.
+- No synthetic ground truth, item.json, analysis sidecar, tags.json, source media, or task file was modified or committed. No embeddings, vector database, cloud retrieval, M3.4, M4.1, PWA, or Style DNA work was performed.
+- Known boundary remains: Chinese synonym/semantic matching is not implemented and is an architecture decision, not a deterministic correctness failure.
+
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.
 - 5.4 mini: implement a small approved patch and run tests.
