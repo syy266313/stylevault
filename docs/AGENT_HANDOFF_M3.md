@@ -114,6 +114,14 @@
 - No synthetic ground truth, item.json, analysis sidecar, tags.json, source media, or task file was modified or committed. No embeddings, vector database, cloud retrieval, M3.4, M4.1, PWA, or Style DNA work was performed.
 - Known boundary remains: Chinese synonym/semantic matching is not implemented and is an architecture decision, not a deterministic correctness failure.
 
+## M3.3.1 evaluator completion
+- Local commit `57b35b8` adds the independent report-only `evaluate_m331_benchmark.py` evaluator and `test_m331_evaluator.py`.
+- It supports empty manifests, approved complete samples, exclusion groups, development/validation/holdout reporting, event tolerance matching, color label matching, unknown/candidate coverage, failure examples, grouped summaries, unavailable media/prediction paths, and finite-number validation.
+- It does not call `evaluate_video.py`, modify synthetic fixtures, write item/index, or alter the frozen schema.
+- Verification for this commit: evaluator `8/8`, full video suite `78/78`, validator `9/9`, search `10/10`, py_compile and diff check passed.
+- A secure push attempt timed out at github.com:443. The last confirmed remote baseline is `637cf99`; remote inclusion of `57b35b8` remains unverified. Do not claim it is pushed until `git rev-parse origin/main` confirms it.
+- Real user videos and manual annotations are not authorized or collected. The next benchmark-data step is better suited to a desktop TRAE workflow after privacy and annotation contracts are approved.
+
 ## Model workflow
 - 5.6 sol: architecture review only, identify P0/P1 and exact files.
 - 5.4 mini: implement a small approved patch and run tests.
